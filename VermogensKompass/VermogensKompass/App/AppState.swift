@@ -1,0 +1,50 @@
+import Foundation
+import Observation
+
+@MainActor
+@Observable
+final class AppState {
+    private let repository: DashboardRepository
+    private let cache = DashboardCache()
+
+    var dashboardState: AsyncState<DashboardSnapshot> = .idle
+    var lastUpdated: Date?
+    var hasLoadedOnce = false
+
+    init(repository: DashboardRepository = DashboardRepository()) {
+        self.repository = repository
+    }
+
+    func refreshDashboard(force: Bool = false) async {
+        guard force || dashboardState.isLoading == false else { return }
+        dashboardState = .loading
+
+        do {
+            let snapshot = try await repository.makeSnapshot()
+            dashboardState = .loaded(snapshot)
+            lastUpdated = Date()
+            hasLoadedOnce = true
+            cache.persist(snapshot)
+            NotificationManager.shared.processHighPriorityAlert(from: snapshot.crises)
+        } catch {
+            if let cached = cache.load() {
+                dashboardState = .loaded(cached)
+            } else {
+                dashboardState = .failed(error.friendlyMessage)
+            }
+        }
+    }
+}
+
+private extension AsyncState {
+    var isLoading: Bool {
+        if case .loading = self { return true }
+        return false
+    }
+}
+
+private extension Error {
+    var friendlyMessage: String {
+        (self as? LocalizedError)?.errorDescription ?? localizedDescription
+    }
+}

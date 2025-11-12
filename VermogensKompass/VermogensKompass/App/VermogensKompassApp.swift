@@ -1,0 +1,22 @@
+import SwiftUI
+import BackgroundTasks
+
+@main
+struct VermoegensKompassApp: App {
+    @State private var appState = AppState()
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environment(appState)
+                .task {
+                    BackgroundRefreshManager.shared.configure { appState }
+                    await NotificationManager.shared.requestAuthorization()
+                    BackgroundRefreshManager.shared.schedule()
+                }
+        }
+        .backgroundTask(.appRefresh("de.vibecode.vermoegenskompass.refresh")) {
+            await BackgroundRefreshManager.shared.handleBackgroundSceneTask(appState: appState)
+        }
+    }
+}

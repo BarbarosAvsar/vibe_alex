@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CrisisView: View {
     @Environment(AppState.self) private var appState
+    private let summaryGenerator = CrisisSummaryGenerator()
 
     var body: some View {
         NavigationStack {
@@ -10,6 +11,11 @@ struct CrisisView: View {
                     Task { await appState.refreshDashboard(force: true) }
                 } content: { snapshot in
                     VStack(spacing: 16) {
+                        if let summary = summaryGenerator.summarize(events: snapshot.crises) {
+                            DashboardSection("Kurzüberblick", subtitle: "On-Device Zusammenfassung") {
+                                CrisisSummaryCard(summary: summary)
+                            }
+                        }
                         ForEach(snapshot.crises) { event in
                             CrisisCard(event: event)
                         }
@@ -77,5 +83,26 @@ struct CrisisCard: View {
         case "Moderat": return .orange.opacity(0.7)
         default: return .green.opacity(0.7)
         }
+    }
+}
+
+struct CrisisSummaryCard: View {
+    let summary: CrisisSummary
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(summary.headline)
+                .font(.headline)
+            ForEach(summary.highlights, id: \.self) { highlight in
+                HStack(alignment: .top, spacing: 8) {
+                    Image(systemName: "sparkles")
+                        .foregroundStyle(Theme.accent)
+                    Text(highlight)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .cardStyle()
     }
 }

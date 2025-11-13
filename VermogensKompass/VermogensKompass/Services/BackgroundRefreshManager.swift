@@ -8,12 +8,15 @@ final class BackgroundRefreshManager {
 
     private let identifier = "de.vibecode.vermoegenskompass.refresh"
     private var appStateProvider: (() -> AppState?)?
+    private var didRegisterTask = false
 
     func configure(appStateProvider: @escaping () -> AppState?) {
         self.appStateProvider = appStateProvider
+        guard didRegisterTask == false else { return }
         BGTaskScheduler.shared.register(forTaskWithIdentifier: identifier, using: nil) { [weak self] task in
             Task { await self?.handle(task: task as? BGAppRefreshTask) }
         }
+        didRegisterTask = true
     }
 
     func schedule() {

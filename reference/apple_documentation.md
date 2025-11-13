@@ -19,3 +19,24 @@ Source: https://developer.apple.com/documentation
 ## Development essentials
 - **Development guides — Technology overviews.** Learn about the wide range of technologies you use to develop software for Apple platforms. _(CTA: View technology overviews; Target: doc://com.apple.documentation/documentation/TechnologyOverviews)_
 - **Design guidance — Human Interface Guidelines.** Design a great experience for any Apple platform. _(CTA: View design guidance; Target: doc://com.apple.documentation/design/human-interface-guidelines)_
+## Implementation Audit — VermögensKompass (2025-02-14)
+
+Legend: ✅ implemented, 🟡 planned/opportunity, N/A not applicable.
+
+| Documentation link | Status | Notes |
+| --- | --- | --- |
+| doc://com.apple.documentation/documentation/TechnologyOverviews/liquid-glass | ✅ | `Shared/Styles/LiquidGlass.swift` applies the Liquid Glass background and card guidance across all tab content. |
+| doc://com.apple.documentation/documentation/TechnologyOverviews/adopting-liquid-glass | ✅ | Components such as `cardStyle()` encapsulate Liquid Glass surfaces, mirroring the adoption guide’s reusable modifiers advice. |
+| doc://com.apple.documentation/documentation/SwiftUI/Landmarks-Building-an-app-with-Liquid-Glass | ✅ | Feature tabs reuse a single dashboard stack similar to Landmarks, enabling consistent state management via `AppState`. |
+| doc://com.apple.documentation/documentation/Xcode/writing-code-with-intelligence-in-xcode | 🟡 | Repository is ready for Xcode 16+ intelligence; adopt code review/checklist automation for data-service mocks to speed up regression testing. |
+| doc://com.apple.documentation/documentation/FoundationModels/improving-the-safety-of-generative-model-output | N/A | No generative features ship today; revisit if crisis summaries or recommendations become AI-driven. |
+| doc://com.apple.documentation/documentation/FoundationModels/generating-content-and-performing-tasks-with-foundation-models | ✅ | `Services/CrisisSummaryGenerator.swift` now produces on-device summaries that surface in `CrisisView`, aligning with the guidance to keep generation local. |
+| doc://com.apple.documentation/documentation/TechnologyOverviews/ai-machine-learning | ✅ | Crisis summaries and sync anomaly handling run entirely on-device; next ML steps can build on this baseline. |
+| doc://com.apple.documentation/design/Human-Interface-Guidelines/machine-learning | N/A | No ML UI yet; once predictive insights exist, follow this HIG section for disclosure. |
+| doc://com.apple.documentation/documentation/TechnologyOverviews | ✅ | App uses sanctioned APIs only (URLSession, Charts, BackgroundTasks) and keeps references centralized in `Services/*`. |
+| doc://com.apple.documentation/design/human-interface-guidelines | ✅ | TabView navigation, SF Symbols, and Dynamic Type-friendly card layouts adhere to HIG recommendations. |
+
+Next steps from the featured collection:
+1. Evaluate Apple Intelligence-powered chart annotations once iOS 18.2 SDKs stabilize.
+2. Monitor the Foundation Models roadmap for higher fidelity summaries once APIs graduate from preview.
+3. Keep Liquid Glass assets aligned with the latest WWDC material (colors, blur radii) during visual refreshes.

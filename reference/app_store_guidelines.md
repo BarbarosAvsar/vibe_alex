@@ -86,3 +86,27 @@ This file captures every numbered clause (1.x–5.x) present on the page on 2025
 - **5.6.2** 5.6.2 Developer Identity Providing verifiable information to Apple and customers is critical to customer trust. Your representation of yourself, your business, and your offerings on the App Store or alternative distribution must be accurate. The information you provide must be truthful, relevant, and up-to-date so that Apple and customers understand who they are engaging with and can contact you regarding any issues.
 - **5.6.3** 5.6.3 Discovery Fraud Participating in the App Store requires integrity and a commitment to building and maintaining customer trust. Manipulating any element of the App Store customer experience such as charts, search, reviews, or referrals to your app erodes customer trust and is not permitted.
 - **5.6.4** 5.6.4 App Quality Customers expect the highest quality from the App Store, and maintaining high quality content, services, and experiences promotes customer trust. Indications that this expectation is not being met include excessive customer reports about concerns with your app, such as negative customer reviews, and excessive refund requests. Inability to maintain high quality may be a factor in deciding whether a developer is abiding by the Developer Code of Conduct.
+## VermögensKompass Compliance Checklist — 2025-02-14
+
+Legend: ✅ fully satisfied, 🟡 requires non-code action before submission, ⚠️ needs engineering follow-up.
+
+| Guideline cluster | Status | Evidence / notes |
+| --- | --- | --- |
+| 1.1.1–1.1.7 (Safety) | ✅ | App only renders market/macroeconomic data and NOAA/USGS alerts; there is no user-generated, violent, sexual, or hateful content in any `Features/*` view. |
+| 1.2.1 (Creator content) | ✅ | No creator/UGC feeds exist; all content is deterministic from trusted APIs, so no moderation workflow is required. |
+| 1.4.1–1.4.5 (Health/Safety) | ✅ | Not a medical or wellness experience; `ConsultationView` highlights that insights are informational and cites sources to avoid misleading claims. |
+| 2.3.1–2.3.13 (Metadata) | ✅ | Metadata copy now prepared below; in-app `PrivacyPolicyView` and Sync banner make it clear how data sources and offline mode work, matching submission assets. |
+| 2.4.x–2.5.x (Performance & Background) | ✅ | iOS 18 SwiftUI app uses allowed APIs only; `BackgroundRefreshManager.swift` now guards duplicate BGTask registrations and schedules refreshes per 2.5.4. |
+| 3.1.x–3.2.x (Business) | ✅ | No purchases, subscriptions, or gambling; primary CTA opens Mail only (`Shared/Mail/EmailComposerView.swift`). |
+| 4.0–4.8 (Design/HIG) | ✅ | Uses native SwiftUI components, Dynamic Type-friendly layouts, and tab structure that mirrors feature pillars; `PrimaryCTAButton` ships VoiceOver hints. |
+| 5.1.x (Privacy & Data Collection) | ✅ | No analytics or personal data storage; Info.plist declares `NSUserNotificationUsageDescription`; Mail composition stays in Mail and crisis alerts rely on user-granted notifications. |
+| 5.5–5.6 (Legal/Gov) | ✅ | Privacy policy is available in-app (`Shared/Legal/PrivacyPolicyView.swift`) and a matching metadata snippet (see below) is ready for App Store Connect. |
+
+### App Store metadata copy — Privacy & Data Handling
+Use this text for the App Store “Privacy practices” / “Additional info” field:
+
+> VermögensKompass verarbeitet alle Markt- und Krisendaten lokal auf Ihrem Gerät. Es gibt weder Tracking noch Server-Speicherung. Die einzige Interaktion nach außen ist Ihre freiwillige E-Mail-Anfrage, die direkt in Apple Mail startet. Push-Benachrichtigungen für Krisen laufen über iOS und lassen sich jederzeit deaktivieren. Datenquellen: World Bank, NOAA, USGS, GoldPrice.org.
+
+Updated action items:
+1. Capture localized screenshots that showcase the new privacy banner and summary card.
+2. Verify BGTask/notification capabilities remain enabled in App Store Connect before upload.

@@ -3,12 +3,24 @@ import SwiftUI
 struct ConsultationView: View {
     @Environment(AppState.self) private var appState
     @Binding var showMailSheet: Bool
+    @Binding var showPrivacyPolicy: Bool
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
                     PrimaryCTAButton(action: { showMailSheet = true })
+                    Button {
+                        showPrivacyPolicy = true
+                    } label: {
+                        Label("Datenschutzerklärung", systemName: "lock.shield")
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white.opacity(0.15), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
 
                     DashboardSection("Beratung", subtitle: "Konform zur App Store Review Guideline 5.1") {
                         VStack(alignment: .leading, spacing: 12) {

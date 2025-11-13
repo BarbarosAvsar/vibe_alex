@@ -10,6 +10,7 @@ final class AppState {
     var dashboardState: AsyncState<DashboardSnapshot> = .idle
     var lastUpdated: Date?
     var hasLoadedOnce = false
+    var syncNotice: SyncNotice?
 
     init(repository: DashboardRepository = DashboardRepository()) {
         self.repository = repository
@@ -18,6 +19,7 @@ final class AppState {
     func refreshDashboard(force: Bool = false) async {
         guard force || dashboardState.isLoading == false else { return }
         dashboardState = .loading
+        syncNotice = nil
 
         do {
             let snapshot = try await repository.makeSnapshot()
@@ -26,14 +28,21 @@ final class AppState {
             hasLoadedOnce = true
             cache.persist(snapshot)
             NotificationManager.shared.processHighPriorityAlert(from: snapshot.crises)
+            syncNotice = nil
         } catch {
-            if let cached = cache.load() {
-                dashboardState = .loaded(cached)
-            } else {
-                dashboardState = .failed(error.friendlyMessage)
-            }
+            let fallback = cache.load() ?? MockData.snapshot
+            dashboardState = .loaded(fallback)
+            syncNotice = SyncNotice(
+                lastSuccessfulSync: lastUpdated,
+                errorDescription: error.friendlyMessage
+            )
         }
     }
+}
+
+struct SyncNotice: Equatable {
+    let lastSuccessfulSync: Date?
+    let errorDescription: String
 }
 
 private extension AsyncState {

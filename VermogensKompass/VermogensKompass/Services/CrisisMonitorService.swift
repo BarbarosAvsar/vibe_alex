@@ -14,8 +14,14 @@ struct CrisisMonitorService {
         async let geopolitical = fetchGeopoliticalAlerts()
         async let financial = fetchFinancialStress()
 
-        let merged = try await [quakes, storms, geopolitical, financial].flatMap { $0 }
-        return Array(merged.sorted(by: { $0.occurredAt > $1.occurredAt }).prefix(limit))
+        let quakesEvents = try await quakes
+        let stormEvents = await storms
+        let geopoliticalEvents = await geopolitical
+        let financialEvents = await financial
+
+        let merged = [quakesEvents, stormEvents, geopoliticalEvents, financialEvents].flatMap { $0 }
+        let sorted = merged.sorted { $0.occurredAt > $1.occurredAt }
+        return Array(sorted.prefix(limit))
     }
 
     private func fetchEarthquakes() async throws -> [CrisisEvent] {

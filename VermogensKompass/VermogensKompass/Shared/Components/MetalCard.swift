@@ -55,10 +55,8 @@ struct MetalCard: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                 Spacer()
-                if let url = asset.dataSource.url {
-                    Link("Daten öffnen", destination: url)
-                        .font(.caption2)
-                }
+                Link("Daten öffnen", destination: asset.dataSource.url)
+                    .font(.caption2)
             }
         }
         .cardStyle()

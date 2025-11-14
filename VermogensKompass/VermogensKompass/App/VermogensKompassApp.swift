@@ -1,6 +1,7 @@
 import SwiftUI
 import BackgroundTasks
 
+@MainActor
 @main
 struct VermoegensKompassApp: App {
     @State private var appState = AppState()

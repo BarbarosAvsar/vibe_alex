@@ -39,6 +39,8 @@
 		B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6090C3527069CC67168D75F0 /* CrisisMonitorService.swift */; };
 		BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */; };
 		C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF9AE1D9DD225C2A46C6FDB /* DashboardSnapshot.swift */; };
+		E7C1A12C2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C1A12B2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift */; };
+		E7C1A12E2CA0FDCF0069E9E1 /* CrisisSummaryGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C1A12D2CA0FDCF0069E9E1 /* CrisisSummaryGenerator.swift */; };
 		F2E8F2712C9F55D600CCDC5F /* NotificationOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */; };
 		E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */; };
 		E6B982952C9F5EFE00EFA8D4 /* CrisisFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */; };
@@ -98,6 +100,8 @@
 		E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CrisisThresholds.swift; path = CrisisThresholds.swift; sourceTree = "<group>"; };
 		E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrisisFeedTests.swift; sourceTree = "<group>"; };
 		E6B982972C9F5EFE00EFA8D4 /* VermogensKompassTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VermogensKompassTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7C1A12B2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacroChartInsightEngine.swift; path = MacroChartInsightEngine.swift; sourceTree = "<group>"; };
+		E7C1A12D2CA0FDCF0069E9E1 /* CrisisSummaryGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CrisisSummaryGenerator.swift; path = CrisisSummaryGenerator.swift; sourceTree = "<group>"; };
 		D5A4F3289569C7584F4D552E /* BackgroundRefreshManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BackgroundRefreshManager.swift; path = BackgroundRefreshManager.swift; sourceTree = "<group>"; };
 		DC199FB3D09F581E3D7D4F88 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
 		DE1A853C472FCB44436C27D7 /* DashboardCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardCache.swift; path = DashboardCache.swift; sourceTree = "<group>"; };
@@ -163,6 +167,8 @@
 				D5A4F3289569C7584F4D552E /* BackgroundRefreshManager.swift */,
 				DE1A853C472FCB44436C27D7 /* DashboardCache.swift */,
 				CA405C053E2B160760D7545B /* NotificationManager.swift */,
+				E7C1A12B2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift */,
+				E7C1A12D2CA0FDCF0069E9E1 /* CrisisSummaryGenerator.swift */,
 			);
 			name = Services;
 			path = Services;
@@ -501,6 +507,8 @@
 				8951793C6E0EA1968F4064C3 /* MetalPriceService.swift in Sources */,
 				FFFB8E77F49B801181B8FEAA /* MockData.swift in Sources */,
 				5042C4D19A498B135562AFDD /* AsyncStateView.swift in Sources */,
+				E7C1A12C2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift in Sources */,
+				E7C1A12E2CA0FDCF0069E9E1 /* CrisisSummaryGenerator.swift in Sources */,
 				CD992FE1A17CE63A902FDA94 /* DashboardSection.swift in Sources */,
 				3B60987029A81AD7814C4F6E /* MetalCard.swift in Sources */,
 				BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */,
@@ -543,7 +551,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = VermogensKompass/Supporting/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.vermoegenskompass;
 				SDKROOT = iphoneos;
@@ -616,7 +624,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = VermogensKompass/Supporting/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.vermoegenskompass;
 				SDKROOT = iphoneos;
@@ -691,7 +699,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.vermoegenskompassTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -708,7 +716,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.vermoegenskompassTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

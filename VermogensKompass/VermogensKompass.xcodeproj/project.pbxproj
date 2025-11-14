@@ -106,7 +106,7 @@
 		F973AB3375CF3856D42A0B76 /* DashboardSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardSection.swift; path = DashboardSection.swift; sourceTree = "<group>"; };
 		F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationOnboardingView.swift; path = NotificationOnboardingView.swift; sourceTree = "<group>"; };
 		FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConsultationView.swift; path = ConsultationView.swift; sourceTree = "<group>"; };
-		FECDABE89A019C2B5861345D /* Preview Content.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = "Preview Content.xcassets"; path = Preview Content.xcassets"; sourceTree = "<group>"; };
+		FECDABE89A019C2B5861345D /* Preview Content.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = "Preview Content.xcassets"; path = "Preview Content.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

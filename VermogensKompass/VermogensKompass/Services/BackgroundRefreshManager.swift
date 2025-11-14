@@ -7,17 +7,6 @@ final class BackgroundRefreshManager {
     private init() { }
 
     private let identifier = "de.vibecode.vermoegenskompass.refresh"
-    private var appStateProvider: (() -> AppState?)?
-    private var didRegisterTask = false
-
-    func configure(appStateProvider: @escaping () -> AppState?) {
-        self.appStateProvider = appStateProvider
-        registerTaskIfNeeded()
-    }
-
-    func prepareForLaunch() {
-        registerTaskIfNeeded()
-    }
 
     func schedule() {
         let request = BGAppRefreshTaskRequest(identifier: identifier)
@@ -34,39 +23,5 @@ final class BackgroundRefreshManager {
     func handleBackgroundSceneTask(appState: AppState) async {
         await appState.refreshDashboard(force: true)
         schedule()
-    }
-
-    private func handle(task: BGAppRefreshTask?) async {
-        guard let task else { return }
-        schedule()
-        let operation = Task<Void, Error> {
-            try Task.checkCancellation()
-            if let appState = appStateProvider?() {
-                await appState.refreshDashboard(force: true)
-            }
-        }
-        task.expirationHandler = {
-            operation.cancel()
-        }
-
-        do {
-            _ = try await operation.value
-            task.setTaskCompleted(success: true)
-        } catch is CancellationError {
-            task.setTaskCompleted(success: false)
-        } catch {
-            #if DEBUG
-            print("Background task failed", error)
-            #endif
-            task.setTaskCompleted(success: false)
-        }
-    }
-
-    private func registerTaskIfNeeded() {
-        guard didRegisterTask == false else { return }
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: identifier, using: nil) { [weak self] task in
-            Task { await self?.handle(task: task as? BGAppRefreshTask) }
-        }
-        didRegisterTask = true
     }
 }

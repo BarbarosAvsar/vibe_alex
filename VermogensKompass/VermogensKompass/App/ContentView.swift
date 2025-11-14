@@ -61,12 +61,12 @@ struct ContentView: View {
             guard appState.hasLoadedOnce == false else { return }
             await appState.refreshDashboard(force: true)
         }
-        .onChange(of: scenePhase) { phase in
+        .task(id: scenePhase) { phase in
             switch phase {
             case .background:
                 BackgroundRefreshManager.shared.schedule()
             case .active:
-                Task { await appState.refreshNotificationAuthorizationStatus() }
+                await appState.refreshNotificationAuthorizationStatus()
             default:
                 break
             }

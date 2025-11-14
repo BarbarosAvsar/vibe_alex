@@ -10,15 +10,19 @@ struct ConsultationView: View {
             ScrollView {
                 VStack(spacing: 24) {
                     PrimaryCTAButton(action: { showMailSheet = true })
+
                     Button {
                         showPrivacyPolicy = true
                     } label: {
-                        Label("Datenschutzerklärung", systemName: "lock.shield")
+                        Label("Datenschutzerklärung", systemImage: "lock.shield")
                             .font(.headline)
                             .foregroundStyle(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color.white.opacity(0.15), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                            .background(
+                                Color.white.opacity(0.15),
+                                in: RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            )
                     }
                     .buttonStyle(.plain)
 

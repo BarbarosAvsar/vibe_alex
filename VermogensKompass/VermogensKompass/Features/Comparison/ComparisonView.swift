@@ -1,8 +1,5 @@
 import SwiftUI
 import Charts
-#if canImport(Accessibility)
-import Accessibility
-#endif
 
 struct ComparisonView: View {
     @Environment(AppState.self) private var appState
@@ -41,9 +38,6 @@ struct ComparisonView: View {
                             .chartXAxisLabel("Jahr")
                             .chartYAxisLabel("%")
                             .chartLegend(.visible)
-#if canImport(Accessibility)
-                            .accessibilityChartDescriptor(MacroChartDescriptor(series: snapshot.macroSeries))
-#endif
                             .cardStyle()
 
                             if let annotation {
@@ -134,45 +128,3 @@ private struct MacroChartInsightCard: View {
         .cardStyle()
     }
 }
-
-#if canImport(Accessibility)
-@available(iOS 16.0, *)
-struct MacroChartDescriptor: AXChartDescriptorRepresentable {
-    let series: [MacroSeries]
-
-    func makeChartDescriptor() -> AXChartDescriptor {
-        let years = series.flatMap { $0.points.map(\.year) }
-        let values = series.flatMap { $0.points.map(\.value) }
-        let xRange = Double(years.min() ?? 0)...Double(years.max() ?? 0)
-        let yRange = (values.min() ?? 0)...(values.max() ?? 0)
-
-        let xAxis = AXNumericDataAxisDescriptor(title: "Jahr", range: xRange) { value in
-            String(Int(value))
-        }
-        let yAxis = AXNumericDataAxisDescriptor(title: "Prozent", range: yRange) { value in
-            value.formatted(.number.precision(.fractionLength(1))) + "%"
-        }
-
-        let dataSeries = series.map { macroSeries -> AXDataSeriesDescriptor in
-            let dataPoints = macroSeries.points.map { point in
-                AXDataPoint(
-                    x: Double(point.year),
-                    y: point.value,
-                    label: "\(point.year)",
-                    valueDescription: point.value.formatted(.number.precision(.fractionLength(1))) + macroSeries.kind.unit
-                )
-            }
-            return AXDataSeriesDescriptor(name: macroSeries.kind.title, isContinuous: true, dataPoints: dataPoints)
-        }
-
-        return AXChartDescriptor(
-            title: "Makro-Vergleich",
-            summary: AXChartSummary("Verlauf von Inflation, Wachstum und Verteidigungsausgaben."),
-            xAxis: xAxis,
-            yAxis: yAxis,
-            additionalAxes: [],
-            series: dataSeries
-        )
-    }
-}
-#endif

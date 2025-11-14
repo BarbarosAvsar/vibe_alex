@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F5AA4C112CA11D6E00E3A1C1 /* SyncStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */; };
+		F5AA4C132CA11D8F00E3A1C1 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AA4C122CA11D8F00E3A1C1 /* PrivacyPolicyView.swift */; };
 		01964462257EDF68CCED9DAA /* Preview Content.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FECDABE89A019C2B5861345D /* Preview Content.xcassets */; };
 		106D8C2819EB3D3F3A67AF83 /* AsyncState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F4499AF37DA4F6D59FB979 /* AsyncState.swift */; };
 		13FF4E194AF18A47906483F8 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA405C053E2B160760D7545B /* NotificationManager.swift */; };
@@ -64,6 +66,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SyncStatusBanner.swift; path = SyncStatusBanner.swift; sourceTree = "<group>"; };
+		F5AA4C122CA11D8F00E3A1C1 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrivacyPolicyView.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EmailComposerView.swift; path = EmailComposerView.swift; sourceTree = "<group>"; };
 		05012142113DBB560C687635 /* MetalAsset.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalAsset.swift; path = MetalAsset.swift; sourceTree = "<group>"; };
 		06ABC094EDBC2CF47952C99C /* MetalCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalCard.swift; path = MetalCard.swift; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 				B85EA27F27F49CD0B2E0A764 /* Components */,
 				646764A28CA53A578F892624 /* Mail */,
 				F2E8F2722C9F55D600CCDC5F /* Notifications */,
+				F5AA4C142CA11DB200E3A1C1 /* Legal */,
 				878DE0582D67A1DA1B35921C /* Styles */,
 			);
 			name = Shared;
@@ -224,6 +229,16 @@
 			);
 			name = Notifications;
 			path = Notifications;
+			sourceTree = "<group>";
+		};
+
+		F5AA4C142CA11DB200E3A1C1 /* Legal */ = {
+			isa = PBXGroup;
+			children = (
+				F5AA4C122CA11D8F00E3A1C1 /* PrivacyPolicyView.swift */,
+			);
+			name = Legal;
+			path = Legal;
 			sourceTree = "<group>";
 		};
 		6A5AF9D74A26A154FC9AD391 /* Overview */ = {
@@ -296,6 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */,
+				F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */,
 				F973AB3375CF3856D42A0B76 /* DashboardSection.swift */,
 				06ABC094EDBC2CF47952C99C /* MetalCard.swift */,
 				A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */,
@@ -513,11 +529,13 @@
 				3B60987029A81AD7814C4F6E /* MetalCard.swift in Sources */,
 				BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */,
 				561D5298703B7D1FFA33635E /* PrimaryCTAButton.swift in Sources */,
+				F5AA4C112CA11D6E00E3A1C1 /* SyncStatusBanner.swift in Sources */,
 				CB498A97055F94BE39A71B82 /* EmailComposerView.swift in Sources */,
 				29E59C2E8AB2F7258FB0E5F3 /* Theme.swift in Sources */,
 				90B55E90E6BCF1F6A891A5C1 /* BackgroundRefreshManager.swift in Sources */,
 				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
 				13FF4E194AF18A47906483F8 /* NotificationManager.swift in Sources */,
+				F5AA4C132CA11D8F00E3A1C1 /* PrivacyPolicyView.swift in Sources */,
 				F2E8F2712C9F55D600CCDC5F /* NotificationOnboardingView.swift in Sources */,
 				6F233A8033D277072438B147 /* LiquidGlass.swift in Sources */,
 			);

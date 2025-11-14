@@ -5,7 +5,7 @@ import UIKit
 struct EmailComposerView: UIViewControllerRepresentable {
     let configuration: EmailConfiguration
 
-    func makeUIViewController(context: Context) -> some UIViewController {
+    func makeUIViewController(context: Context) -> UIViewController {
         if MFMailComposeViewController.canSendMail() {
             let controller = MFMailComposeViewController()
             controller.mailComposeDelegate = context.coordinator

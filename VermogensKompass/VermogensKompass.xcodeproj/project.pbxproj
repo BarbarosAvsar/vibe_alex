@@ -39,6 +39,9 @@
 		B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6090C3527069CC67168D75F0 /* CrisisMonitorService.swift */; };
 		BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */; };
 		C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF9AE1D9DD225C2A46C6FDB /* DashboardSnapshot.swift */; };
+		F2E8F2712C9F55D600CCDC5F /* NotificationOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */; };
+		E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */; };
+		E6B982952C9F5EFE00EFA8D4 /* CrisisFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */; };
 		CA5D8141306DE7B128199721 /* MetalAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05012142113DBB560C687635 /* MetalAsset.swift */; };
 		CB498A97055F94BE39A71B82 /* EmailComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */; };
 		CD992FE1A17CE63A902FDA94 /* DashboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973AB3375CF3856D42A0B76 /* DashboardSection.swift */; };
@@ -47,6 +50,16 @@
 		FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1A853C472FCB44436C27D7 /* DashboardCache.swift */; };
 		FFFB8E77F49B801181B8FEAA /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBC564B4244F3139DF6FC1A /* MockData.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E6B9829F2C9F5EFE00EFA8D4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7072653FA7D019007BD0FE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BD61DE3DBC24CEB427EE4D3;
+			remoteInfo = VermogensKompass;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EmailComposerView.swift; path = VermogensKompass/Shared/Mail/EmailComposerView.swift; sourceTree = "<group>"; };
@@ -82,12 +95,16 @@
 		CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncStateView.swift; path = VermogensKompass/Shared/Components/AsyncStateView.swift; sourceTree = "<group>"; };
 		CA405C053E2B160760D7545B /* NotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationManager.swift; path = VermogensKompass/Services/NotificationManager.swift; sourceTree = "<group>"; };
 		CBB202283825D5EEEE6BA843 /* AppConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppConfig.swift; path = VermogensKompass/Config/AppConfig.swift; sourceTree = "<group>"; };
+		E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CrisisThresholds.swift; path = VermogensKompass/Config/CrisisThresholds.swift; sourceTree = "<group>"; };
+		E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VermogensKompassTests/CrisisFeedTests.swift; sourceTree = "<group>"; };
+		E6B982972C9F5EFE00EFA8D4 /* VermogensKompassTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VermogensKompassTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A4F3289569C7584F4D552E /* BackgroundRefreshManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BackgroundRefreshManager.swift; path = VermogensKompass/Services/BackgroundRefreshManager.swift; sourceTree = "<group>"; };
 		DC199FB3D09F581E3D7D4F88 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
 		DE1A853C472FCB44436C27D7 /* DashboardCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardCache.swift; path = VermogensKompass/Services/DashboardCache.swift; sourceTree = "<group>"; };
 		DED211DC8C2A0CDBC7C71277 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = VermogensKompass/Resources/Assets.xcassets; sourceTree = "<group>"; };
 		EE381FE29E9F9E8463DAFA9F /* MacroIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacroIndicator.swift; path = VermogensKompass/Models/MacroIndicator.swift; sourceTree = "<group>"; };
 		F973AB3375CF3856D42A0B76 /* DashboardSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardSection.swift; path = VermogensKompass/Shared/Components/DashboardSection.swift; sourceTree = "<group>"; };
+		F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationOnboardingView.swift; path = VermogensKompass/Shared/Notifications/NotificationOnboardingView.swift; sourceTree = "<group>"; };
 		FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConsultationView.swift; path = VermogensKompass/Features/Consultation/ConsultationView.swift; sourceTree = "<group>"; };
 		FECDABE89A019C2B5861345D /* Preview Content.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = "Preview Content.xcassets"; path = "VermogensKompass/Resources/Preview Content.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,6 +120,13 @@
 				468DCD8A8D762F3FBC0DBBC6 /* MessageUI.framework in Frameworks */,
 				E8723C7944C2F2898A54486E /* BackgroundTasks.framework in Frameworks */,
 				69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6B982982C9F5EFE00EFA8D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +182,7 @@
 			children = (
 				B85EA27F27F49CD0B2E0A764 /* Components */,
 				646764A28CA53A578F892624 /* Mail */,
+				F2E8F2722C9F55D600CCDC5F /* Notifications */,
 				878DE0582D67A1DA1B35921C /* Styles */,
 			);
 			name = Shared;
@@ -184,6 +209,15 @@
 			);
 			name = Mail;
 			path = VermogensKompass/Shared/Mail;
+			sourceTree = "<group>";
+		};
+		F2E8F2722C9F55D600CCDC5F /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */,
+			);
+			name = Notifications;
+			path = VermogensKompass/Shared/Notifications;
 			sourceTree = "<group>";
 		};
 		6A5AF9D74A26A154FC9AD391 /* Overview */ = {
@@ -271,13 +305,23 @@
 				C45318BFC02B5FAD23B0AD51 /* Products */,
 				A033DEB2B647178B8385430E /* Frameworks */,
 				7EC3313A120B6282B090CFF6 /* VermogensKompass */,
+				E6B982932C9F5EFE00EFA8D4 /* VermogensKompassTests */,
 			);
+			sourceTree = "<group>";
+		};
+		E6B982932C9F5EFE00EFA8D4 /* VermogensKompassTests */ = {
+			isa = PBXGroup;
+			children = (
+				E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */,
+			);
+			path = VermogensKompassTests;
 			sourceTree = "<group>";
 		};
 		C45318BFC02B5FAD23B0AD51 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				353183EBB39C30CF147F5E8B /* VermogensKompass.app */,
+				E6B982972C9F5EFE00EFA8D4 /* VermogensKompassTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -286,6 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				CBB202283825D5EEEE6BA843 /* AppConfig.swift */,
+				E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */,
 			);
 			name = Config;
 			path = VermogensKompass/Config;
@@ -353,6 +398,24 @@
 			productReference = 353183EBB39C30CF147F5E8B /* VermogensKompass.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E6B982962C9F5EFE00EFA8D4 /* VermogensKompassTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6B9829B2C9F5EFE00EFA8D4 /* Build configuration list for PBXNativeTarget "VermogensKompassTests" */;
+			buildPhases = (
+				E6B982992C9F5EFE00EFA8D4 /* Sources */,
+				E6B982982C9F5EFE00EFA8D4 /* Frameworks */,
+				E6B9829A2C9F5EFE00EFA8D4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E6B982A02C9F5EFE00EFA8D4 /* PBXTargetDependency */,
+			);
+			name = VermogensKompassTests;
+			productName = VermogensKompassTests;
+			productReference = E6B982972C9F5EFE00EFA8D4 /* VermogensKompassTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -361,6 +424,15 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					8BD61DE3DBC24CEB427EE4D3 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					E6B982962C9F5EFE00EFA8D4 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 8BD61DE3DBC24CEB427EE4D3;
+					};
+				};
 			};
 			buildConfigurationList = 270556A8E9838DC2A4A777FA /* Build configuration list for PBXProject "VermogensKompass" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -378,6 +450,7 @@
 			projectRoot = "";
 			targets = (
 				8BD61DE3DBC24CEB427EE4D3 /* VermogensKompass */,
+				E6B982962C9F5EFE00EFA8D4 /* VermogensKompassTests */,
 			);
 		};
 /* End PBXProject section */
@@ -392,6 +465,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6B9829A2C9F5EFE00EFA8D4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -403,6 +483,7 @@
 				1B9D3939AFC48376C3FF0588 /* ContentView.swift in Sources */,
 				ADE26232E88519008DE2C7C0 /* VermogensKompassApp.swift in Sources */,
 				AD47249CF4332EEDFCDF5C30 /* AppConfig.swift in Sources */,
+				E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */,
 				72C012A7C44BA846A12CE82E /* ComparisonView.swift in Sources */,
 				962EFE2CA99011B28EC599C8 /* ConsultationView.swift in Sources */,
 				2D3618662F6E7B76296EB4F5 /* CrisisView.swift in Sources */,
@@ -429,11 +510,28 @@
 				90B55E90E6BCF1F6A891A5C1 /* BackgroundRefreshManager.swift in Sources */,
 				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
 				13FF4E194AF18A47906483F8 /* NotificationManager.swift in Sources */,
+				F2E8F2712C9F55D600CCDC5F /* NotificationOnboardingView.swift in Sources */,
 				6F233A8033D277072438B147 /* LiquidGlass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6B982992C9F5EFE00EFA8D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6B982952C9F5EFE00EFA8D4 /* CrisisFeedTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E6B982A02C9F5EFE00EFA8D4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8BD61DE3DBC24CEB427EE4D3 /* VermogensKompass */;
+			targetProxy = E6B9829F2C9F5EFE00EFA8D4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		6DF40A1A15928E2ADDD9EF13 /* Release */ = {
@@ -588,6 +686,39 @@
 			};
 			name = Debug;
 		};
+		E6B9829C2C9F5EFE00EFA8D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.vermoegenskompassTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VermogensKompass.app/VermogensKompass";
+			};
+			name = Debug;
+		};
+		E6B9829D2C9F5EFE00EFA8D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.vermoegenskompassTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VermogensKompass.app/VermogensKompass";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -605,6 +736,15 @@
 			buildConfigurations = (
 				6DF40A1A15928E2ADDD9EF13 /* Release */,
 				D5FC8B24F7B3FE26CB829114 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6B9829B2C9F5EFE00EFA8D4 /* Build configuration list for PBXNativeTarget "VermogensKompassTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6B9829C2C9F5EFE00EFA8D4 /* Debug */,
+				E6B9829D2C9F5EFE00EFA8D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

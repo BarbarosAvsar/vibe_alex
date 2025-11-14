@@ -39,7 +39,8 @@ final class BackgroundRefreshManager {
     private func handle(task: BGAppRefreshTask?) async {
         guard let task else { return }
         schedule()
-        let operation = Task {
+        let operation = Task<Void, Error> {
+            try Task.checkCancellation()
             if let appState = appStateProvider?() {
                 await appState.refreshDashboard(force: true)
             }
@@ -47,7 +48,17 @@ final class BackgroundRefreshManager {
         task.expirationHandler = {
             operation.cancel()
         }
-        await operation.value
-        task.setTaskCompleted(success: true)
+
+        do {
+            _ = try await operation.value
+            task.setTaskCompleted(success: true)
+        } catch is CancellationError {
+            task.setTaskCompleted(success: false)
+        } catch {
+            #if DEBUG
+            print("Background task failed", error)
+            #endif
+            task.setTaskCompleted(success: false)
+        }
     }
 }

@@ -1,6 +1,10 @@
 import Foundation
 
-struct HTTPClient {
+protocol HTTPClienting {
+    func get(_ url: URL) async throws -> Data
+}
+
+struct HTTPClient: HTTPClienting {
     enum HTTPError: LocalizedError {
         case invalidResponse
         case statusCode(Int)

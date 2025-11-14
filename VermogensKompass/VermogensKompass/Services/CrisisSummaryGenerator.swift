@@ -4,7 +4,7 @@ struct CrisisSummaryGenerator {
     func summarize(events: [CrisisEvent]) -> CrisisSummary? {
         guard events.isEmpty == false else { return nil }
 
-        let severeEvents = events.filter { $0.severityScore >= 5 }
+        let severeEvents = events.filter { $0.severityScore >= CrisisThresholds.highRiskSeverityScore }
         let headline: String
         if severeEvents.isEmpty {
             headline = "Keine Hochrisiko-Ereignisse erkennbar"

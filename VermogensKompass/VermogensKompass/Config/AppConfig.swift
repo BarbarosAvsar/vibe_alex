@@ -11,6 +11,7 @@ enum AppConfig {
     )
 
     static let focusCountryISO = "DEU"
+    static let contactWebsite = URL(string: "https://vermoegenskompass.de/kontakt")!
 }
 
 struct EmailConfiguration: Equatable {

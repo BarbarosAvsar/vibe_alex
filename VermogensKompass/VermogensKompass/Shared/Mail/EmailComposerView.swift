@@ -14,16 +14,7 @@ struct EmailComposerView: UIViewControllerRepresentable {
             controller.setMessageBody(configuration.body, isHTML: false)
             return controller
         } else {
-            let controller = UIViewController()
-            DispatchQueue.main.async {
-                let subject = configuration.subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-                let body = configuration.body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-                if let url = URL(string: "mailto:\(configuration.to)?subject=\(subject)&body=\(body)"),
-                   UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url)
-                }
-            }
-            return controller
+            return UIHostingController(rootView: MailFallbackView(configuration: configuration))
         }
     }
 
@@ -36,6 +27,52 @@ struct EmailComposerView: UIViewControllerRepresentable {
     final class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
         func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
             controller.dismiss(animated: true)
+        }
+    }
+}
+
+private struct MailFallbackView: View {
+    let configuration: EmailConfiguration
+    @State private var didCopyAddress = false
+
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Apple Mail ist nicht eingerichtet")
+                        .font(.title3.bold())
+                    Text("Sie können uns trotzdem kontaktieren: kopieren Sie die E-Mail-Adresse oder öffnen Sie unsere Kontaktseite.")
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                }
+
+                Button {
+                    UIPasteboard.general.string = configuration.to
+                    withAnimation {
+                        didCopyAddress = true
+                    }
+                } label: {
+                    Label("Adresse kopieren", systemImage: "doc.on.doc")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+
+                if didCopyAddress {
+                    Text("Adresse kopiert. Fügen Sie sie in Ihre bevorzugte Mail-App ein.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
+                Link(destination: AppConfig.contactWebsite) {
+                    Label("Kontaktseite öffnen", systemImage: "safari")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Kontakt")
         }
     }
 }

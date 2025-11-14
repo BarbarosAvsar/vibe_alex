@@ -1,7 +1,11 @@
 import Foundation
 
 struct MacroIndicatorService {
-    private let client = HTTPClient()
+    private let client: HTTPClienting
+
+    init(client: HTTPClienting = HTTPClient()) {
+        self.client = client
+    }
 
     func fetchIndicator(_ kind: MacroIndicatorKind, limit: Int = 8) async throws -> (MacroIndicator, MacroSeries) {
         let code = kind.indicatorCode

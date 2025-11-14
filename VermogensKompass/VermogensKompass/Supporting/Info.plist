@@ -25,7 +25,6 @@
     <key>UIBackgroundModes</key>
     <array>
         <string>fetch</string>
-        <string>processing</string>
     </array>
     <key>NSUserNotificationUsageDescription</key>
     <string>Wir informieren Sie über Krisenereignisse, die Ihre Vermögensplanung betreffen.</string>

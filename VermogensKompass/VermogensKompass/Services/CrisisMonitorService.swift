@@ -1,30 +1,53 @@
 import Foundation
 
+protocol CrisisFeedService: Sendable {
+    func fetchEvents() async throws -> [CrisisEvent]
+}
+
 struct CrisisMonitorService {
-    private let client = HTTPClient()
-    private let decoder: JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return decoder
-    }()
+    private let feeds: [any CrisisFeedService]
 
-    func fetchEvents(limit: Int = 12) async throws -> [CrisisEvent] {
-        async let quakes = fetchEarthquakes()
-        async let storms = fetchStormAlerts()
-        async let geopolitical = fetchGeopoliticalAlerts()
-        async let financial = fetchFinancialStress()
-
-        let quakesEvents = try await quakes
-        let stormEvents = await storms
-        let geopoliticalEvents = await geopolitical
-        let financialEvents = await financial
-
-        let merged = [quakesEvents, stormEvents, geopoliticalEvents, financialEvents].flatMap { $0 }
-        let sorted = merged.sorted { $0.occurredAt > $1.occurredAt }
-        return Array(sorted.prefix(limit))
+    init(feeds: [any CrisisFeedService]? = nil, client: HTTPClienting = HTTPClient()) {
+        if let feeds {
+            self.feeds = feeds
+        } else {
+            self.feeds = [
+                EarthquakeCrisisFeed(client: client),
+                StormAlertCrisisFeed(client: client),
+                GeopoliticalAlertCrisisFeed(client: client),
+                FinancialStressCrisisFeed(client: client)
+            ]
+        }
     }
 
-    private func fetchEarthquakes() async throws -> [CrisisEvent] {
+    func fetchEvents(limit: Int = 12) async throws -> [CrisisEvent] {
+        var aggregated: [CrisisEvent] = []
+        try await withThrowingTaskGroup(of: [CrisisEvent].self) { group in
+            for feed in feeds {
+                group.addTask {
+                    try await feed.fetchEvents()
+                }
+            }
+
+            for try await events in group {
+                aggregated.append(contentsOf: events)
+            }
+        }
+
+        let sorted = aggregated.sorted { $0.occurredAt > $1.occurredAt }
+        return Array(sorted.prefix(limit))
+    }
+}
+
+struct EarthquakeCrisisFeed: CrisisFeedService {
+    private let client: HTTPClienting
+    private let decoder = JSONDecoder()
+
+    init(client: HTTPClienting = HTTPClient()) {
+        self.client = client
+    }
+
+    func fetchEvents() async throws -> [CrisisEvent] {
         guard let url = URL(string: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson") else {
             return []
         }
@@ -44,8 +67,21 @@ struct CrisisMonitorService {
             )
         }
     }
+}
 
-    private func fetchStormAlerts() async -> [CrisisEvent] {
+struct StormAlertCrisisFeed: CrisisFeedService {
+    private let client: HTTPClienting
+    private let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
+
+    init(client: HTTPClienting = HTTPClient()) {
+        self.client = client
+    }
+
+    func fetchEvents() async throws -> [CrisisEvent] {
         guard let url = URL(string: "https://api.weather.gov/alerts/active?status=actual&message_type=alert") else {
             return []
         }
@@ -74,90 +110,120 @@ struct CrisisMonitorService {
                 )
             }
     }
+}
 
-    private func fetchGeopoliticalAlerts() async -> [CrisisEvent] {
-        let watchList = [("Ukraine", "UKR"), ("Israel", "ISR"), ("Taiwan", "TWN"), ("South Africa", "ZAF"), ("Germany", "DEU")]
-        return await withTaskGroup(of: CrisisEvent?.self, returning: [CrisisEvent].self) { group in
-            for (name, code) in watchList {
+struct GeopoliticalAlertCrisisFeed: CrisisFeedService {
+    private let client: HTTPClienting
+    private let decoder = JSONDecoder()
+    private let watchList: [(name: String, code: String)]
+
+    init(
+        client: HTTPClienting = HTTPClient(),
+        watchList: [(String, String)] = [("Ukraine", "UKR"), ("Israel", "ISR"), ("Taiwan", "TWN"), ("South Africa", "ZAF"), ("Germany", "DEU")]
+    ) {
+        self.client = client
+        self.watchList = watchList
+    }
+
+    func fetchEvents() async throws -> [CrisisEvent] {
+        try await withThrowingTaskGroup(of: CrisisEvent?.self) { group in
+            for entry in watchList {
                 group.addTask {
-                    await fetchGovernanceAlert(for: name, countryCode: code)
+                    try await self.fetchGovernanceAlert(for: entry)
                 }
             }
+
             var events: [CrisisEvent] = []
-            for await event in group {
-                if let event { events.append(event) }
+            for try await result in group {
+                if let event = result {
+                    events.append(event)
+                }
             }
             return events
         }
     }
 
-    private func fetchFinancialStress() async -> [CrisisEvent] {
-        let watchList = [("Germany", "DEU"), ("United States", "USA"), ("United Kingdom", "GBR"), ("Japan", "JPN"), ("China", "CHN")]
-        return await withTaskGroup(of: CrisisEvent?.self, returning: [CrisisEvent].self) { group in
-            for (name, code) in watchList {
-                group.addTask {
-                    await fetchFinancialAlert(for: name, countryCode: code)
-                }
-            }
-            var results: [CrisisEvent] = []
-            for await event in group.compactMap({ $0 }) {
-                results.append(event)
-            }
-            return results
-        }
-    }
-
-    private func fetchFinancialAlert(for country: String, countryCode: String) async -> CrisisEvent? {
-        guard let url = URL(string: "https://api.worldbank.org/v2/country/\(countryCode)/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=2") else {
+    private func fetchGovernanceAlert(for entry: (name: String, code: String)) async throws -> CrisisEvent? {
+        guard let url = URL(string: "https://api.worldbank.org/v2/country/\(entry.code)/indicator/PV.PSR.PIND?format=json&per_page=2") else {
             return nil
         }
         guard let data = try? await client.get(url),
               let response = try? decoder.decode(WorldBankValueResponse.self, from: data),
-              let latest = response.entries.first(where: { $0.value != nil }) else {
-            return nil
-        }
-        guard let value = latest.value, value < 0 else {
-            return nil
-        }
-
-        let yearDate = Calendar.current.date(from: DateComponents(year: Int(latest.date) ?? 2024)) ?? Date()
-
-        return CrisisEvent(
-            id: "finance-\(countryCode)",
-            title: "Rezession \(country)",
-            magnitude: abs(value),
-            region: country,
-            occurredAt: yearDate,
-            detailURL: URL(string: "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG"),
-            source: .worldbankFinance,
-            category: .financial
-        )
-    }
-
-    private func fetchGovernanceAlert(for country: String, countryCode: String) async -> CrisisEvent? {
-        guard let url = URL(string: "https://api.worldbank.org/v2/country/\(countryCode)/indicator/PV.PSR.PIND?format=json&per_page=2") else {
-            return nil
-        }
-        guard let data = try? await client.get(url),
-              let response = try? decoder.decode(WorldBankValueResponse.self, from: data),
-              let latest = response.entries.first(where: { $0.value != nil }) else {
-            return nil
-        }
-        guard let value = latest.value, value < -0.5 else {
+              let latest = response.entries.first(where: { $0.value != nil }),
+              let value = latest.value,
+              value < CrisisThresholds.politicalInstabilityCutoff else {
             return nil
         }
 
-        let yearDate = Calendar.current.date(from: DateComponents(year: Int(latest.date) ?? 2024)) ?? Date()
+        let yearDate = makeYearDate(from: latest.date)
 
         return CrisisEvent(
-            id: "geo-\(countryCode)",
-            title: "Politische Instabilität \(country)",
+            id: "geo-\(entry.code)",
+            title: "Politische Instabilität \(entry.name)",
             magnitude: abs(value) * 2,
-            region: country,
+            region: entry.name,
             occurredAt: yearDate,
             detailURL: URL(string: "https://data.worldbank.org/indicator/PV.PSR.PIND"),
             source: .worldBankGovernance,
             category: .geopolitical
+        )
+    }
+}
+
+struct FinancialStressCrisisFeed: CrisisFeedService {
+    private let client: HTTPClienting
+    private let decoder = JSONDecoder()
+    private let watchList: [(name: String, code: String)]
+
+    init(
+        client: HTTPClienting = HTTPClient(),
+        watchList: [(String, String)] = [("Germany", "DEU"), ("United States", "USA"), ("United Kingdom", "GBR"), ("Japan", "JPN"), ("China", "CHN")]
+    ) {
+        self.client = client
+        self.watchList = watchList
+    }
+
+    func fetchEvents() async throws -> [CrisisEvent] {
+        try await withThrowingTaskGroup(of: CrisisEvent?.self) { group in
+            for entry in watchList {
+                group.addTask {
+                    try await self.fetchAlert(for: entry)
+                }
+            }
+
+            var events: [CrisisEvent] = []
+            for try await result in group {
+                if let event = result {
+                    events.append(event)
+                }
+            }
+            return events
+        }
+    }
+
+    private func fetchAlert(for entry: (name: String, code: String)) async throws -> CrisisEvent? {
+        guard let url = URL(string: "https://api.worldbank.org/v2/country/\(entry.code)/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=2") else {
+            return nil
+        }
+        guard let data = try? await client.get(url),
+              let response = try? decoder.decode(WorldBankValueResponse.self, from: data),
+              let latest = response.entries.first(where: { $0.value != nil }),
+              let value = latest.value,
+              value < CrisisThresholds.recessionGrowthCutoff else {
+            return nil
+        }
+
+        let yearDate = makeYearDate(from: latest.date)
+
+        return CrisisEvent(
+            id: "finance-\(entry.code)",
+            title: "Rezession \(entry.name)",
+            magnitude: abs(value),
+            region: entry.name,
+            occurredAt: yearDate,
+            detailURL: URL(string: "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG"),
+            source: .worldbankFinance,
+            category: .financial
         )
     }
 }
@@ -220,4 +286,8 @@ private extension String {
         default: return 2
         }
     }
+}
+
+private func makeYearDate(from year: String) -> Date {
+    Calendar.current.date(from: DateComponents(year: Int(year) ?? 2024)) ?? Date()
 }

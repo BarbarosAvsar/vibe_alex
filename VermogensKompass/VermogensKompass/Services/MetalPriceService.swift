@@ -1,7 +1,11 @@
 import Foundation
 
 struct MetalPriceService {
-    private let client = HTTPClient()
+    private let client: HTTPClienting
+
+    init(client: HTTPClienting = HTTPClient()) {
+        self.client = client
+    }
 
     func fetchAssets() async throws -> [MetalAsset] {
         guard let url = URL(string: "https://data-asg.goldprice.org/dbXRates/USD") else {

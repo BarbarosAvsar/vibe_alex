@@ -14,15 +14,37 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         center.delegate = self
     }
 
-    func requestAuthorization() async {
+    func authorizationStatus() async -> UNAuthorizationStatus {
         let settings = await center.notificationSettings()
-        guard settings.authorizationStatus != .authorized else { return }
-        _ = try? await center.requestAuthorization(options: [.alert, .badge, .sound])
+        return settings.authorizationStatus
     }
 
-    func processHighPriorityAlert(from events: [CrisisEvent]) {
+    func requestAuthorization() async -> Bool {
+        let currentStatus = await authorizationStatus()
+        switch currentStatus {
+        case .authorized:
+            return true
+        case .denied:
+            return false
+        case .provisional:
+            return true
+        default:
+            do {
+                return try await center.requestAuthorization(options: [.alert, .badge, .sound])
+            } catch {
+                #if DEBUG
+                print("Notification authorization failed", error)
+                #endif
+                return false
+            }
+        }
+    }
+
+    func processHighPriorityAlert(from events: [CrisisEvent]) async {
+        let status = await authorizationStatus()
+        guard status == .authorized else { return }
         guard let event = events.sorted(by: { $0.severityScore > $1.severityScore }).first,
-              event.severityScore >= 5 else { return }
+              event.severityScore >= CrisisThresholds.highRiskSeverityScore else { return }
 
         if defaults.string(forKey: lastNotificationKey) == event.id { return }
         defaults.set(event.id, forKey: lastNotificationKey)
@@ -31,9 +53,14 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         content.title = "Krisenlage: \(event.title)"
         content.body = "Region: \(event.region). Kategorie: \(event.category.rawValue.capitalized)."
         content.sound = .default
-
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
-        center.add(request)
+        do {
+            try await center.add(request)
+        } catch {
+            #if DEBUG
+            print("Failed to schedule notification", error)
+            #endif
+        }
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

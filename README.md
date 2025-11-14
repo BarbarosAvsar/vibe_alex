@@ -20,5 +20,10 @@ Key capabilities:
 
 ## Reference Material
 - `reference/apple_documentation.md` — summary of every featured document on developer.apple.com/documentation.
-- `reference/app_store_guidelines.md` — condensed list of all numbered App Store Review rules (sections 1–5).
+- `reference/app_store_guidelines.md` — condensed list of all numbered App Store Review rules (sections 1–5).
 - `reference/clean_code_swift.md` — actionable takeaways from the MaatheusGois Clean Code for Swift guide.
+
+## Continuous Integration (Option 3 from setup discussion)
+- All pushes and pull requests targeting `main` automatically trigger `.github/workflows/ci.yml` on GitHub Actions’ `macos-14` runners.
+- The workflow selects Xcode 16, resolves packages, and executes `xcodebuild clean test` for the `VermogensKompass` scheme on the iPhone 15 simulator.
+- To view results, open the “Actions” tab in GitHub; failing builds annotate commits/PRs with the exact step/command output.

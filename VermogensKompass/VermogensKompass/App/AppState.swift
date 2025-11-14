@@ -1,5 +1,33 @@
 import Foundation
 import Observation
+import UserNotifications
+
+enum NotificationAuthorizationState: Equatable {
+    case unknown
+    case notDetermined
+    case denied
+    case authorized
+    case provisional
+
+    init(status: UNAuthorizationStatus?) {
+        switch status {
+        case .some(.authorized): self = .authorized
+        case .some(.denied): self = .denied
+        case .some(.provisional): self = .provisional
+        case .some(.notDetermined): self = .notDetermined
+        default: self = .unknown
+        }
+    }
+
+    var requiresOnboarding: Bool {
+        switch self {
+        case .denied, .notDetermined, .provisional:
+            return true
+        default:
+            return false
+        }
+    }
+}
 
 @MainActor
 @Observable
@@ -11,6 +39,7 @@ final class AppState {
     var lastUpdated: Date?
     var hasLoadedOnce = false
     var syncNotice: SyncNotice?
+    var notificationStatus: NotificationAuthorizationState = .unknown
 
     init(repository: DashboardRepository = DashboardRepository()) {
         self.repository = repository
@@ -27,7 +56,7 @@ final class AppState {
             lastUpdated = Date()
             hasLoadedOnce = true
             cache.persist(snapshot)
-            NotificationManager.shared.processHighPriorityAlert(from: snapshot.crises)
+            await NotificationManager.shared.processHighPriorityAlert(from: snapshot.crises)
             syncNotice = nil
         } catch {
             let fallback = cache.load() ?? MockData.snapshot
@@ -37,6 +66,17 @@ final class AppState {
                 errorDescription: error.friendlyMessage
             )
         }
+    }
+
+    func refreshNotificationAuthorizationStatus() async {
+        let status = await NotificationManager.shared.authorizationStatus()
+        notificationStatus = NotificationAuthorizationState(status: status)
+    }
+
+    func requestNotificationAccess() async -> Bool {
+        let granted = await NotificationManager.shared.requestAuthorization()
+        await refreshNotificationAuthorizationStatus()
+        return granted
     }
 }
 

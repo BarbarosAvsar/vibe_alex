@@ -11,7 +11,6 @@ struct VermoegensKompassApp: App {
                 .environment(appState)
                 .task {
                     BackgroundRefreshManager.shared.configure { appState }
-                    await NotificationManager.shared.requestAuthorization()
                     BackgroundRefreshManager.shared.schedule()
                 }
         }

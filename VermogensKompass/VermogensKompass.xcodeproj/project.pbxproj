@@ -320,8 +320,8 @@
 			children = (
 				E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */,
 			);
-			path = VermogensKompassTests;
-			sourceTree = "<group>";
+			path = ../VermogensKompassTests;
+			sourceTree = SOURCE_ROOT;
 		};
 		C45318BFC02B5FAD23B0AD51 /* Products */ = {
 			isa = PBXGroup;

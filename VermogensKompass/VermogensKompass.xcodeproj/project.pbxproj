@@ -62,51 +62,51 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EmailComposerView.swift; path = VermogensKompass/Shared/Mail/EmailComposerView.swift; sourceTree = "<group>"; };
-		05012142113DBB560C687635 /* MetalAsset.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalAsset.swift; path = VermogensKompass/Models/MetalAsset.swift; sourceTree = "<group>"; };
-		06ABC094EDBC2CF47952C99C /* MetalCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalCard.swift; path = VermogensKompass/Shared/Components/MetalCard.swift; sourceTree = "<group>"; };
-		0D624EFBBEAC6A70A8CC65A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		1316F12548E728AC87A451AD /* LiquidGlass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LiquidGlass.swift; path = VermogensKompass/Shared/Styles/LiquidGlass.swift; sourceTree = "<group>"; };
-		16CCB805849B18312345FD27 /* AppState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = VermogensKompass/App/AppState.swift; sourceTree = "<group>"; };
-		2AF9AE1D9DD225C2A46C6FDB /* DashboardSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardSnapshot.swift; path = VermogensKompass/Models/DashboardSnapshot.swift; sourceTree = "<group>"; };
-		3210A792E90E0A7C3807801B /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = VermogensKompass/App/ContentView.swift; sourceTree = "<group>"; };
+		02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EmailComposerView.swift; path = EmailComposerView.swift; sourceTree = "<group>"; };
+		05012142113DBB560C687635 /* MetalAsset.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalAsset.swift; path = MetalAsset.swift; sourceTree = "<group>"; };
+		06ABC094EDBC2CF47952C99C /* MetalCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalCard.swift; path = MetalCard.swift; sourceTree = "<group>"; };
+		0D624EFBBEAC6A70A8CC65A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		1316F12548E728AC87A451AD /* LiquidGlass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LiquidGlass.swift; path = LiquidGlass.swift; sourceTree = "<group>"; };
+		16CCB805849B18312345FD27 /* AppState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = AppState.swift; sourceTree = "<group>"; };
+		2AF9AE1D9DD225C2A46C6FDB /* DashboardSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardSnapshot.swift; path = DashboardSnapshot.swift; sourceTree = "<group>"; };
+		3210A792E90E0A7C3807801B /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		353183EBB39C30CF147F5E8B /* VermogensKompass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VermogensKompass.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		40C8229FF889B06599889FED /* VermogensKompassApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VermogensKompassApp.swift; path = VermogensKompass/App/VermogensKompassApp.swift; sourceTree = "<group>"; };
-		5ACB2EE4D8243D0A6C4740ED /* DashboardRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardRepository.swift; path = VermogensKompass/Services/DashboardRepository.swift; sourceTree = "<group>"; };
-		6090C3527069CC67168D75F0 /* CrisisMonitorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrisisMonitorService.swift; path = VermogensKompass/Services/CrisisMonitorService.swift; sourceTree = "<group>"; };
-		6126193F20B79928E336B32A /* HTTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPClient.swift; path = VermogensKompass/Services/HTTPClient.swift; sourceTree = "<group>"; };
-		61C8785E139738DCA48C7B53 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
-		67BD4E9FC5219FCF55CADC0A /* Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = VermogensKompass/Shared/Styles/Theme.swift; sourceTree = "<group>"; };
-		6E6AB215CC03BE99B4F11333 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Charts.framework; sourceTree = DEVELOPER_DIR; };
-		6EBB195905BCB712A8E66313 /* ComparisonView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ComparisonView.swift; path = VermogensKompass/Features/Comparison/ComparisonView.swift; sourceTree = "<group>"; };
-		756A3D547F74D8747F36CEC8 /* CrisisView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrisisView.swift; path = VermogensKompass/Features/Crisis/CrisisView.swift; sourceTree = "<group>"; };
-		8137B0ABF90A495D64FE4DF8 /* MetalPriceService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalPriceService.swift; path = VermogensKompass/Services/MetalPriceService.swift; sourceTree = "<group>"; };
-		86EEF8BB94CF0A7B09A60760 /* MacroIndicatorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacroIndicatorService.swift; path = VermogensKompass/Services/MacroIndicatorService.swift; sourceTree = "<group>"; };
-		932DECAC21051C7C487FA3E2 /* OverviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OverviewView.swift; path = VermogensKompass/Features/Overview/OverviewView.swift; sourceTree = "<group>"; };
-		9B7AB8D048023CE48FE9A12E /* MetalsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalsView.swift; path = VermogensKompass/Features/Metals/MetalsView.swift; sourceTree = "<group>"; };
-		A18761A9AC8E8D195D3E9B47 /* CrisisEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrisisEvent.swift; path = VermogensKompass/Models/CrisisEvent.swift; sourceTree = "<group>"; };
-		A27AF7A2B67E3562ED7B4A05 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = VermogensKompass/Supporting/Info.plist; sourceTree = "<group>"; };
-		A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetricCard.swift; path = VermogensKompass/Shared/Components/MetricCard.swift; sourceTree = "<group>"; };
-		AB06057FA458C0237615DD23 /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/BackgroundTasks.framework; sourceTree = DEVELOPER_DIR; };
-		BDBC564B4244F3139DF6FC1A /* MockData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MockData.swift; path = VermogensKompass/Services/MockData.swift; sourceTree = "<group>"; };
-		C1A47374EC0D649E09300AD7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/MessageUI.framework; sourceTree = DEVELOPER_DIR; };
-		C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrimaryCTAButton.swift; path = VermogensKompass/Shared/Components/PrimaryCTAButton.swift; sourceTree = "<group>"; };
-		C6F4499AF37DA4F6D59FB979 /* AsyncState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncState.swift; path = VermogensKompass/Models/AsyncState.swift; sourceTree = "<group>"; };
-		CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncStateView.swift; path = VermogensKompass/Shared/Components/AsyncStateView.swift; sourceTree = "<group>"; };
-		CA405C053E2B160760D7545B /* NotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationManager.swift; path = VermogensKompass/Services/NotificationManager.swift; sourceTree = "<group>"; };
-		CBB202283825D5EEEE6BA843 /* AppConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppConfig.swift; path = VermogensKompass/Config/AppConfig.swift; sourceTree = "<group>"; };
-		E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CrisisThresholds.swift; path = VermogensKompass/Config/CrisisThresholds.swift; sourceTree = "<group>"; };
-		E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VermogensKompassTests/CrisisFeedTests.swift; sourceTree = "<group>"; };
+		40C8229FF889B06599889FED /* VermogensKompassApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VermogensKompassApp.swift; path = VermogensKompassApp.swift; sourceTree = "<group>"; };
+		5ACB2EE4D8243D0A6C4740ED /* DashboardRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardRepository.swift; path = DashboardRepository.swift; sourceTree = "<group>"; };
+		6090C3527069CC67168D75F0 /* CrisisMonitorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrisisMonitorService.swift; path = CrisisMonitorService.swift; sourceTree = "<group>"; };
+		6126193F20B79928E336B32A /* HTTPClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPClient.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		61C8785E139738DCA48C7B53 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
+		67BD4E9FC5219FCF55CADC0A /* Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = Theme.swift; sourceTree = "<group>"; };
+		6E6AB215CC03BE99B4F11333 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Charts.framework; sourceTree = DEVELOPER_DIR; };
+		6EBB195905BCB712A8E66313 /* ComparisonView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ComparisonView.swift; path = ComparisonView.swift; sourceTree = "<group>"; };
+		756A3D547F74D8747F36CEC8 /* CrisisView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrisisView.swift; path = CrisisView.swift; sourceTree = "<group>"; };
+		8137B0ABF90A495D64FE4DF8 /* MetalPriceService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalPriceService.swift; path = MetalPriceService.swift; sourceTree = "<group>"; };
+		86EEF8BB94CF0A7B09A60760 /* MacroIndicatorService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacroIndicatorService.swift; path = MacroIndicatorService.swift; sourceTree = "<group>"; };
+		932DECAC21051C7C487FA3E2 /* OverviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OverviewView.swift; path = OverviewView.swift; sourceTree = "<group>"; };
+		9B7AB8D048023CE48FE9A12E /* MetalsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalsView.swift; path = MetalsView.swift; sourceTree = "<group>"; };
+		A18761A9AC8E8D195D3E9B47 /* CrisisEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrisisEvent.swift; path = CrisisEvent.swift; sourceTree = "<group>"; };
+		A27AF7A2B67E3562ED7B4A05 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = Info.plist; sourceTree = "<group>"; };
+		A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetricCard.swift; path = MetricCard.swift; sourceTree = "<group>"; };
+		AB06057FA458C0237615DD23 /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = BackgroundTasks.framework; sourceTree = DEVELOPER_DIR; };
+		BDBC564B4244F3139DF6FC1A /* MockData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MockData.swift; path = MockData.swift; sourceTree = "<group>"; };
+		C1A47374EC0D649E09300AD7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = MessageUI.framework; sourceTree = DEVELOPER_DIR; };
+		C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrimaryCTAButton.swift; path = PrimaryCTAButton.swift; sourceTree = "<group>"; };
+		C6F4499AF37DA4F6D59FB979 /* AsyncState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncState.swift; path = AsyncState.swift; sourceTree = "<group>"; };
+		CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncStateView.swift; path = AsyncStateView.swift; sourceTree = "<group>"; };
+		CA405C053E2B160760D7545B /* NotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NotificationManager.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		CBB202283825D5EEEE6BA843 /* AppConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppConfig.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CrisisThresholds.swift; path = CrisisThresholds.swift; sourceTree = "<group>"; };
+		E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrisisFeedTests.swift; sourceTree = "<group>"; };
 		E6B982972C9F5EFE00EFA8D4 /* VermogensKompassTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VermogensKompassTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5A4F3289569C7584F4D552E /* BackgroundRefreshManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BackgroundRefreshManager.swift; path = VermogensKompass/Services/BackgroundRefreshManager.swift; sourceTree = "<group>"; };
-		DC199FB3D09F581E3D7D4F88 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
-		DE1A853C472FCB44436C27D7 /* DashboardCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardCache.swift; path = VermogensKompass/Services/DashboardCache.swift; sourceTree = "<group>"; };
-		DED211DC8C2A0CDBC7C71277 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = VermogensKompass/Resources/Assets.xcassets; sourceTree = "<group>"; };
-		EE381FE29E9F9E8463DAFA9F /* MacroIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacroIndicator.swift; path = VermogensKompass/Models/MacroIndicator.swift; sourceTree = "<group>"; };
-		F973AB3375CF3856D42A0B76 /* DashboardSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardSection.swift; path = VermogensKompass/Shared/Components/DashboardSection.swift; sourceTree = "<group>"; };
-		F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationOnboardingView.swift; path = VermogensKompass/Shared/Notifications/NotificationOnboardingView.swift; sourceTree = "<group>"; };
-		FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConsultationView.swift; path = VermogensKompass/Features/Consultation/ConsultationView.swift; sourceTree = "<group>"; };
-		FECDABE89A019C2B5861345D /* Preview Content.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = "Preview Content.xcassets"; path = "VermogensKompass/Resources/Preview Content.xcassets"; sourceTree = "<group>"; };
+		D5A4F3289569C7584F4D552E /* BackgroundRefreshManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BackgroundRefreshManager.swift; path = BackgroundRefreshManager.swift; sourceTree = "<group>"; };
+		DC199FB3D09F581E3D7D4F88 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
+		DE1A853C472FCB44436C27D7 /* DashboardCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardCache.swift; path = DashboardCache.swift; sourceTree = "<group>"; };
+		DED211DC8C2A0CDBC7C71277 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Assets.xcassets; sourceTree = "<group>"; };
+		EE381FE29E9F9E8463DAFA9F /* MacroIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacroIndicator.swift; path = MacroIndicator.swift; sourceTree = "<group>"; };
+		F973AB3375CF3856D42A0B76 /* DashboardSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardSection.swift; path = DashboardSection.swift; sourceTree = "<group>"; };
+		F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationOnboardingView.swift; path = NotificationOnboardingView.swift; sourceTree = "<group>"; };
+		FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConsultationView.swift; path = ConsultationView.swift; sourceTree = "<group>"; };
+		FECDABE89A019C2B5861345D /* Preview Content.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = "Preview Content.xcassets"; path = Preview Content.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,7 +139,7 @@
 				9B7AB8D048023CE48FE9A12E /* MetalsView.swift */,
 			);
 			name = Metals;
-			path = VermogensKompass/Features/Metals;
+			path = Metals;
 			sourceTree = "<group>";
 		};
 		171F8E6CEBD413AC6A010350 /* Crisis */ = {
@@ -148,7 +148,7 @@
 				756A3D547F74D8747F36CEC8 /* CrisisView.swift */,
 			);
 			name = Crisis;
-			path = VermogensKompass/Features/Crisis;
+			path = Crisis;
 			sourceTree = "<group>";
 		};
 		5A9D6B971FFC94C0B55EA48D /* Services */ = {
@@ -165,7 +165,7 @@
 				CA405C053E2B160760D7545B /* NotificationManager.swift */,
 			);
 			name = Services;
-			path = VermogensKompass/Services;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		5BE42CC237643D72548005C7 /* Supporting */ = {
@@ -174,7 +174,7 @@
 				A27AF7A2B67E3562ED7B4A05 /* Info.plist */,
 			);
 			name = Supporting;
-			path = VermogensKompass/Supporting;
+			path = Supporting;
 			sourceTree = "<group>";
 		};
 		5C688B107787C948B6EEE69D /* Shared */ = {
@@ -186,7 +186,7 @@
 				878DE0582D67A1DA1B35921C /* Styles */,
 			);
 			name = Shared;
-			path = VermogensKompass/Shared;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		640B5184BBFDFFF560531073 /* Models */ = {
@@ -199,7 +199,7 @@
 				05012142113DBB560C687635 /* MetalAsset.swift */,
 			);
 			name = Models;
-			path = VermogensKompass/Models;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		646764A28CA53A578F892624 /* Mail */ = {
@@ -208,7 +208,7 @@
 				02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */,
 			);
 			name = Mail;
-			path = VermogensKompass/Shared/Mail;
+			path = Mail;
 			sourceTree = "<group>";
 		};
 		F2E8F2722C9F55D600CCDC5F /* Notifications */ = {
@@ -217,7 +217,7 @@
 				F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */,
 			);
 			name = Notifications;
-			path = VermogensKompass/Shared/Notifications;
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		6A5AF9D74A26A154FC9AD391 /* Overview */ = {
@@ -226,7 +226,7 @@
 				932DECAC21051C7C487FA3E2 /* OverviewView.swift */,
 			);
 			name = Overview;
-			path = VermogensKompass/Features/Overview;
+			path = Overview;
 			sourceTree = "<group>";
 		};
 		7EC3313A120B6282B090CFF6 /* VermogensKompass */ = {
@@ -252,7 +252,7 @@
 				FECDABE89A019C2B5861345D /* Preview Content.xcassets */,
 			);
 			name = Resources;
-			path = VermogensKompass/Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		878DE0582D67A1DA1B35921C /* Styles */ = {
@@ -262,7 +262,7 @@
 				1316F12548E728AC87A451AD /* LiquidGlass.swift */,
 			);
 			name = Styles;
-			path = VermogensKompass/Shared/Styles;
+			path = Styles;
 			sourceTree = "<group>";
 		};
 		904539D15D149163FE799BEB /* iOS */ = {
@@ -296,7 +296,7 @@
 				C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */,
 			);
 			name = Components;
-			path = VermogensKompass/Shared/Components;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		BD3FEB51E8143C5C8F70ED01 = {
@@ -333,7 +333,7 @@
 				E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */,
 			);
 			name = Config;
-			path = VermogensKompass/Config;
+			path = Config;
 			sourceTree = "<group>";
 		};
 		C5518CD9EC7F550711634656 /* Comparison */ = {
@@ -342,7 +342,7 @@
 				6EBB195905BCB712A8E66313 /* ComparisonView.swift */,
 			);
 			name = Comparison;
-			path = VermogensKompass/Features/Comparison;
+			path = Comparison;
 			sourceTree = "<group>";
 		};
 		D1C708E3A6728A16EA944DB9 /* Features */ = {
@@ -355,7 +355,7 @@
 				6A5AF9D74A26A154FC9AD391 /* Overview */,
 			);
 			name = Features;
-			path = VermogensKompass/Features;
+			path = Features;
 			sourceTree = "<group>";
 		};
 		EA9AAD2D3D288BF27DE73A79 /* Consultation */ = {
@@ -364,7 +364,7 @@
 				FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */,
 			);
 			name = Consultation;
-			path = VermogensKompass/Features/Consultation;
+			path = Consultation;
 			sourceTree = "<group>";
 		};
 		FF651B296DD458BCD78D3B72 /* App */ = {
@@ -375,7 +375,7 @@
 				40C8229FF889B06599889FED /* VermogensKompassApp.swift */,
 			);
 			name = App;
-			path = VermogensKompass/App;
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

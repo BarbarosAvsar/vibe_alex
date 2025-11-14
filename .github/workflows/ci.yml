@@ -13,8 +13,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Select Xcode 16
-        run: sudo xcode-select -s /Applications/Xcode_16.0.app
+      - name: Select bundled Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode_15.4.app
 
       - name: Show Xcode version
         run: xcodebuild -version

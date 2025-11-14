@@ -25,5 +25,5 @@ Key capabilities:
 
 ## Continuous Integration (Option 3 from setup discussion)
 - All pushes and pull requests targeting `main` automatically trigger `.github/workflows/ci.yml` on GitHub Actions’ `macos-14` runners.
-- The workflow selects Xcode 16, resolves packages, and executes `xcodebuild clean test` for the `VermogensKompass` scheme on the iPhone 15 simulator.
+- The workflow selects the hosted `Xcode_15.4.app` toolchain (current default on macOS 14 runners), resolves packages, and executes `xcodebuild clean test` for the `VermogensKompass` scheme on the iPhone 15 simulator.
 - To view results, open the “Actions” tab in GitHub; failing builds annotate commits/PRs with the exact step/command output.

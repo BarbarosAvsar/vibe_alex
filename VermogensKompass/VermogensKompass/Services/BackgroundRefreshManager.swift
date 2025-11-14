@@ -12,11 +12,11 @@ final class BackgroundRefreshManager {
 
     func configure(appStateProvider: @escaping () -> AppState?) {
         self.appStateProvider = appStateProvider
-        guard didRegisterTask == false else { return }
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: identifier, using: nil) { [weak self] task in
-            Task { await self?.handle(task: task as? BGAppRefreshTask) }
-        }
-        didRegisterTask = true
+        registerTaskIfNeeded()
+    }
+
+    func prepareForLaunch() {
+        registerTaskIfNeeded()
     }
 
     func schedule() {
@@ -60,5 +60,13 @@ final class BackgroundRefreshManager {
             #endif
             task.setTaskCompleted(success: false)
         }
+    }
+
+    private func registerTaskIfNeeded() {
+        guard didRegisterTask == false else { return }
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: identifier, using: nil) { [weak self] task in
+            Task { await self?.handle(task: task as? BGAppRefreshTask) }
+        }
+        didRegisterTask = true
     }
 }

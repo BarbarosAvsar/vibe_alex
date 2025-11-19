@@ -4,7 +4,8 @@ import UIKit
 struct ContentView: View {
     @Environment(AppState.self) private var appState
     @Environment(CurrencySettings.self) private var currencySettings
-    @State private var showPrivacyPolicy = false
+    @State private var selectedTab: Tab = .overview
+    @State private var showSettings = false
     @State private var showNotificationOnboarding = false
     @AppStorage("notificationOnboardingCompleted") private var notificationOnboardingCompleted = false
     @Environment(\.scenePhase) private var scenePhase
@@ -31,26 +32,28 @@ struct ContentView: View {
                     .padding(.horizontal)
                     .transition(.opacity)
                 }
-                TabView {
-                    OverviewView()
+                TabView(selection: $selectedTab) {
+                    OverviewView(showSettings: $showSettings, onRequestConsultation: openConsultation)
                         .tabItem { Label("Übersicht", systemImage: "house.fill") }
+                        .tag(Tab.overview)
 
-                    ComparisonView()
+                    ComparisonView(showSettings: $showSettings)
                         .tabItem { Label("Vergleich", systemImage: "chart.bar.doc.horizontal") }
+                        .tag(Tab.comparison)
 
-                    MetalsView()
+                    MetalsView(showSettings: $showSettings, onRequestConsultation: openConsultation)
                         .tabItem { Label("Edelmetalle", systemImage: "rhombus.fill") }
+                        .tag(Tab.metals)
 
-                    CrisisView()
+                    CrisisView(showSettings: $showSettings)
                         .tabItem { Label("Krisen", systemImage: "exclamationmark.triangle.fill") }
+                        .tag(Tab.crisis)
 
-                    ConsultationView(showPrivacyPolicy: $showPrivacyPolicy)
+                    ConsultationView(showSettings: $showSettings)
                         .tabItem { Label("Beratung", systemImage: "person.text.rectangle") }
+                        .tag(Tab.consultation)
                 }
                 .tint(Theme.accent)
-            }
-            .sheet(isPresented: $showPrivacyPolicy) {
-                PrivacyPolicyView()
             }
             .animation(.easeInOut(duration: 0.25), value: appState.syncNotice)
         }
@@ -69,6 +72,10 @@ struct ContentView: View {
             default:
                 break
             }
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsSheet()
+                .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showNotificationOnboarding) {
             NotificationOnboardingView(status: appState.notificationStatus) {
@@ -89,9 +96,23 @@ struct ContentView: View {
             }
         }
     }
+
+    private func openConsultation() {
+        selectedTab = .consultation
+    }
 }
 
 #Preview("Root view") {
     ContentView()
         .environment(AppState(repository: DashboardRepository(mockData: MockData.snapshot)))
+}
+
+extension ContentView {
+    enum Tab: Hashable {
+        case overview
+        case comparison
+        case metals
+        case crisis
+        case consultation
+    }
 }

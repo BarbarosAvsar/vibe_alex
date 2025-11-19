@@ -137,14 +137,14 @@ private struct BennerCyclePill: View {
     }
 }
 
-private extension BennerCycleEntry {
+extension BennerCycleEntry {
     var progress: Double {
         guard phaseLength > 0 else { return 1 }
         return Double(orderInPhase) / Double(phaseLength)
     }
 }
 
-private extension BennerPhase {
+extension BennerPhase {
     var tint: Color {
         switch self {
         case .panic:

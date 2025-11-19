@@ -39,6 +39,9 @@
 		988C5AE2D0906C31A211BE1F /* ConsultationFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E61AB20C67BD6A5D9953B11 /* ConsultationFormViewModel.swift */; };
 		962EFE2CA99011B28EC599C8 /* ConsultationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */; };
 		9B4F5FEC61BF556D9B2C19A7 /* BennerCyclePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B407D4A9F2279DF0D9A01F /* BennerCyclePhase.swift */; };
+		A1B26AA324F28C1D2D8C1EFA /* ToolbarStatusControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B26AA224F28C1D2D8C1EFA /* ToolbarStatusControl.swift */; };
+		A7C8217C9F6814F1A9321CBA /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C8217B9F6814F1A9321CBA /* SettingsSheet.swift */; };
+		B6F31E83D7A0F4C4B30341AA /* AssetComparisonEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F31E82D7A0F4C4B30341AA /* AssetComparisonEngine.swift */; };
 		A5E012130E5E54EDA023731D /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6126193F20B79928E336B32A /* HTTPClient.swift */; };
 		AD47249CF4332EEDFCDF5C30 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB202283825D5EEEE6BA843 /* AppConfig.swift */; };
 		ADE26232E88519008DE2C7C0 /* VermogensKompassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C8229FF889B06599889FED /* VermogensKompassApp.swift */; };
@@ -135,6 +138,9 @@
 		B3AF72F07A6B1C6C8A3F6A28 /* ConsultationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConsultationService.swift; path = VermogensKompass/Services/ConsultationService.swift; sourceTree = SOURCE_ROOT; };
 		C78F97A04D7E8CA2A8D6E403 /* BennerCycleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BennerCycleService.swift; path = VermogensKompass/Services/BennerCycleService.swift; sourceTree = SOURCE_ROOT; };
 		A9AC6E6DCC5FEE66A1657EDC /* BennerCycleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BennerCycleServiceTests.swift; sourceTree = "<group>"; };
+		A1B26AA224F28C1D2D8C1EFA /* ToolbarStatusControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ToolbarStatusControl.swift; path = VermogensKompass/Shared/Components/ToolbarStatusControl.swift; sourceTree = SOURCE_ROOT; };
+		A7C8217B9F6814F1A9321CBA /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsSheet.swift; path = VermogensKompass/App/SettingsSheet.swift; sourceTree = SOURCE_ROOT; };
+		B6F31E82D7A0F4C4B30341AA /* AssetComparisonEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AssetComparisonEngine.swift; path = VermogensKompass/Features/Comparison/AssetComparisonEngine.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,6 +336,7 @@
 				06ABC094EDBC2CF47952C99C /* MetalCard.swift */,
 				A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */,
 				C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */,
+				A1B26AA224F28C1D2D8C1EFA /* ToolbarStatusControl.swift */,
 			);
 			name = Components;
 			path = Components;
@@ -379,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				6EBB195905BCB712A8E66313 /* ComparisonView.swift */,
+				B6F31E82D7A0F4C4B30341AA /* AssetComparisonEngine.swift */,
 			);
 			name = Comparison;
 			path = Comparison;
@@ -415,6 +423,7 @@
 				3210A792E90E0A7C3807801B /* ContentView.swift */,
 				40C8229FF889B06599889FED /* VermogensKompassApp.swift */,
 				F8A7DA21DA3E6E4291E63889 /* CurrencySettings.swift */,
+				A7C8217B9F6814F1A9321CBA /* SettingsSheet.swift */,
 			);
 			name = App;
 			path = App;
@@ -527,6 +536,7 @@
 				AD47249CF4332EEDFCDF5C30 /* AppConfig.swift in Sources */,
 				E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */,
 				72C012A7C44BA846A12CE82E /* ComparisonView.swift in Sources */,
+				B6F31E83D7A0F4C4B30341AA /* AssetComparisonEngine.swift in Sources */,
 				962EFE2CA99011B28EC599C8 /* ConsultationView.swift in Sources */,
 				2D3618662F6E7B76296EB4F5 /* CrisisView.swift in Sources */,
 				95EEA4F36F93F978CA02A21E /* MetalsView.swift in Sources */,
@@ -555,10 +565,12 @@
 				3B60987029A81AD7814C4F6E /* MetalCard.swift in Sources */,
 				BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */,
 				561D5298703B7D1FFA33635E /* PrimaryCTAButton.swift in Sources */,
+				A1B26AA324F28C1D2D8C1EFA /* ToolbarStatusControl.swift in Sources */,
 				976EF4CCDE9E3260B2899F5C /* ConsultationFormView.swift in Sources */,
 				988C5AE2D0906C31A211BE1F /* ConsultationFormViewModel.swift in Sources */,
 				F5AA4C112CA11D6E00E3A1C1 /* SyncStatusBanner.swift in Sources */,
 				F8A7DA22DA3E6E4291E63889 /* CurrencySettings.swift in Sources */,
+				A7C8217C9F6814F1A9321CBA /* SettingsSheet.swift in Sources */,
 				29E59C2E8AB2F7258FB0E5F3 /* Theme.swift in Sources */,
 				90B55E90E6BCF1F6A891A5C1 /* BackgroundRefreshManager.swift in Sources */,
 				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,

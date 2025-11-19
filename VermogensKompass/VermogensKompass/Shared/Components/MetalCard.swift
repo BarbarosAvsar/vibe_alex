@@ -55,14 +55,9 @@ struct MetalCard: View {
                 }
             }
 
-            HStack {
-                Text("Quelle: \(asset.dataSource.rawValue)")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Link("Daten öffnen", destination: asset.dataSource.url)
-                    .font(.caption2)
-            }
+            Text("Quelle: \(asset.dataSource.rawValue)")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
         }
         .cardStyle()
     }

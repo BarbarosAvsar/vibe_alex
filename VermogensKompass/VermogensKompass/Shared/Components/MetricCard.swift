@@ -16,6 +16,7 @@ struct MetricCard: View {
             }
             Text(indicator.formattedValue)
                 .font(.largeTitle.weight(.semibold))
+            Spacer(minLength: 0)
             Text(indicator.deltaDescription)
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -23,6 +24,7 @@ struct MetricCard: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+        .frame(maxWidth: .infinity, minHeight: 170, alignment: .topLeading)
         .cardStyle()
     }
 }

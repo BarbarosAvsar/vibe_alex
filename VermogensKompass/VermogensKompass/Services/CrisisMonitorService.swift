@@ -71,7 +71,10 @@ struct PoliticalFinancialNewsFeed: CrisisFeedService {
             }
         }
 
-        return Array(unique.sorted { $0.occurredAt > $1.occurredAt }.prefix(10))
+        // Preserve the order in which the different feeds were combined so that we keep
+        // the expected "financial first, geopolitical second" layout that the UI (and tests)
+        // rely on. The articles are already returned in descending order per feed.
+        return Array(unique.prefix(10))
     }
 
     private func fetchTopHeadlines(category: String, label: CrisisCategory, apiKey: String) async throws -> [CrisisEvent] {

@@ -1,8 +1,6 @@
 import Foundation
 
 enum CrisisCategory: String, Codable, CaseIterable {
-    case seismic
-    case storm
     case geopolitical
     case financial
 }
@@ -10,23 +8,21 @@ enum CrisisCategory: String, Codable, CaseIterable {
 struct CrisisEvent: Identifiable, Hashable, Codable {
     let id: String
     let title: String
-    let magnitude: Double?
+    let summary: String?
     let region: String
     let occurredAt: Date
+    let publishedAt: Date?
     let detailURL: URL?
+    let sourceName: String?
     let source: DataSource
     let category: CrisisCategory
+    let severityScore: Double
 
     var severityBadge: String {
-        guard let magnitude else { return "Info" }
-        switch magnitude {
-        case ..<4: return "Niedrig"
+        switch severityScore {
+        case ..<4: return "Info"
         case 4..<6: return "Moderat"
         default: return "Hoch"
         }
-    }
-
-    var severityScore: Double {
-        magnitude ?? 0
     }
 }

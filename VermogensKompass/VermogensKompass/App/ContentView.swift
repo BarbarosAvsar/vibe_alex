@@ -3,7 +3,7 @@ import UIKit
 
 struct ContentView: View {
     @Environment(AppState.self) private var appState
-    @State private var showMailSheet = false
+    @Environment(CurrencySettings.self) private var currencySettings
     @State private var showPrivacyPolicy = false
     @State private var showNotificationOnboarding = false
     @AppStorage("notificationOnboardingCompleted") private var notificationOnboardingCompleted = false
@@ -32,24 +32,22 @@ struct ContentView: View {
                     .transition(.opacity)
                 }
                 TabView {
-                    OverviewView(showMailSheet: $showMailSheet)
+                    OverviewView()
                         .tabItem { Label("Übersicht", systemImage: "house.fill") }
 
                     ComparisonView()
                         .tabItem { Label("Vergleich", systemImage: "chart.bar.doc.horizontal") }
 
-                    MetalsView(showMailSheet: $showMailSheet)
+                    MetalsView()
                         .tabItem { Label("Edelmetalle", systemImage: "rhombus.fill") }
 
                     CrisisView()
                         .tabItem { Label("Krisen", systemImage: "exclamationmark.triangle.fill") }
 
-                    ConsultationView(showMailSheet: $showMailSheet, showPrivacyPolicy: $showPrivacyPolicy)
+                    ConsultationView(showPrivacyPolicy: $showPrivacyPolicy)
                         .tabItem { Label("Beratung", systemImage: "person.text.rectangle") }
                 }
-            }
-            .sheet(isPresented: $showMailSheet) {
-                EmailComposerView(configuration: AppConfig.contactEmail)
+                .tint(Theme.accent)
             }
             .sheet(isPresented: $showPrivacyPolicy) {
                 PrivacyPolicyView()
@@ -57,6 +55,7 @@ struct ContentView: View {
             .animation(.easeInOut(duration: 0.25), value: appState.syncNotice)
         }
         .task {
+            await currencySettings.refreshRates()
             await appState.refreshNotificationAuthorizationStatus()
             guard appState.hasLoadedOnce == false else { return }
             await appState.refreshDashboard(force: true)

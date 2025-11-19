@@ -97,7 +97,7 @@ Legend: ✅ fully satisfied, 🟡 requires non-code action before submission, �
 | 1.4.1–1.4.5 (Health/Safety) | ✅ | Not a medical or wellness experience; `ConsultationView` highlights that insights are informational and cites sources to avoid misleading claims. |
 | 2.3.1–2.3.13 (Metadata) | ✅ | Metadata copy now prepared below; in-app `PrivacyPolicyView` and Sync banner make it clear how data sources and offline mode work, matching submission assets. |
 | 2.4.x–2.5.x (Performance & Background) | ✅ | iOS 18 SwiftUI app uses allowed APIs only; `BackgroundRefreshManager.swift` now guards duplicate BGTask registrations and schedules refreshes per 2.5.4. |
-| 3.1.x–3.2.x (Business) | ✅ | No purchases, subscriptions, or gambling; primary CTA opens Mail only (`Shared/Mail/EmailComposerView.swift`). |
+| 3.1.x–3.2.x (Business) | ✅ | No purchases, subscriptions, or gambling; primary CTA opens an in-app contact form (`Features/Consultation/ConsultationFormView.swift`). |
 | 4.0–4.8 (Design/HIG) | ✅ | Uses native SwiftUI components, Dynamic Type-friendly layouts, and tab structure that mirrors feature pillars; `PrimaryCTAButton` ships VoiceOver hints. |
 | 5.1.x (Privacy & Data Collection) | ✅ | No analytics or personal data storage; Info.plist declares `NSUserNotificationUsageDescription`; Mail composition stays in Mail and crisis alerts rely on user-granted notifications. |
 | 5.5–5.6 (Legal/Gov) | ✅ | Privacy policy is available in-app (`Shared/Legal/PrivacyPolicyView.swift`) and a matching metadata snippet (see below) is ready for App Store Connect. |

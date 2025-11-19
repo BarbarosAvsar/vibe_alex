@@ -45,7 +45,14 @@ struct NotificationOnboardingView: View {
                     }
                     .toggleStyle(.switch)
                     .padding()
-                    .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .background(
+                        Theme.surface,
+                        in: RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .strokeBorder(Theme.border.opacity(0.5), lineWidth: 1)
+                    )
 
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Sie können Ihre Entscheidung jederzeit in den iOS-Einstellungen ändern.", systemImage: "lock.shield")
@@ -127,10 +134,13 @@ struct NotificationPermissionBanner: View {
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: "bell.slash.fill")
-                .foregroundStyle(.yellow)
+                .foregroundStyle(Theme.accentStrong)
                 .imageScale(.large)
                 .padding(8)
-                .background(Color.yellow.opacity(0.15), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .background(
+                    Theme.accentStrong.opacity(0.12),
+                    in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                )
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(statusTitle)
@@ -148,12 +158,12 @@ struct NotificationPermissionBanner: View {
         }
         .padding(14)
         .background(
-            Color.black.opacity(0.35),
+            Theme.surface,
             in: RoundedRectangle(cornerRadius: 20, style: .continuous)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .strokeBorder(Color.white.opacity(0.1), lineWidth: 1)
+                .strokeBorder(Theme.border.opacity(0.6), lineWidth: 1)
         )
     }
 

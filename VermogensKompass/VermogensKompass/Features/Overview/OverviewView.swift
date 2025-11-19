@@ -2,7 +2,7 @@ import SwiftUI
 
 struct OverviewView: View {
     @Environment(AppState.self) private var appState
-    @Binding var showMailSheet: Bool
+    @State private var showConsultationForm = false
 
     var body: some View {
         NavigationStack {
@@ -13,7 +13,8 @@ struct OverviewView: View {
                     VStack(spacing: 24) {
                         heroSection(snapshot)
                         macroSection(snapshot)
-                        PrimaryCTAButton(action: { showMailSheet = true })
+                        bennerCycleSection(appState.bennerCycleEntries)
+                        PrimaryCTAButton(action: { showConsultationForm = true })
                     }
                     .padding()
                 }
@@ -30,6 +31,9 @@ struct OverviewView: View {
             }
             .refreshable {
                 await appState.refreshDashboard(force: true)
+            }
+            .navigationDestination(isPresented: $showConsultationForm) {
+                ConsultationFormView()
             }
         }
     }
@@ -53,6 +57,13 @@ struct OverviewView: View {
                     MetricCard(indicator: indicator)
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func bennerCycleSection(_ entries: [BennerCycleEntry]) -> some View {
+        DashboardSection("Benner Cycle", subtitle: "Samuel Benner Prognose bis 2150") {
+            BennerCycleView(entries: entries)
         }
     }
 }

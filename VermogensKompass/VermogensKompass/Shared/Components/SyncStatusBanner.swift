@@ -6,10 +6,13 @@ struct SyncStatusBanner: View {
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: "wifi.slash")
-                .foregroundStyle(.yellow)
+                .foregroundStyle(Theme.accentStrong)
                 .imageScale(.large)
                 .padding(8)
-                .background(Color.yellow.opacity(0.15), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .background(
+                    Theme.accentStrong.opacity(0.12),
+                    in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                )
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Offline-Daten")
@@ -17,26 +20,26 @@ struct SyncStatusBanner: View {
                 if let lastSync = notice.lastSuccessfulSync {
                     Text("Letzte Synchronisierung: \(lastSync.formatted(date: .abbreviated, time: .shortened))")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                 } else {
                     Text("Noch keine erfolgreiche Synchronisierung")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                 }
                 Text(notice.errorDescription)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textMuted)
             }
             Spacer()
         }
         .padding(14)
         .background(
-            Color.black.opacity(0.35),
+            Theme.surface,
             in: RoundedRectangle(cornerRadius: 20, style: .continuous)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .strokeBorder(Color.white.opacity(0.1), lineWidth: 1)
+                .strokeBorder(Theme.border.opacity(0.6), lineWidth: 1)
         )
     }
 }

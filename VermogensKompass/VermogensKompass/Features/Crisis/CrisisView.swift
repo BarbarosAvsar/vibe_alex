@@ -54,23 +54,19 @@ struct CrisisCard: View {
                     .font(.caption2)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(Color.white.opacity(0.08), in: Capsule())
+                    .background(Theme.border.opacity(0.25), in: Capsule())
             }
             .font(.subheadline)
             .foregroundStyle(.secondary)
-            if let magnitude = event.magnitude {
-                Text("Magnitude \(magnitude.formatted(.number.precision(.fractionLength(1))))")
-                    .font(.caption)
+            if let summary = event.summary {
+                Text(summary)
+                    .font(.subheadline)
+                    .foregroundStyle(Theme.textSecondary)
             }
             Text(event.occurredAt, style: .relative)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            if let link = event.detailURL {
-                Link("Details", destination: link)
-                    .font(.caption.bold())
-                    .foregroundStyle(Theme.accent)
-            }
-            Text("Quelle: \(event.source.rawValue)")
+            Text("Quelle: \(event.sourceName ?? event.source.rawValue)")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
         }
@@ -79,9 +75,9 @@ struct CrisisCard: View {
 
     private var badgeColor: Color {
         switch event.severityBadge {
-        case "Hoch": return .red.opacity(0.7)
-        case "Moderat": return .orange.opacity(0.7)
-        default: return .green.opacity(0.7)
+        case "Hoch": return Theme.accentStrong.opacity(0.85)
+        case "Moderat": return Theme.accent.opacity(0.85)
+        default: return Theme.border.opacity(0.7)
         }
     }
 }

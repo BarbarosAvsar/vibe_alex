@@ -40,9 +40,14 @@ final class AppState {
     var hasLoadedOnce = false
     var syncNotice: SyncNotice?
     var notificationStatus: NotificationAuthorizationState = .unknown
+    let bennerCycleEntries: [BennerCycleEntry]
 
-    init(repository: DashboardRepository = DashboardRepository()) {
+    init(
+        repository: DashboardRepository = DashboardRepository(),
+        bennerCycleService: BennerCycleService = BennerCycleService()
+    ) {
         self.repository = repository
+        self.bennerCycleEntries = bennerCycleService.makeEntries()
     }
 
     func refreshDashboard(force: Bool = false) async {

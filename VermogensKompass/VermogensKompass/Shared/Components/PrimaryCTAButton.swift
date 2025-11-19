@@ -19,29 +19,32 @@ struct PrimaryCTAButton: View {
                 Image(systemName: icon)
                     .font(.title3.weight(.bold))
                     .padding(10)
-                    .background(Color.white.opacity(0.15), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .background(
+                        Theme.surface.opacity(0.9),
+                        in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    )
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
                         .font(.headline)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Theme.textOnAccent)
                     Text(subtitle)
                         .font(.subheadline)
-                        .foregroundStyle(.black.opacity(0.8))
+                        .foregroundStyle(Theme.textOnAccent.opacity(0.8))
                 }
                 Spacer()
                 Image(systemName: "arrow.right")
                     .font(.headline)
-                    .foregroundStyle(.black.opacity(0.8))
+                    .foregroundStyle(Theme.textOnAccent.opacity(0.8))
             }
             .padding()
             .background(
-                LinearGradient(colors: [Theme.accent, Theme.accent.opacity(0.8)],
+                LinearGradient(colors: [Theme.accent, Theme.accent.opacity(0.85)],
                                startPoint: .topLeading,
                                endPoint: .bottomTrailing),
                 in: RoundedRectangle(cornerRadius: 20, style: .continuous)
             )
-            .accessibilityHint("Öffnet den E-Mail-Dialog")
+            .accessibilityHint("Öffnet das Beratungsformular")
         }
         .buttonStyle(.plain)
     }

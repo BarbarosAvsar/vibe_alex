@@ -22,23 +22,29 @@
 		3AC1BEB9CB770A214EA68855 /* CrisisEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18761A9AC8E8D195D3E9B47 /* CrisisEvent.swift */; };
 		3B60987029A81AD7814C4F6E /* MetalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06ABC094EDBC2CF47952C99C /* MetalCard.swift */; };
 		44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB2EE4D8243D0A6C4740ED /* DashboardRepository.swift */; };
-		468DCD8A8D762F3FBC0DBBC6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1A47374EC0D649E09300AD7 /* MessageUI.framework */; };
 		5042C4D19A498B135562AFDD /* AsyncStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */; };
 		561D5298703B7D1FFA33635E /* PrimaryCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */; };
+		5AF26617904D1033018A6F9F /* BennerCycleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AF04761F3C2F8AAF0AC2B9 /* BennerCycleView.swift */; };
 		69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC199FB3D09F581E3D7D4F88 /* UserNotifications.framework */; };
 		6F233A8033D277072438B147 /* LiquidGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1316F12548E728AC87A451AD /* LiquidGlass.swift */; };
 		72C012A7C44BA846A12CE82E /* ComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBB195905BCB712A8E66313 /* ComparisonView.swift */; };
 		831592B39948BCF6B40CC3AF /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61C8785E139738DCA48C7B53 /* SwiftUI.framework */; };
 		87FB7CD2DBB6A28B66C594AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DED211DC8C2A0CDBC7C71277 /* Assets.xcassets */; };
 		8951793C6E0EA1968F4064C3 /* MetalPriceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8137B0ABF90A495D64FE4DF8 /* MetalPriceService.swift */; };
+		8A3BCD86A1B134BA8472CB0B /* DisplayCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CC6E56A4A9E064A4C89FBE /* DisplayCurrency.swift */; };
 		8E0A9F24871B19F2BF03ABD4 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CCB805849B18312345FD27 /* AppState.swift */; };
 		90B55E90E6BCF1F6A891A5C1 /* BackgroundRefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A4F3289569C7584F4D552E /* BackgroundRefreshManager.swift */; };
 		95EEA4F36F93F978CA02A21E /* MetalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7AB8D048023CE48FE9A12E /* MetalsView.swift */; };
+		976EF4CCDE9E3260B2899F5C /* ConsultationFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC40B4A4B6EC7840AADB8AB4 /* ConsultationFormView.swift */; };
+		988C5AE2D0906C31A211BE1F /* ConsultationFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E61AB20C67BD6A5D9953B11 /* ConsultationFormViewModel.swift */; };
 		962EFE2CA99011B28EC599C8 /* ConsultationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */; };
+		9B4F5FEC61BF556D9B2C19A7 /* BennerCyclePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2B407D4A9F2279DF0D9A01F /* BennerCyclePhase.swift */; };
 		A5E012130E5E54EDA023731D /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6126193F20B79928E336B32A /* HTTPClient.swift */; };
 		AD47249CF4332EEDFCDF5C30 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB202283825D5EEEE6BA843 /* AppConfig.swift */; };
 		ADE26232E88519008DE2C7C0 /* VermogensKompassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C8229FF889B06599889FED /* VermogensKompassApp.swift */; };
+		B1CA4B89AC1A95FCD934932F /* ConsultationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AF72F07A6B1C6C8A3F6A28 /* ConsultationService.swift */; };
 		B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6090C3527069CC67168D75F0 /* CrisisMonitorService.swift */; };
+		B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78F97A04D7E8CA2A8D6E403 /* BennerCycleService.swift */; };
 		BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */; };
 		C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF9AE1D9DD225C2A46C6FDB /* DashboardSnapshot.swift */; };
 		E7C1A12C2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C1A12B2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift */; };
@@ -46,12 +52,16 @@
 		F2E8F2712C9F55D600CCDC5F /* NotificationOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */; };
 		E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982902C9F5D7F00EFA8D4 /* CrisisThresholds.swift */; };
 		E6B982952C9F5EFE00EFA8D4 /* CrisisFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */; };
+		E84B88F41893339C93DB7329 /* ExchangeRateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84B88F31893339C93DB7329 /* ExchangeRateService.swift */; };
+		C1CEDCF7C05E5E7A7CB2D61E /* BennerCycleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AC6E6DCC5FEE66A1657EDC /* BennerCycleServiceTests.swift */; };
+		D7CC25EDA1B6230C9BA90907 /* CurrencyConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC25ECA1B6230C9BA90907 /* CurrencyConverterTests.swift */; };
+		E2D9137BF411F7D41CB19E6B /* ConsultationFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D9137AF411F7D41CB19E6B /* ConsultationFormViewModelTests.swift */; };
 		CA5D8141306DE7B128199721 /* MetalAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05012142113DBB560C687635 /* MetalAsset.swift */; };
-		CB498A97055F94BE39A71B82 /* EmailComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */; };
 		CD992FE1A17CE63A902FDA94 /* DashboardSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973AB3375CF3856D42A0B76 /* DashboardSection.swift */; };
 		E8723C7944C2F2898A54486E /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB06057FA458C0237615DD23 /* BackgroundTasks.framework */; };
 		F0866BAA76D16387AF80AEEA /* MacroIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE381FE29E9F9E8463DAFA9F /* MacroIndicator.swift */; };
 		FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1A853C472FCB44436C27D7 /* DashboardCache.swift */; };
+		F8A7DA22DA3E6E4291E63889 /* CurrencySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7DA21DA3E6E4291E63889 /* CurrencySettings.swift */; };
 		FFFB8E77F49B801181B8FEAA /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBC564B4244F3139DF6FC1A /* MockData.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,7 +78,6 @@
 /* Begin PBXFileReference section */
 		F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SyncStatusBanner.swift; path = SyncStatusBanner.swift; sourceTree = "<group>"; };
 		F5AA4C122CA11D8F00E3A1C1 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrivacyPolicyView.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
-		02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EmailComposerView.swift; path = EmailComposerView.swift; sourceTree = "<group>"; };
 		05012142113DBB560C687635 /* MetalAsset.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalAsset.swift; path = MetalAsset.swift; sourceTree = "<group>"; };
 		06ABC094EDBC2CF47952C99C /* MetalCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalCard.swift; path = MetalCard.swift; sourceTree = "<group>"; };
 		0D624EFBBEAC6A70A8CC65A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -95,7 +104,6 @@
 		A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetricCard.swift; path = MetricCard.swift; sourceTree = "<group>"; };
 		AB06057FA458C0237615DD23 /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = BackgroundTasks.framework; sourceTree = DEVELOPER_DIR; };
 		BDBC564B4244F3139DF6FC1A /* MockData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MockData.swift; path = MockData.swift; sourceTree = "<group>"; };
-		C1A47374EC0D649E09300AD7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = MessageUI.framework; sourceTree = DEVELOPER_DIR; };
 		C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrimaryCTAButton.swift; path = PrimaryCTAButton.swift; sourceTree = "<group>"; };
 		C6F4499AF37DA4F6D59FB979 /* AsyncState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncState.swift; path = AsyncState.swift; sourceTree = "<group>"; };
 		CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncStateView.swift; path = AsyncStateView.swift; sourceTree = "<group>"; };
@@ -113,8 +121,20 @@
 		EE381FE29E9F9E8463DAFA9F /* MacroIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MacroIndicator.swift; path = MacroIndicator.swift; sourceTree = "<group>"; };
 		F973AB3375CF3856D42A0B76 /* DashboardSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardSection.swift; path = DashboardSection.swift; sourceTree = "<group>"; };
 		F2E8F2702C9F55D600CCDC5F /* NotificationOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationOnboardingView.swift; path = NotificationOnboardingView.swift; sourceTree = "<group>"; };
+		F2B407D4A9F2279DF0D9A01F /* BennerCyclePhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BennerCyclePhase.swift; path = Models/BennerCyclePhase.swift; sourceTree = "<group>"; };
+		D5CC6E56A4A9E064A4C89FBE /* DisplayCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DisplayCurrency.swift; path = Models/DisplayCurrency.swift; sourceTree = "<group>"; };
+		F8A7DA21DA3E6E4291E63889 /* CurrencySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CurrencySettings.swift; path = App/CurrencySettings.swift; sourceTree = "<group>"; };
+		E84B88F31893339C93DB7329 /* ExchangeRateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExchangeRateService.swift; path = Services/ExchangeRateService.swift; sourceTree = "<group>"; };
+		D7CC25ECA1B6230C9BA90907 /* CurrencyConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterTests.swift; sourceTree = "<group>"; };
+		E2D9137AF411F7D41CB19E6B /* ConsultationFormViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultationFormViewModelTests.swift; sourceTree = "<group>"; };
 		FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConsultationView.swift; path = ConsultationView.swift; sourceTree = "<group>"; };
 		FECDABE89A019C2B5861345D /* Preview Content.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = "Preview Content.xcassets"; path = "Preview Content.xcassets"; sourceTree = "<group>"; };
+		9E61AB20C67BD6A5D9953B11 /* ConsultationFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConsultationFormViewModel.swift; path = Features/Consultation/ConsultationFormViewModel.swift; sourceTree = "<group>"; };
+		DC40B4A4B6EC7840AADB8AB4 /* ConsultationFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConsultationFormView.swift; path = Features/Consultation/ConsultationFormView.swift; sourceTree = "<group>"; };
+		E1AF04761F3C2F8AAF0AC2B9 /* BennerCycleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BennerCycleView.swift; path = Features/Overview/BennerCycleView.swift; sourceTree = "<group>"; };
+		B3AF72F07A6B1C6C8A3F6A28 /* ConsultationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConsultationService.swift; path = Services/ConsultationService.swift; sourceTree = "<group>"; };
+		C78F97A04D7E8CA2A8D6E403 /* BennerCycleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BennerCycleService.swift; path = Services/BennerCycleService.swift; sourceTree = "<group>"; };
+		A9AC6E6DCC5FEE66A1657EDC /* BennerCycleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BennerCycleServiceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +145,6 @@
 				2498CF8D66F54C21B112ABA5 /* Foundation.framework in Frameworks */,
 				831592B39948BCF6B40CC3AF /* SwiftUI.framework in Frameworks */,
 				20294A5D7AB3FB7F8454F02E /* Charts.framework in Frameworks */,
-				468DCD8A8D762F3FBC0DBBC6 /* MessageUI.framework in Frameworks */,
 				E8723C7944C2F2898A54486E /* BackgroundTasks.framework in Frameworks */,
 				69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */,
 			);
@@ -164,6 +183,9 @@
 			children = (
 				6090C3527069CC67168D75F0 /* CrisisMonitorService.swift */,
 				5ACB2EE4D8243D0A6C4740ED /* DashboardRepository.swift */,
+				C78F97A04D7E8CA2A8D6E403 /* BennerCycleService.swift */,
+				B3AF72F07A6B1C6C8A3F6A28 /* ConsultationService.swift */,
+				E84B88F31893339C93DB7329 /* ExchangeRateService.swift */,
 				6126193F20B79928E336B32A /* HTTPClient.swift */,
 				86EEF8BB94CF0A7B09A60760 /* MacroIndicatorService.swift */,
 				8137B0ABF90A495D64FE4DF8 /* MetalPriceService.swift */,
@@ -191,7 +213,6 @@
 			isa = PBXGroup;
 			children = (
 				B85EA27F27F49CD0B2E0A764 /* Components */,
-				646764A28CA53A578F892624 /* Mail */,
 				F2E8F2722C9F55D600CCDC5F /* Notifications */,
 				F5AA4C142CA11DB200E3A1C1 /* Legal */,
 				878DE0582D67A1DA1B35921C /* Styles */,
@@ -208,18 +229,11 @@
 				2AF9AE1D9DD225C2A46C6FDB /* DashboardSnapshot.swift */,
 				EE381FE29E9F9E8463DAFA9F /* MacroIndicator.swift */,
 				05012142113DBB560C687635 /* MetalAsset.swift */,
+				F2B407D4A9F2279DF0D9A01F /* BennerCyclePhase.swift */,
+				D5CC6E56A4A9E064A4C89FBE /* DisplayCurrency.swift */,
 			);
 			name = Models;
 			path = Models;
-			sourceTree = "<group>";
-		};
-		646764A28CA53A578F892624 /* Mail */ = {
-			isa = PBXGroup;
-			children = (
-				02C722E135BE799A5B0E7FAA /* EmailComposerView.swift */,
-			);
-			name = Mail;
-			path = Mail;
 			sourceTree = "<group>";
 		};
 		F2E8F2722C9F55D600CCDC5F /* Notifications */ = {
@@ -245,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				932DECAC21051C7C487FA3E2 /* OverviewView.swift */,
+				E1AF04761F3C2F8AAF0AC2B9 /* BennerCycleView.swift */,
 			);
 			name = Overview;
 			path = Overview;
@@ -292,7 +307,6 @@
 				0D624EFBBEAC6A70A8CC65A7 /* Foundation.framework */,
 				61C8785E139738DCA48C7B53 /* SwiftUI.framework */,
 				6E6AB215CC03BE99B4F11333 /* Charts.framework */,
-				C1A47374EC0D649E09300AD7 /* MessageUI.framework */,
 				AB06057FA458C0237615DD23 /* BackgroundTasks.framework */,
 				DC199FB3D09F581E3D7D4F88 /* UserNotifications.framework */,
 			);
@@ -335,6 +349,9 @@
 			isa = PBXGroup;
 			children = (
 				E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */,
+				A9AC6E6DCC5FEE66A1657EDC /* BennerCycleServiceTests.swift */,
+				D7CC25ECA1B6230C9BA90907 /* CurrencyConverterTests.swift */,
+				E2D9137AF411F7D41CB19E6B /* ConsultationFormViewModelTests.swift */,
 			);
 			path = ../VermogensKompassTests;
 			sourceTree = SOURCE_ROOT;
@@ -383,6 +400,8 @@
 		EA9AAD2D3D288BF27DE73A79 /* Consultation */ = {
 			isa = PBXGroup;
 			children = (
+				DC40B4A4B6EC7840AADB8AB4 /* ConsultationFormView.swift */,
+				9E61AB20C67BD6A5D9953B11 /* ConsultationFormViewModel.swift */,
 				FB1D6CDEBCE4DFFB2F0B560E /* ConsultationView.swift */,
 			);
 			name = Consultation;
@@ -395,6 +414,7 @@
 				16CCB805849B18312345FD27 /* AppState.swift */,
 				3210A792E90E0A7C3807801B /* ContentView.swift */,
 				40C8229FF889B06599889FED /* VermogensKompassApp.swift */,
+				F8A7DA21DA3E6E4291E63889 /* CurrencySettings.swift */,
 			);
 			name = App;
 			path = App;
@@ -511,16 +531,22 @@
 				2D3618662F6E7B76296EB4F5 /* CrisisView.swift in Sources */,
 				95EEA4F36F93F978CA02A21E /* MetalsView.swift in Sources */,
 				21642D3232190EC72E7D0718 /* OverviewView.swift in Sources */,
+				5AF26617904D1033018A6F9F /* BennerCycleView.swift in Sources */,
 				106D8C2819EB3D3F3A67AF83 /* AsyncState.swift in Sources */,
 				3AC1BEB9CB770A214EA68855 /* CrisisEvent.swift in Sources */,
 				C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */,
+				9B4F5FEC61BF556D9B2C19A7 /* BennerCyclePhase.swift in Sources */,
+				8A3BCD86A1B134BA8472CB0B /* DisplayCurrency.swift in Sources */,
 				F0866BAA76D16387AF80AEEA /* MacroIndicator.swift in Sources */,
 				CA5D8141306DE7B128199721 /* MetalAsset.swift in Sources */,
 				B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */,
+				B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */,
+				B1CA4B89AC1A95FCD934932F /* ConsultationService.swift in Sources */,
 				44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */,
 				A5E012130E5E54EDA023731D /* HTTPClient.swift in Sources */,
 				2976AE82FA0B3E81FC022794 /* MacroIndicatorService.swift in Sources */,
 				8951793C6E0EA1968F4064C3 /* MetalPriceService.swift in Sources */,
+				E84B88F41893339C93DB7329 /* ExchangeRateService.swift in Sources */,
 				FFFB8E77F49B801181B8FEAA /* MockData.swift in Sources */,
 				5042C4D19A498B135562AFDD /* AsyncStateView.swift in Sources */,
 				E7C1A12C2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift in Sources */,
@@ -529,8 +555,10 @@
 				3B60987029A81AD7814C4F6E /* MetalCard.swift in Sources */,
 				BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */,
 				561D5298703B7D1FFA33635E /* PrimaryCTAButton.swift in Sources */,
+				976EF4CCDE9E3260B2899F5C /* ConsultationFormView.swift in Sources */,
+				988C5AE2D0906C31A211BE1F /* ConsultationFormViewModel.swift in Sources */,
 				F5AA4C112CA11D6E00E3A1C1 /* SyncStatusBanner.swift in Sources */,
-				CB498A97055F94BE39A71B82 /* EmailComposerView.swift in Sources */,
+				F8A7DA22DA3E6E4291E63889 /* CurrencySettings.swift in Sources */,
 				29E59C2E8AB2F7258FB0E5F3 /* Theme.swift in Sources */,
 				90B55E90E6BCF1F6A891A5C1 /* BackgroundRefreshManager.swift in Sources */,
 				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
@@ -546,6 +574,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6B982952C9F5EFE00EFA8D4 /* CrisisFeedTests.swift in Sources */,
+				D7CC25EDA1B6230C9BA90907 /* CurrencyConverterTests.swift in Sources */,
+				C1CEDCF7C05E5E7A7CB2D61E /* BennerCycleServiceTests.swift in Sources */,
+				E2D9137BF411F7D41CB19E6B /* ConsultationFormViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

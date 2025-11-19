@@ -59,12 +59,15 @@ enum MockData {
             CrisisEvent(
                 id: "mock-\(index)",
                 title: "Ereignis #\(index + 1)",
-                magnitude: Double.random(in: 3...6),
+                summary: "Ein Beispielereignis zur Demonstration der Krisenübersicht.",
                 region: "Europa",
                 occurredAt: Date().addingTimeInterval(Double(-index) * 8_000),
+                publishedAt: Date().addingTimeInterval(Double(-index) * 8_000),
                 detailURL: nil,
-                source: .usgs,
-                category: .seismic
+                sourceName: "Mock Source",
+                source: .newsAPI,
+                category: index % 2 == 0 ? .geopolitical : .financial,
+                severityScore: Double.random(in: 3...6)
             )
         }
 

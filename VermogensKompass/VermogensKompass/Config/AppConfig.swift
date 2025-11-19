@@ -3,19 +3,13 @@ import Foundation
 enum AppConfig {
     static let minimumSupportedOS = "iOS 18"
 
-    static let contactEmail = EmailConfiguration(
-        to: "beratung@vermoegenskompass.de",
-        subject: "Anfrage zu physischen Edelmetallen",
-        body: "Guten Tag,\n\nbitte senden Sie mir weitere Informationen zum VermögensKompass 2050." +
-              "\n\nVielen Dank!"
-    )
-
     static let focusCountryISO = "DEU"
-    static let contactWebsite = URL(string: "https://vermoegenskompass.de/kontakt")!
-}
+    static let consultationEndpoint = URL(string: "https://api.midainvest.com/contact")!
 
-struct EmailConfiguration: Equatable {
-    let to: String
-    let subject: String
-    let body: String
+    static var newsAPIKey: String? {
+        if let envKey = ProcessInfo.processInfo.environment["NEWSAPI_API_KEY"], envKey.isEmpty == false {
+            return envKey
+        }
+        return Bundle.main.object(forInfoDictionaryKey: "NEWSAPI_API_KEY") as? String
+    }
 }

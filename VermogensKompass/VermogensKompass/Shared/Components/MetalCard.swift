@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MetalCard: View {
     let asset: MetalAsset
+    @Environment(CurrencySettings.self) private var currencySettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -14,7 +15,7 @@ struct MetalCard: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
-                Text(asset.price, format: .currency(code: asset.currency))
+                Text(displayPrice, format: .currency(code: currencySettings.selectedCurrency.code))
                     .font(.title3.bold())
             }
 
@@ -46,7 +47,10 @@ struct MetalCard: View {
                             .font(.caption.weight(.semibold))
                     }
                     .padding(8)
-                    .background(Color.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .background(
+                        Theme.background,
+                        in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    )
                 }
             }
 
@@ -65,5 +69,13 @@ struct MetalCard: View {
     private var changeText: String {
         let value = asset.dailyChangePercentage.formatted(.number.precision(.fractionLength(2)))
         return "\(value)% 24h"
+    }
+
+    private var displayPrice: Double {
+        currencySettings.converter.convert(
+            amount: asset.price,
+            from: asset.currency,
+            to: currencySettings.selectedCurrency
+        )
     }
 }

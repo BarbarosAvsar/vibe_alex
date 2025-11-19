@@ -2,26 +2,30 @@ import SwiftUI
 
 struct ConsultationView: View {
     @Environment(AppState.self) private var appState
-    @Binding var showMailSheet: Bool
     @Binding var showPrivacyPolicy: Bool
+    @State private var showConsultationForm = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    PrimaryCTAButton(action: { showMailSheet = true })
+                    PrimaryCTAButton(action: { showConsultationForm = true })
 
                     Button {
                         showPrivacyPolicy = true
                     } label: {
                         Label("Datenschutzerklärung", systemImage: "lock.shield")
                             .font(.headline)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Theme.textPrimary)
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(
-                                Color.white.opacity(0.15),
+                                Theme.surface,
                                 in: RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                    .strokeBorder(Theme.border.opacity(0.5), lineWidth: 1)
                             )
                     }
                     .buttonStyle(.plain)
@@ -52,7 +56,7 @@ struct ConsultationView: View {
                                     Text(event.severityBadge)
                                         .font(.caption2)
                                         .padding(6)
-                                        .background(Color.white.opacity(0.08), in: Capsule())
+                                        .background(Theme.background, in: Capsule())
                                 }
                                 .padding(.vertical, 6)
                             }
@@ -64,6 +68,9 @@ struct ConsultationView: View {
             .navigationTitle("Beratung")
             .refreshable {
                 await appState.refreshDashboard(force: true)
+            }
+            .navigationDestination(isPresented: $showConsultationForm) {
+                ConsultationFormView()
             }
         }
     }

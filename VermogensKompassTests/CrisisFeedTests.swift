@@ -2,18 +2,33 @@ import XCTest
 @testable import VermogensKompass
 
 final class CrisisFeedTests: XCTestCase {
-    func testEarthquakeFeedParsesEvents() async throws {
-        let payload = """
-        {"features":[{"id":"eq-1","properties":{"mag":5.6,"place":"Berlin","time":1700000000000,"url":"https://example.com/eq","title":"M 5.6 - Berlin"}}]}
+    func testNewsFeedParsesArticles() async throws {
+        let financialPayload = """
+        {"articles":[{"source":{"name":"Reuters"},"title":"Banken geraten unter Druck","description":"Stress im Bankensektor","publishedAt":"2024-01-01T12:00:00Z"}]}
         """.data(using: .utf8)!
-        let stub = StubHTTPClient(responses: ["https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson": payload])
-        let feed = EarthquakeCrisisFeed(client: stub)
+        let politicalPayload = """
+        {"articles":[{"source":{"name":"AP"},"title":"Regierungskrise in Europa","description":"Koalition gerät ins Wanken","publishedAt":"2024-01-02T08:00:00Z"}]}
+        """.data(using: .utf8)!
+        let businessURL = Self.topHeadlinesURL.absoluteString
+        let politicsURL = Self.politicsURL.absoluteString
+        let stub = StubHTTPClient(responses: [
+            businessURL: financialPayload,
+            politicsURL: politicalPayload
+        ])
+        let feed = PoliticalFinancialNewsFeed(client: stub, apiKey: "test-key")
 
         let events = try await feed.fetchEvents()
 
-        XCTAssertEqual(events.count, 1)
-        XCTAssertEqual(events.first?.id, "eq-1")
-        XCTAssertEqual(events.first?.category, .seismic)
+        XCTAssertEqual(events.count, 2)
+        XCTAssertEqual(events.first?.category, .financial)
+        XCTAssertEqual(events.last?.category, .geopolitical)
+        XCTAssertEqual(events.last?.region, "AP")
+    }
+
+    func testNewsFeedReturnsEmptyWhenAPIKeyMissing() async throws {
+        let feed = PoliticalFinancialNewsFeed(client: StubHTTPClient(responses: [:]), apiKey: nil)
+        let events = try await feed.fetchEvents()
+        XCTAssertTrue(events.isEmpty)
     }
 
     func testGeopoliticalFeedHonorsInstabilityThreshold() async throws {
@@ -30,25 +45,6 @@ final class CrisisFeedTests: XCTestCase {
         XCTAssertEqual(events.count, 1)
         XCTAssertEqual(events.first?.region, "Testland")
         XCTAssertEqual(events.first?.category, .geopolitical)
-    }
-
-    func testStormFeedFiltersEventsByKeyword() async throws {
-        let payload = """
-        {
-          "features": [
-            {"id": "storm-1", "properties": {"event": "Severe Storm", "headline": "Storm Warning", "severity": "severe", "areaDesc": "USA", "effective": "2024-01-01T00:00:00Z"}},
-            {"id": "flood-1", "properties": {"event": "Flood", "headline": "Flood", "severity": "moderate", "areaDesc": "USA", "effective": "2024-01-01T00:00:00Z"}}
-          ]
-        }
-        """.data(using: .utf8)!
-        let stub = StubHTTPClient(responses: ["https://api.weather.gov/alerts/active?status=actual&message_type=alert": payload])
-        let feed = StormAlertCrisisFeed(client: stub)
-
-        let events = try await feed.fetchEvents()
-
-        XCTAssertEqual(events.count, 1)
-        XCTAssertEqual(events.first?.id, "storm-1")
-        XCTAssertEqual(events.first?.category, .storm)
     }
 
     func testFinancialFeedOnlyEmitsNegativeGrowth() async throws {
@@ -77,6 +73,33 @@ final class CrisisFeedTests: XCTestCase {
         ]
         """.data(using: .utf8)!
     }
+
+    private static var topHeadlinesURL: URL {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "newsapi.org"
+        components.path = "/v2/top-headlines"
+        components.queryItems = [
+            URLQueryItem(name: "language", value: "en"),
+            URLQueryItem(name: "pageSize", value: "6"),
+            URLQueryItem(name: "category", value: "business")
+        ]
+        return components.url!
+    }
+
+    private static var politicsURL: URL {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "newsapi.org"
+        components.path = "/v2/everything"
+        components.queryItems = [
+            URLQueryItem(name: "language", value: "en"),
+            URLQueryItem(name: "pageSize", value: "6"),
+            URLQueryItem(name: "sortBy", value: "publishedAt"),
+            URLQueryItem(name: "q", value: "geopolitics OR government OR election OR crisis OR war")
+        ]
+        return components.url!
+    }
 }
 
 private final class StubHTTPClient: HTTPClienting {
@@ -99,5 +122,12 @@ private final class StubHTTPClient: HTTPClienting {
             throw Error.missingResponse
         }
         return data
+    }
+
+    func send(_ request: URLRequest) async throws -> Data {
+        guard let url = request.url else {
+            throw Error.missingResponse
+        }
+        return try await get(url)
     }
 }

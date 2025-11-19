@@ -2,6 +2,7 @@ import Foundation
 
 protocol HTTPClienting: Sendable {
     func get(_ url: URL) async throws -> Data
+    func send(_ request: URLRequest) async throws -> Data
 }
 
 struct HTTPClient: HTTPClienting {
@@ -20,7 +21,13 @@ struct HTTPClient: HTTPClienting {
     }
 
     func get(_ url: URL) async throws -> Data {
-        let (data, response) = try await URLSession.shared.data(from: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        return try await send(request)
+    }
+
+    func send(_ request: URLRequest) async throws -> Data {
+        let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw HTTPError.invalidResponse
         }

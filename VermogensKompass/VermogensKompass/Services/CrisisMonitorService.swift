@@ -12,8 +12,7 @@ struct CrisisMonitorService {
             self.feeds = feeds
         } else {
             self.feeds = [
-                EarthquakeCrisisFeed(client: client),
-                StormAlertCrisisFeed(client: client),
+                PoliticalFinancialNewsFeed(client: client, apiKey: AppConfig.newsAPIKey),
                 GeopoliticalAlertCrisisFeed(client: client),
                 FinancialStressCrisisFeed(client: client)
             ]
@@ -39,76 +38,111 @@ struct CrisisMonitorService {
     }
 }
 
-struct EarthquakeCrisisFeed: CrisisFeedService {
+struct PoliticalFinancialNewsFeed: CrisisFeedService {
     private let client: HTTPClienting
-    private let decoder = JSONDecoder()
-
-    init(client: HTTPClienting = HTTPClient()) {
-        self.client = client
-    }
-
-    func fetchEvents() async throws -> [CrisisEvent] {
-        guard let url = URL(string: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson") else {
-            return []
-        }
-        let data = try await client.get(url)
-        let feed = try decoder.decode(USGSResponse.self, from: data)
-
-        return feed.features.map { feature in
-            CrisisEvent(
-                id: feature.id,
-                title: feature.properties.title,
-                magnitude: feature.properties.mag,
-                region: feature.properties.place,
-                occurredAt: Date(timeIntervalSince1970: feature.properties.time / 1000),
-                detailURL: URL(string: feature.properties.url),
-                source: .usgs,
-                category: .seismic
-            )
-        }
-    }
-}
-
-struct StormAlertCrisisFeed: CrisisFeedService {
-    private let client: HTTPClienting
+    private let apiKey: String?
     private let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         return decoder
     }()
 
-    init(client: HTTPClienting = HTTPClient()) {
+    init(client: HTTPClienting = HTTPClient(), apiKey: String?) {
         self.client = client
+        self.apiKey = apiKey
     }
 
     func fetchEvents() async throws -> [CrisisEvent] {
-        guard let url = URL(string: "https://api.weather.gov/alerts/active?status=actual&message_type=alert") else {
-            return []
-        }
-        guard let data = try? await client.get(url),
-              let response = try? decoder.decode(NOAAResponse.self, from: data) else {
+        guard let apiKey, apiKey.isEmpty == false else {
             return []
         }
 
-        return response.features
-            .filter { feature in
-                guard let event = feature.properties.event?.lowercased() else { return false }
-                return event.contains("storm") || event.contains("hurricane") || event.contains("tornado")
+        async let financialHeadlines = fetchTopHeadlines(category: "business", label: .financial, apiKey: apiKey)
+        async let politicalHeadlines = fetchPoliticalNews(apiKey: apiKey)
+
+        let (financial, political) = try await (financialHeadlines, politicalHeadlines)
+        let merged = financial + political
+        var unique: [CrisisEvent] = []
+        var seenIDs = Set<String>()
+
+        for event in merged {
+            if seenIDs.insert(event.id).inserted {
+                unique.append(event)
             }
-            .prefix(8)
-            .map { feature in
-                let severityScore = feature.properties.severity?.severityScore ?? 4
-                return CrisisEvent(
-                    id: feature.id,
-                    title: feature.properties.headline ?? (feature.properties.event ?? "Unwetter"),
-                    magnitude: Double(severityScore),
-                    region: feature.properties.areaDesc ?? "USA",
-                    occurredAt: feature.properties.effective ?? Date(),
-                    detailURL: URL(string: feature.id),
-                    source: .noaa,
-                    category: .storm
-                )
-            }
+        }
+
+        return Array(unique.sorted { $0.occurredAt > $1.occurredAt }.prefix(10))
+    }
+
+    private func fetchTopHeadlines(category: String, label: CrisisCategory, apiKey: String) async throws -> [CrisisEvent] {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "newsapi.org"
+        components.path = "/v2/top-headlines"
+        components.queryItems = [
+            URLQueryItem(name: "language", value: "en"),
+            URLQueryItem(name: "pageSize", value: "6"),
+            URLQueryItem(name: "category", value: category)
+        ]
+        guard let request = makeRequest(from: components, apiKey: apiKey) else { return [] }
+        let data = try await client.send(request)
+        let response = try decoder.decode(NewsAPIResponse.self, from: data)
+        return mapArticles(response.articles, category: label)
+    }
+
+    private func fetchPoliticalNews(apiKey: String) async throws -> [CrisisEvent] {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "newsapi.org"
+        components.path = "/v2/everything"
+        components.queryItems = [
+            URLQueryItem(name: "language", value: "en"),
+            URLQueryItem(name: "pageSize", value: "6"),
+            URLQueryItem(name: "sortBy", value: "publishedAt"),
+            URLQueryItem(name: "q", value: "geopolitics OR government OR election OR crisis OR war")
+        ]
+        guard let request = makeRequest(from: components, apiKey: apiKey) else { return [] }
+        let data = try await client.send(request)
+        let response = try decoder.decode(NewsAPIResponse.self, from: data)
+        return mapArticles(response.articles, category: .geopolitical)
+    }
+
+    private func makeRequest(from components: URLComponents, apiKey: String) -> URLRequest? {
+        guard let url = components.url else { return nil }
+        var request = URLRequest(url: url)
+        request.addValue(apiKey, forHTTPHeaderField: "X-Api-Key")
+        return request
+    }
+
+    private func mapArticles(_ articles: [NewsAPIArticle], category: CrisisCategory) -> [CrisisEvent] {
+        articles.compactMap { article in
+            guard let title = article.title else { return nil }
+            let publishedAt = article.publishedAt ?? Date()
+            let identifier = "\(category.rawValue)-\(title.hashValue)"
+            return CrisisEvent(
+                id: "news-\(identifier)",
+                title: title,
+                summary: article.description ?? article.content,
+                region: article.source.name ?? "Weltweit",
+                occurredAt: publishedAt,
+                publishedAt: article.publishedAt,
+                detailURL: nil,
+                sourceName: article.source.name,
+                source: .newsAPI,
+                category: category,
+                severityScore: severityScore(for: article.publishedAt)
+            )
+        }
+    }
+
+    private func severityScore(for date: Date?) -> Double {
+        guard let date else { return 4 }
+        let hours = Date().timeIntervalSince(date) / 3600
+        switch hours {
+        case ..<24: return 6
+        case ..<72: return 5
+        default: return 4
+        }
     }
 }
 
@@ -160,12 +194,15 @@ struct GeopoliticalAlertCrisisFeed: CrisisFeedService {
         return CrisisEvent(
             id: "geo-\(entry.code)",
             title: "Politische Instabilität \(entry.name)",
-            magnitude: abs(value) * 2,
+            summary: "Governance-Index \(value.formatted(.number.precision(.fractionLength(2))))",
             region: entry.name,
             occurredAt: yearDate,
+            publishedAt: yearDate,
             detailURL: URL(string: "https://data.worldbank.org/indicator/PV.PSR.PIND"),
+            sourceName: "World Bank",
             source: .worldBankGovernance,
-            category: .geopolitical
+            category: .geopolitical,
+            severityScore: abs(value) * 2
         )
     }
 }
@@ -218,45 +255,34 @@ struct FinancialStressCrisisFeed: CrisisFeedService {
         return CrisisEvent(
             id: "finance-\(entry.code)",
             title: "Rezession \(entry.name)",
-            magnitude: abs(value),
+            summary: "Reales BIP-Wachstum \(value.formatted(.number.precision(.fractionLength(1))))%",
             region: entry.name,
             occurredAt: yearDate,
+            publishedAt: yearDate,
             detailURL: URL(string: "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG"),
+            sourceName: "World Bank",
             source: .worldbankFinance,
-            category: .financial
+            category: .financial,
+            severityScore: abs(value)
         )
     }
 }
 
-private struct USGSResponse: Decodable {
-    struct Feature: Decodable {
-        struct Properties: Decodable {
-            let mag: Double?
-            let place: String
-            let time: TimeInterval
-            let url: String
-            let title: String
-        }
-        let id: String
-        let properties: Properties
-    }
-
-    let features: [Feature]
+private struct NewsAPIResponse: Decodable {
+    let articles: [NewsAPIArticle]
 }
 
-private struct NOAAResponse: Decodable {
-    struct Feature: Decodable {
-        struct Properties: Decodable {
-            let event: String?
-            let headline: String?
-            let severity: String?
-            let areaDesc: String?
-            let effective: Date?
-        }
-        let id: String
-        let properties: Properties
+private struct NewsAPIArticle: Decodable {
+    struct Source: Decodable {
+        let name: String?
     }
-    let features: [Feature]
+
+    let title: String?
+    let description: String?
+    let content: String?
+    let source: Source
+    let publishedAt: Date?
+    let url: URL?
 }
 
 private struct WorldBankValueResponse: Decodable {

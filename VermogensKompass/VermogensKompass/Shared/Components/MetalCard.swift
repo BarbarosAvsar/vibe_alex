@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct MetalCard: View {
     let asset: MetalAsset
     @Environment(CurrencySettings.self) private var currencySettings

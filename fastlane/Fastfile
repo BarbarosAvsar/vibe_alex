@@ -1,0 +1,55 @@
+# Fastlane lane used by the GitHub Actions Variant B workflow.
+# Secrets consumed at runtime:
+# - APPLE_TEAM_ID: Apple Developer Team ID used for signing/export.
+# - APP_STORE_CONNECT_API_KEY_ID / APP_STORE_CONNECT_ISSUER_ID: Identify the App Store Connect API key.
+# - APP_STORE_CONNECT_API_KEY_PATH: File path (written by the workflow) that contains the decoded AuthKey_<ID>.p8.
+# - APPLE_PROVISIONING_PROFILE_NAME: Friendly name of the App Store provisioning profile used in ExportOptions.
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build VermogensKompass and upload it to TestFlight via pilot"
+  lane :beta do
+    project_path = ENV.fetch("PROJECT_PATH", "VermogensKompass/VermogensKompass.xcodeproj")
+    scheme = ENV.fetch("SCHEME", "VermogensKompass")
+    archive_path = ENV.fetch("ARCHIVE_PATH", "build/VermogensKompass.xcarchive")
+    ipa_name = ENV.fetch("APP_NAME", "VermogensKompass")
+    bundle_identifier = ENV.fetch("BUNDLE_IDENTIFIER", "de.vibecode.vermoegenskompass")
+    provisioning_profile_name = ENV.fetch("APPLE_PROVISIONING_PROFILE_NAME", "VermogensKompass_AppStore")
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("APP_STORE_CONNECT_API_KEY_ID"),
+      issuer_id: ENV.fetch("APP_STORE_CONNECT_ISSUER_ID"),
+      key_filepath: ENV.fetch("APP_STORE_CONNECT_API_KEY_PATH"),
+      duration: 1200,
+      in_house: false
+    )
+
+    ipa_path = build_app(
+      project: project_path,
+      scheme: scheme,
+      configuration: "Release",
+      clean: true,
+      archive_path: archive_path,
+      output_directory: "build",
+      output_name: ipa_name,
+      export_options: {
+        method: "app-store",
+        signingStyle: "manual",
+        provisioningProfiles: {
+          bundle_identifier => provisioning_profile_name
+        },
+        teamID: ENV.fetch("APPLE_TEAM_ID")
+      }
+    )
+
+    pilot(
+      ipa: ipa_path,
+      api_key: api_key,
+      skip_submission: true,
+      skip_waiting_for_build_processing: false,
+      distribute_external: false,
+      changelog: ENV["TESTFLIGHT_CHANGELOG"]
+    )
+  end
+end

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct MetalsView: View {
     @Environment(AppState.self) private var appState
     @Environment(CurrencySettings.self) private var currencySettings

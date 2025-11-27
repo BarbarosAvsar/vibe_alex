@@ -1,4 +1,5 @@
 import SwiftUI
+import Charts
 
 @MainActor
 struct MetalsView: View {
@@ -17,8 +18,10 @@ struct MetalsView: View {
                         metalSelector(for: snapshot.metals)
                         if let focus = selectedMetal(from: snapshot.metals) {
                             MetalCard(asset: focus)
+                            trendChart(for: focus, snapshot: snapshot)
                             bennerProjection(for: focus)
                             crisisResilience(for: focus, snapshot: snapshot)
+                            WhyEdelmetalleSection()
                         }
                         PrimaryCTAButton(action: onRequestConsultation)
                     }
@@ -96,8 +99,8 @@ struct MetalsView: View {
 
     @ViewBuilder
     private func bennerProjection(for metal: MetalAsset) -> some View {
-        let projections = projectionEntries()
-        DashboardSection("Benner-Prognose für \(metal.name)", subtitle: "Fokus auf die nächsten 5 Jahre") {
+        let projections = projectionEntries().prefix(3)
+        DashboardSection("Prognose für 3 Jahre", subtitle: "\(metal.name) im Benner-Cycle Ausblick") {
             VStack(spacing: 12) {
                 ForEach(projections) { entry in
                     HStack {
@@ -121,6 +124,32 @@ struct MetalsView: View {
                     )
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func trendChart(for metal: MetalAsset, snapshot: DashboardSnapshot) -> some View {
+        let points = metalTrendPoints(for: metal)
+        DashboardSection("Historisch & Prognose bis 2050", subtitle: "Indexentwicklung \(metal.name)") {
+            Chart(points) { point in
+                LineMark(
+                    x: .value("Jahr", point.year),
+                    y: .value("Index", point.value)
+                )
+                .interpolationMethod(.catmullRom)
+                .foregroundStyle(point.isProjection ? Theme.accentStrong.opacity(0.8) : Theme.accentStrong)
+
+                if point.isProjection {
+                    AreaMark(
+                        x: .value("Jahr", point.year),
+                        y: .value("Index", point.value)
+                    )
+                    .interpolationMethod(.catmullRom)
+                    .foregroundStyle(Theme.accentStrong.opacity(0.15))
+                }
+            }
+            .frame(height: 260)
+            .cardStyle()
         }
     }
 
@@ -160,6 +189,25 @@ struct MetalsView: View {
         let currentYear = Calendar.current.component(.year, from: Date())
         let nextWindow = currentYear...(currentYear + 5)
         return appState.bennerCycleEntries.filter { nextWindow.contains($0.year) }.prefix(5).map { $0 }
+    }
+
+    private func metalTrendPoints(for metal: MetalAsset) -> [MetalTrendPoint] {
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let history = (0..<6).map { index -> MetalTrendPoint in
+            let year = currentYear - (5 - index)
+            let factor = 1 + (Double(index) * 0.03)
+            let base = max(metal.price / 100, 25)
+            return MetalTrendPoint(year: year, value: base * factor, isProjection: false)
+        }
+        let projections = appState.bennerCycleEntries
+            .filter { $0.year >= currentYear }
+            .prefix(5)
+            .reduce(into: [MetalTrendPoint]()) { partial, entry in
+                let lastValue = partial.last?.value ?? history.last?.value ?? metal.price / 10
+                let nextValue = lastValue + lastValue * entry.phase.multiplier
+                partial.append(MetalTrendPoint(year: entry.year, value: nextValue, isProjection: true))
+            }
+        return history + projections
     }
 
     private func scenarios(for metal: MetalAsset, snapshot: DashboardSnapshot) -> [CrisisScenario] {
@@ -205,4 +253,22 @@ private struct CrisisScenario: Identifiable {
     let description: String
     let score: Double
     let badgeText: String
+}
+
+private struct MetalTrendPoint: Identifiable {
+    let year: Int
+    let value: Double
+    let isProjection: Bool
+
+    var id: Int { year }
+}
+
+private extension BennerPhase {
+    var multiplier: Double {
+        switch self {
+        case .panic: return 0.08
+        case .goodTimes: return 0.02
+        case .hardTimes: return 0.03
+        }
+    }
 }

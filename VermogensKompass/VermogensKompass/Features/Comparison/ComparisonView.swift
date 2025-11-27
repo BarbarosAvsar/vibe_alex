@@ -5,6 +5,7 @@ struct ComparisonView: View {
     @Environment(AppState.self) private var appState
     @Binding var showSettings: Bool
     @State private var selectedCategory: AssetCategory = .internationalEquities
+    @State private var mode: ComparisonMode = .history
     private let comparisonEngine = AssetComparisonEngine()
 
     var body: some View {
@@ -17,7 +18,7 @@ struct ComparisonView: View {
                     VStack(spacing: 24) {
                         if let selectedSeries = selectedSeries(in: series) {
                             assetComparisonSection(series, selectedSeries: selectedSeries)
-                            appleAISection(for: selectedSeries)
+                            performanceOverview(for: selectedSeries)
                         }
                     }
                     .padding()
@@ -43,32 +44,60 @@ struct ComparisonView: View {
 
     @ViewBuilder
     private func assetComparisonSection(_ series: [AssetComparisonSeries], selectedSeries: AssetComparisonSeries) -> some View {
-        DashboardSection("Asset-Vergleich", subtitle: "Internationale Aktien, Immobilienmärkte und Edelmetalle") {
-            Picker("Asset-Kategorie", selection: $selectedCategory) {
-                ForEach(series.map(\.category), id: \.self) { category in
-                    Text(category.title).tag(category)
+        DashboardSection("Asset-Klassen Vergleich", subtitle: "Historische Entwicklung und Prognose bis 2050") {
+            Picker("Zeitraum", selection: $mode) {
+                ForEach(ComparisonMode.allCases) { item in
+                    Text(item.label).tag(item)
                 }
             }
             .pickerStyle(.segmented)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(series.map(\.category), id: \.self) { category in
+                        Button {
+                            selectedCategory = category
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: category.icon)
+                                Text(category.title)
+                            }
+                            .font(.subheadline.weight(.semibold))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 10)
+                            .background(
+                                selectedCategory == category ? Theme.accent.opacity(0.12) : Theme.surface.opacity(0.6),
+                                in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    .strokeBorder(selectedCategory == category ? Theme.accent.opacity(0.4) : Theme.border.opacity(0.4), lineWidth: 1)
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.bottom, 4)
+            }
 
             Text(selectedSeries.category.subtitle)
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            AssetComparisonChart(series: selectedSeries)
-
-            HStack(spacing: 12) {
-                ComparisonStatCard(title: "CAGR", value: cagr(for: selectedSeries))
-                ComparisonStatCard(title: "Prognose 2150", value: projectionDelta(for: selectedSeries))
-                ComparisonStatCard(title: "Benner-Phase", value: nextPhaseLabel())
-            }
+            AssetComparisonChart(series: selectedSeries, mode: mode)
         }
     }
 
     @ViewBuilder
-    private func appleAISection(for series: AssetComparisonSeries) -> some View {
-        DashboardSection("Apple Intelligence Auswertung", subtitle: "Automatisierte Interpretation der Benner-Prognosen") {
-            AssetAISummaryView(summary: aiSummary(for: series))
+    private func performanceOverview(for series: AssetComparisonSeries) -> some View {
+        DashboardSection("Performance Übersicht", subtitle: "Historisch, Prognose und Benner-Phase") {
+            VStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    ComparisonStatCard(title: "Historische Rendite", value: cagr(for: series))
+                    ComparisonStatCard(title: "Prognose 2050", value: projectionDelta(for: series))
+                }
+                ComparisonStatCard(title: "Nächste Benner-Phase", value: nextPhaseLabel())
+            }
         }
     }
 
@@ -95,51 +124,11 @@ struct ComparisonView: View {
         }
         return "\(nextEntry.phase.title) \(nextEntry.year)"
     }
-
-    private func aiSummary(for series: AssetComparisonSeries) -> AssetAISummary {
-        let nextEntry = nextBennerEntry()
-        let tone: String
-        switch nextEntry?.phase {
-        case .panic:
-            tone = "Defensiver Modus empfohlen – Panikphase im Benner-Zyklus."
-        case .goodTimes:
-            tone = "Gewinne sichern: Good Times stehen laut Forecast bevor."
-        case .hardTimes:
-            tone = "Aufbauphase – Hard Times begünstigen selektive Käufe."
-        case .none:
-            tone = "Langfristige Orientierung behalten."
-        }
-
-        let projectionText: String
-        if let lastProjection = series.projection.last {
-            projectionText = "Die Benner-Prognose reicht bis \(lastProjection.year) und sieht einen Indexwert von \(lastProjection.value.formatted(.number.precision(.fractionLength(1)))) vor."
-        } else {
-            projectionText = "Keine Prognosedaten verfügbar."
-        }
-
-        let riskText: String
-        if let minProjection = series.projection.min(by: { $0.value < $1.value }) {
-            riskText = "Tiefpunkt laut Modell: Jahr \(minProjection.year) mit Index \(minProjection.value.formatted(.number.precision(.fractionLength(1))))"
-        } else {
-            riskText = "Benner-Modell signalisiert stabile Entwicklung."
-        }
-
-        return AssetAISummary(
-            headline: "Apple Intelligence Insight",
-            tone: tone,
-            projection: projectionText,
-            risk: riskText
-        )
-    }
-
-    private func nextBennerEntry() -> BennerCycleEntry? {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        return appState.bennerCycleEntries.first(where: { $0.year >= currentYear })
-    }
 }
 
 private struct AssetComparisonChart: View {
     let series: AssetComparisonSeries
+    let mode: ComparisonMode
 
     private var color: Color {
         switch series.category {
@@ -152,21 +141,24 @@ private struct AssetComparisonChart: View {
     var body: some View {
         let currentYear = Calendar.current.component(.year, from: Date())
         Chart {
-            ForEach(series.history) { point in
-                LineMark(
-                    x: .value("Jahr", point.year),
-                    y: .value("Index", point.value)
-                )
-                .interpolationMethod(.catmullRom)
-                .foregroundStyle(color)
-            }
-            ForEach(series.projection) { point in
-                LineMark(
-                    x: .value("Jahr", point.year),
-                    y: .value("Index", point.value)
-                )
-                .lineStyle(StrokeStyle(lineWidth: 2, dash: [6, 3]))
-                .foregroundStyle(color.opacity(0.8))
+            if mode == .history {
+                ForEach(series.history) { point in
+                    LineMark(
+                        x: .value("Jahr", point.year),
+                        y: .value("Index", point.value)
+                    )
+                    .interpolationMethod(.catmullRom)
+                    .foregroundStyle(color)
+                }
+            } else {
+                ForEach(series.projection) { point in
+                    LineMark(
+                        x: .value("Jahr", point.year),
+                        y: .value("Index", point.value)
+                    )
+                    .interpolationMethod(.catmullRom)
+                    .foregroundStyle(color)
+                }
             }
             RuleMark(x: .value("Heute", currentYear))
                 .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
@@ -184,7 +176,8 @@ private struct AssetComparisonChart: View {
     }
 
     private var chartDomain: ClosedRange<Double> {
-        let allValues = (series.history + series.projection).map(\.value)
+        let values = mode == .history ? series.history : series.projection
+        let allValues = values.map(\.value)
         var minValue = (allValues.min() ?? 0) - 5
         var maxValue = (allValues.max() ?? 0) + 5
         if maxValue - minValue < 5 {
@@ -219,34 +212,16 @@ private struct ComparisonStatCard: View {
     }
 }
 
-private struct AssetAISummary {
-    let headline: String
-    let tone: String
-    let projection: String
-    let risk: String
-}
+private enum ComparisonMode: String, CaseIterable, Identifiable {
+    case history
+    case forecast
 
-private struct AssetAISummaryView: View {
-    let summary: AssetAISummary
+    var id: String { rawValue }
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(summary.headline)
-                .font(.headline)
-            Label(summary.tone, systemImage: "sparkles")
-                .font(.subheadline)
-            Divider()
-            Label(summary.projection, systemImage: "chart.line.uptrend.xyaxis")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-            Label(summary.risk, systemImage: "exclamationmark.triangle")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+    var label: String {
+        switch self {
+        case .history: return "Historisch"
+        case .forecast: return "Prognose 2025–2050"
         }
-        .padding()
-        .background(
-            Theme.surface.opacity(0.45),
-            in: RoundedRectangle(cornerRadius: 20, style: .continuous)
-        )
     }
 }

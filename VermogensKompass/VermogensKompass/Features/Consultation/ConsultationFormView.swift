@@ -9,7 +9,14 @@ struct ConsultationFormView: View {
 
     var body: some View {
         Form {
-            Section("Kontaktinformationen") {
+            Section("Was Sie erwartet") {
+                Label("Kostenlose Erstberatung durch Edelmetall-Experten", systemImage: "checkmark.circle.fill")
+                Label("Individuelle Vermögensstrukturierung", systemImage: "checkmark.circle.fill")
+                Label("Informationen zur Zollfreilager-Lagerung", systemImage: "checkmark.circle.fill")
+                Label("Steuerliche Aspekte und rechtliche Absicherung", systemImage: "checkmark.circle.fill")
+            }
+
+            Section("Ihre Kontaktdaten") {
                 TextField("Name*", text: $viewModel.name)
                     .textContentType(.name)
                     .autocorrectionDisabled()
@@ -89,6 +96,20 @@ struct ConsultationFormView: View {
                 }
             )
         }
+        .safeAreaInset(edge: .bottom) {
+            VStack(alignment: .leading, spacing: 12) {
+                infoCard(
+                    title: "Zollfreilager-Lagerung",
+                    text: "Physische Trennung vom Bankensystem, Versicherung und 24/7 Überwachung für maximale Sicherheit und Flexibilität."
+                )
+                infoCard(
+                    title: "Wert – Struktur gewinnt",
+                    text: "Klare Allokation in Edelmetalle schafft Stabilität in Inflation, Währungsreformen und Krisen."
+                )
+            }
+            .padding(.horizontal)
+            .padding(.bottom)
+        }
     }
 
     private var currentError: String? {
@@ -114,6 +135,25 @@ struct ConsultationFormView: View {
                 )
             }
         }
+    }
+
+    @ViewBuilder
+    private func infoCard(title: String, text: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Image(systemName: "info.circle.fill")
+                Text(title)
+                    .font(.headline)
+            }
+            Text(text)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+        .padding()
+        .background(
+            Theme.accentInfo.opacity(0.24),
+            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+        )
     }
 }
 

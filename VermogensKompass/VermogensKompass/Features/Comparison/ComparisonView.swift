@@ -1,6 +1,7 @@
 import SwiftUI
 import Charts
 
+@MainActor
 struct ComparisonView: View {
     @Environment(AppState.self) private var appState
     @Environment(CurrencySettings.self) private var currencySettings

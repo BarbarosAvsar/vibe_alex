@@ -121,7 +121,6 @@ struct OverviewView: View {
         }
     }
 
-    @ViewBuilder
     private func nextBennerEntry(from entries: [BennerCycleEntry]) -> BennerCycleEntry? {
         let currentYear = Calendar.current.component(.year, from: Date())
         return entries.first(where: { $0.year >= currentYear }) ?? entries.last

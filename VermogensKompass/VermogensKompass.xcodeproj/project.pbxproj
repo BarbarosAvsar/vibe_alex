@@ -24,6 +24,7 @@
 		44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB2EE4D8243D0A6C4740ED /* DashboardRepository.swift */; };
 		5042C4D19A498B135562AFDD /* AsyncStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */; };
 		561D5298703B7D1FFA33635E /* PrimaryCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */; };
+		5F8B6BB12F6D4E3F9CC9B4E5 /* LogoMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F5B8C7E1A64C1B9A1A3D7E /* LogoMark.swift */; };
 		5AF26617904D1033018A6F9F /* BennerCycleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AF04761F3C2F8AAF0AC2B9 /* BennerCycleView.swift */; };
 		69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC199FB3D09F581E3D7D4F88 /* UserNotifications.framework */; };
 		6F233A8033D277072438B147 /* LiquidGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1316F12548E728AC87A451AD /* LiquidGlass.swift */; };
@@ -88,6 +89,7 @@
 		16CCB805849B18312345FD27 /* AppState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = AppState.swift; sourceTree = "<group>"; };
 		2AF9AE1D9DD225C2A46C6FDB /* DashboardSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardSnapshot.swift; path = DashboardSnapshot.swift; sourceTree = "<group>"; };
 		3210A792E90E0A7C3807801B /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		34F5B8C7E1A64C1B9A1A3D7E /* LogoMark.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LogoMark.swift; path = LogoMark.swift; sourceTree = "<group>"; };
 		353183EBB39C30CF147F5E8B /* VermogensKompass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VermogensKompass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40C8229FF889B06599889FED /* VermogensKompassApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VermogensKompassApp.swift; path = VermogensKompassApp.swift; sourceTree = "<group>"; };
 		5ACB2EE4D8243D0A6C4740ED /* DashboardRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DashboardRepository.swift; path = DashboardRepository.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 				CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */,
 				F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */,
 				F973AB3375CF3856D42A0B76 /* DashboardSection.swift */,
+				34F5B8C7E1A64C1B9A1A3D7E /* LogoMark.swift */,
 				06ABC094EDBC2CF47952C99C /* MetalCard.swift */,
 				A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */,
 				C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */,
@@ -562,6 +565,7 @@
 				E7C1A12C2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift in Sources */,
 				E7C1A12E2CA0FDCF0069E9E1 /* CrisisSummaryGenerator.swift in Sources */,
 				CD992FE1A17CE63A902FDA94 /* DashboardSection.swift in Sources */,
+				5F8B6BB12F6D4E3F9CC9B4E5 /* LogoMark.swift in Sources */,
 				3B60987029A81AD7814C4F6E /* MetalCard.swift in Sources */,
 				BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */,
 				561D5298703B7D1FFA33635E /* PrimaryCTAButton.swift in Sources */,

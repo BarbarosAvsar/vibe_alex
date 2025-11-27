@@ -74,6 +74,17 @@ struct ConsultationFormView: View {
                     .font(.footnote)
                     .foregroundStyle(Theme.textSecondary)
             }
+
+            Section("Weitere Informationen") {
+                infoCard(
+                    title: "Zollfreilager-Lagerung",
+                    text: "Physische Trennung vom Bankensystem, Versicherung und 24/7 Überwachung für maximale Sicherheit und Flexibilität."
+                )
+                infoCard(
+                    title: "Wert – Struktur gewinnt",
+                    text: "Klare Allokation in Edelmetalle schafft Stabilität in Inflation, Währungsreformen und Krisen."
+                )
+            }
         }
         .navigationTitle("Beratung anfragen")
         .navigationBarTitleDisplayMode(.inline)
@@ -95,20 +106,6 @@ struct ConsultationFormView: View {
                     }
                 }
             )
-        }
-        .safeAreaInset(edge: .bottom) {
-            VStack(alignment: .leading, spacing: 12) {
-                infoCard(
-                    title: "Zollfreilager-Lagerung",
-                    text: "Physische Trennung vom Bankensystem, Versicherung und 24/7 Überwachung für maximale Sicherheit und Flexibilität."
-                )
-                infoCard(
-                    title: "Wert – Struktur gewinnt",
-                    text: "Klare Allokation in Edelmetalle schafft Stabilität in Inflation, Währungsreformen und Krisen."
-                )
-            }
-            .padding(.horizontal)
-            .padding(.bottom)
         }
     }
 

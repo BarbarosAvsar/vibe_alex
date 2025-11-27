@@ -3,10 +3,11 @@ import Charts
 
 struct ComparisonView: View {
     @Environment(AppState.self) private var appState
+    @Environment(CurrencySettings.self) private var currencySettings
     @Binding var showSettings: Bool
-    @State private var selectedCategory: AssetCategory = .internationalEquities
-    @State private var mode: ComparisonMode = .history
     private let comparisonEngine = AssetComparisonEngine()
+    @State private var mode: ComparisonMode = .history
+    @State private var activeAssets: Set<ComparisonAsset> = [.equityDE, .equityUSA, .gold]
 
     var body: some View {
         NavigationStack {
@@ -14,18 +15,20 @@ struct ComparisonView: View {
                 AsyncStateView(state: appState.dashboardState) {
                     Task { await appState.refreshDashboard(force: true) }
                 } content: { snapshot in
-                    let series = comparisonEngine.makeSeries(from: snapshot, bennerEntries: appState.bennerCycleEntries)
+                    let series = comparisonEngine.makeAssets(from: snapshot, forecasts: appState.bennerCycleEntries)
                     VStack(spacing: 24) {
-                        if let selectedSeries = selectedSeries(in: series) {
-                            assetComparisonSection(series, selectedSeries: selectedSeries)
-                            performanceOverview(for: selectedSeries)
-                        }
+                        assetSelection(series)
+                        comparisonChart(series)
+                        performanceOverview(series)
                     }
                     .padding()
                 }
             }
             .navigationTitle("Vergleich")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    LogoMark()
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
                         showSettings = true
@@ -38,13 +41,9 @@ struct ComparisonView: View {
         }
     }
 
-    private func selectedSeries(in series: [AssetComparisonSeries]) -> AssetComparisonSeries? {
-        series.first(where: { $0.category == selectedCategory }) ?? series.first
-    }
-
     @ViewBuilder
-    private func assetComparisonSection(_ series: [AssetComparisonSeries], selectedSeries: AssetComparisonSeries) -> some View {
-        DashboardSection("Asset-Klassen Vergleich", subtitle: "Historische Entwicklung und Prognose bis 2050") {
+    private func assetSelection(_ series: [ComparisonAssetSeries]) -> some View {
+        DashboardSection("Asset-Klassen Vergleich", subtitle: "Historisch & Prognose 2025–2050") {
             Picker("Zeitraum", selection: $mode) {
                 ForEach(ComparisonMode.allCases) { item in
                     Text(item.label).tag(item)
@@ -52,56 +51,74 @@ struct ComparisonView: View {
             }
             .pickerStyle(.segmented)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
-                    ForEach(series.map(\.category), id: \.self) { category in
-                        Button {
-                            selectedCategory = category
-                        } label: {
-                            HStack(spacing: 6) {
-                                Image(systemName: category.icon)
-                                Text(category.title)
+            ForEach(AssetGroup.allCases, id: \.self) { group in
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(group.rawValue)
+                        .font(.subheadline.weight(.semibold))
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 10) {
+                            ForEach(series.filter { $0.asset.group == group }) { item in
+                                let isActive = activeAssets.contains(item.asset)
+                                Button {
+                                    if isActive {
+                                        activeAssets.remove(item.asset)
+                                    } else {
+                                        activeAssets.insert(item.asset)
+                                    }
+                                } label: {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: item.asset.icon)
+                                        Text(item.asset.name)
+                                    }
+                                    .font(.subheadline.weight(.semibold))
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 10)
+                                    .background(
+                                        isActive ? Theme.accent.opacity(0.12) : Theme.surface.opacity(0.6),
+                                        in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                            .strokeBorder(isActive ? Theme.accent.opacity(0.4) : Theme.border.opacity(0.4), lineWidth: 1)
+                                    )
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .font(.subheadline.weight(.semibold))
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 10)
-                            .background(
-                                selectedCategory == category ? Theme.accent.opacity(0.12) : Theme.surface.opacity(0.6),
-                                in: RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                    .strokeBorder(selectedCategory == category ? Theme.accent.opacity(0.4) : Theme.border.opacity(0.4), lineWidth: 1)
-                            )
                         }
-                        .buttonStyle(.plain)
                     }
                 }
-                .padding(.bottom, 4)
             }
-
-            Text(selectedSeries.category.subtitle)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
-            AssetComparisonChart(series: selectedSeries, mode: mode)
         }
     }
 
     @ViewBuilder
-    private func performanceOverview(for series: AssetComparisonSeries) -> some View {
-        DashboardSection("Performance Übersicht", subtitle: "Historisch, Prognose und Benner-Phase") {
+    private func comparisonChart(_ series: [ComparisonAssetSeries]) -> some View {
+        let selected = series.filter { activeAssets.contains($0.asset) }
+        DashboardSection("Wertentwicklung", subtitle: "Tippen Sie auf den Chart um Details zu sehen") {
+            AssetComparisonChart(series: selected, mode: mode, currency: currencySettings.selectedCurrency.code)
+        }
+    }
+
+    @ViewBuilder
+    private func performanceOverview(_ series: [ComparisonAssetSeries]) -> some View {
+        let selected = series.filter { activeAssets.contains($0.asset) }
+        DashboardSection("Performance Übersicht", subtitle: "Historisch und Prognose") {
             VStack(spacing: 12) {
-                HStack(spacing: 12) {
-                    ComparisonStatCard(title: "Historische Rendite", value: cagr(for: series))
-                    ComparisonStatCard(title: "Prognose 2050", value: projectionDelta(for: series))
+                ForEach(selected) { item in
+                    HStack {
+                        Text(item.asset.name)
+                            .font(.subheadline.weight(.semibold))
+                        Spacer()
+                        Text("Historisch \(cagr(for: item)) • Prognose \(projectionDelta(for: item))")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
                 }
-                ComparisonStatCard(title: "Nächste Benner-Phase", value: nextPhaseLabel())
             }
         }
     }
 
-    private func cagr(for series: AssetComparisonSeries) -> String {
+    private func cagr(for series: ComparisonAssetSeries) -> String {
         guard let first = series.history.first, let last = series.history.last, first.year != last.year else {
             return "–"
         }
@@ -110,48 +127,122 @@ struct ComparisonView: View {
         return growth.formatted(.percent.precision(.fractionLength(1)))
     }
 
-    private func projectionDelta(for series: AssetComparisonSeries) -> String {
+    private func projectionDelta(for series: ComparisonAssetSeries) -> String {
         guard let lastHistory = series.history.last,
               let lastProjection = series.projection.last else { return "–" }
         let delta = (lastProjection.value - lastHistory.value) / max(lastHistory.value, 0.1)
         return delta.formatted(.percent.precision(.fractionLength(1)))
     }
-
-    private func nextPhaseLabel() -> String {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        guard let nextEntry = appState.bennerCycleEntries.first(where: { $0.year >= currentYear }) else {
-            return "–"
-        }
-        return "\(nextEntry.phase.title) \(nextEntry.year)"
-    }
 }
 
 private struct AssetComparisonChart: View {
-    let series: AssetComparisonSeries
+    let series: [ComparisonAssetSeries]
     let mode: ComparisonMode
+    let currency: String
 
-    private var color: Color {
-        switch series.category {
-        case .internationalEquities: return Theme.accent
-        case .realEstate: return Theme.border
-        case .preciousMetals: return Theme.accentStrong
-        }
-    }
+    private let colors: [ComparisonAsset: Color] = [
+        .equityDE: Theme.accent,
+        .equityUSA: Theme.accentStrong,
+        .equityLON: Theme.accentInfo,
+        .realEstateDE: Theme.accent.opacity(0.8),
+        .realEstateES: Theme.accentStrong.opacity(0.8),
+        .realEstateFR: Theme.accentInfo.opacity(0.8),
+        .realEstateLON: Theme.accent.opacity(0.6),
+        .gold: Theme.accentStrong,
+        .silver: Theme.accentInfo
+    ]
 
     var body: some View {
         let currentYear = Calendar.current.component(.year, from: Date())
         Chart {
-            if mode == .history {
-                ForEach(series.history) { point in
-                    LineMark(
-                        x: .value("Jahr", point.year),
-                        y: .value("Index", point.value)
-                    )
-                    .interpolationMethod(.catmullRom)
-                    .foregroundStyle(color)
+            ForEach(series) { asset in
+                if mode == .history {
+                    ForEach(asset.history) { point in
+                        LineMark(
+                            x: .value("Jahr", point.year),
+                            y: .value("Wert", point.value)
+                        )
+                        .interpolationMethod(.catmullRom)
+                        .foregroundStyle(colors[asset.asset] ?? Theme.accent)
+                    }
+                } else {
+                    ForEach(asset.projection) { point in
+                        LineMark(
+                            x: .value("Jahr", point.year),
+                            y: .value("Wert", point.value)
+                        )
+                        .interpolationMethod(.catmullRom)
+                        .foregroundStyle(colors[asset.asset] ?? Theme.accent)
+                    }
                 }
-            } else {
-                ForEach(series.projection) { point in
+            }
+            RuleMark(x: .value("Heute", currentYear))
+                .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
+                .annotation(position: .topTrailing) {
+                    Text("Heute")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+        }
+        .frame(height: 260)
+        .chartXAxisLabel("Jahr")
+        .chartYAxisLabel("Wert in \(currency)")
+        .chartXScale(domain: xDomain)
+        .chartYScale(domain: yDomain)
+        .cardStyle()
+    }
+
+    private var xDomain: ClosedRange<Int> {
+        let years = series.flatMap { mode == .history ? $0.history.map(\.year) : $0.projection.map(\.year) }
+        let minY = years.min() ?? Calendar.current.component(.year, from: Date())
+        let maxY = years.max() ?? minY
+        return minY...maxY
+    }
+
+    private var yDomain: ClosedRange<Double> {
+        let values = series.flatMap { mode == .history ? $0.history.map(\.value) : $0.projection.map(\.value) }
+        let maxValue = values.max() ?? 100
+        return 0...(maxValue * 1.1)
+    }
+}
+
+private struct ComparisonStatCard: View {
+    let title: String
+    let value: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title.uppercased())
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.title3.weight(.semibold))
+            Text("Prognose")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(
+            Theme.surface.opacity(0.5),
+            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+        )
+    }
+}
+
+private enum ComparisonMode: String, CaseIterable, Identifiable {
+    case history
+    case forecast
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .history: return "Historisch"
+        case .forecast: return "Prognose"
+        }
+    }
+}
                     LineMark(
                         x: .value("Jahr", point.year),
                         y: .value("Index", point.value)
@@ -185,43 +276,5 @@ private struct AssetComparisonChart: View {
             maxValue += 2
         }
         return minValue...maxValue
-    }
-}
-
-private struct ComparisonStatCard: View {
-    let title: String
-    let value: String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(title.uppercased())
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Text(value)
-                .font(.title3.weight(.semibold))
-            Text("Benner-Modell")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-        }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-            Theme.surface.opacity(0.5),
-            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-        )
-    }
-}
-
-private enum ComparisonMode: String, CaseIterable, Identifiable {
-    case history
-    case forecast
-
-    var id: String { rawValue }
-
-    var label: String {
-        switch self {
-        case .history: return "Historisch"
-        case .forecast: return "Prognose 2025–2050"
-        }
     }
 }

@@ -14,7 +14,6 @@ struct OverviewView: View {
                 } content: { snapshot in
                     VStack(spacing: 24) {
                         warningHero()
-                        bennerHighlightSection(appState.bennerCycleEntries)
                         metalFocusSection(snapshot)
                         macroSection(snapshot)
                         WhyEdelmetalleSection()
@@ -25,6 +24,9 @@ struct OverviewView: View {
             }
             .navigationTitle("Übersicht")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    LogoMark()
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
                         showSettings = true
@@ -40,10 +42,10 @@ struct OverviewView: View {
     @ViewBuilder
     private func warningHero() -> some View {
         if let entry = nextBennerEntry(from: appState.bennerCycleEntries) {
-            DashboardSection("Vermögenssicherung", subtitle: "Historische Analyse & Benner-Prognose") {
+            DashboardSection("Vermögenssicherung", subtitle: "Aktuelle Prognose") {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Label("Schwere Zeiten", systemImage: "exclamationmark.triangle.fill")
+                        Text("Prognose")
                             .font(.headline)
                             .foregroundStyle(Theme.textOnAccent)
                             .padding(.horizontal, 12)
@@ -55,12 +57,7 @@ struct OverviewView: View {
                     }
                     Text(entry.summary)
                         .font(.headline)
-                    Text(entry.phase.guidance)
-                        .font(.subheadline)
-                        .foregroundStyle(Theme.textSecondary)
-                    ProgressView(value: entry.progress)
-                        .tint(entry.phase.tint)
-                    Text("Benner-Cycle Prognose – Vorsicht geboten, Absicherung empfohlen.")
+                    Text("Vorsicht empfohlen – Absicherung priorisieren.")
                         .font(.caption)
                         .foregroundStyle(Theme.textMuted)
                 }
@@ -125,21 +122,6 @@ struct OverviewView: View {
     }
 
     @ViewBuilder
-    private func bennerCycleSection(_ entries: [BennerCycleEntry]) -> some View {
-        DashboardSection("Benner Cycle", subtitle: "Samuel Benner Prognose bis 2150") {
-            BennerCycleView(entries: entries)
-        }
-    }
-
-    @ViewBuilder
-    private func bennerHighlightSection(_ entries: [BennerCycleEntry]) -> some View {
-        if let entry = nextBennerEntry(from: entries) {
-            DashboardSection("Nächste Prognose", subtitle: "Fokusjahr des Benner-Zyklus") {
-                BennerNextForecastCard(entry: entry)
-            }
-        }
-    }
-
     private func nextBennerEntry(from entries: [BennerCycleEntry]) -> BennerCycleEntry? {
         let currentYear = Calendar.current.component(.year, from: Date())
         return entries.first(where: { $0.year >= currentYear }) ?? entries.last
@@ -191,54 +173,4 @@ private enum MacroRegion: String, CaseIterable, Identifiable {
     }
 
     var short: String { label }
-}
-
-private struct BennerNextForecastCard: View {
-    let entry: BennerCycleEntry
-
-    private var badgeText: String {
-        switch entry.phase {
-        case .panic: return "Panik"
-        case .goodTimes: return "Aufschwung"
-        case .hardTimes: return "Kaufphase"
-        }
-    }
-
-    private var badgeColor: Color {
-        switch entry.phase {
-        case .panic: return Theme.accentStrong
-        case .goodTimes: return Theme.accent
-        case .hardTimes: return Theme.border
-        }
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Jahr \(entry.year)")
-                    .font(.title3.weight(.semibold))
-                Spacer()
-                Text(badgeText)
-                    .font(.caption.weight(.semibold))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 4)
-                    .background(badgeColor.opacity(0.15), in: Capsule())
-                    .overlay(
-                        Capsule()
-                            .stroke(badgeColor.opacity(0.4), lineWidth: 1)
-                    )
-            }
-            Text(entry.summary)
-                .font(.headline)
-            Text(entry.phase.guidance)
-                .font(.subheadline)
-                .foregroundStyle(Theme.textSecondary)
-            ProgressView(value: entry.progress)
-                .tint(badgeColor)
-            Text("Basierend auf Samuel Benner Forecast bis 2150.")
-                .font(.caption)
-                .foregroundStyle(Theme.textMuted)
-        }
-        .cardStyle()
-    }
 }

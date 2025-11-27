@@ -1,19 +1,17 @@
 import SwiftUI
 
 struct LiquidGlassBackground: View {
-    @Environment(\.colorScheme) private var colorScheme
-
     var body: some View {
         GeometryReader { proxy in
-            let warmOpacity = colorScheme == .dark ? 0.24 : 0.14
-            let coolOpacity = colorScheme == .dark ? 0.22 : 0.12
-            let primaryOpacity = colorScheme == .dark ? 0.12 : 0.08
+            let warmOpacity = 0.22
+            let coolOpacity = 0.18
+            let primaryOpacity = 0.12
 
             LinearGradient(
                 colors: [
+                    Theme.background.opacity(0.95),
                     Theme.background,
-                    Theme.surface,
-                    Theme.background
+                    Theme.surface
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -72,7 +70,7 @@ struct LiquidGlassCard: ViewModifier {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .strokeBorder(Theme.border.opacity(0.5), lineWidth: 1)
             )
-            .shadow(color: Theme.accent.opacity(0.08), radius: 18, x: 0, y: 8)
+            .shadow(color: Theme.accent.opacity(0.12), radius: 18, x: 0, y: 8)
     }
 }
 

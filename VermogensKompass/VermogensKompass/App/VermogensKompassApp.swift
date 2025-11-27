@@ -17,6 +17,7 @@ struct VermoegensKompassApp: App {
             ContentView()
                 .environment(appState)
                 .environment(currencySettings)
+                .preferredColorScheme(.dark)
                 .task {
                     BackgroundRefreshManager.shared.schedule()
                 }
@@ -29,18 +30,19 @@ struct VermoegensKompassApp: App {
 
 private enum Appearance {
     static func configure() {
-        let accent = UIColor(named: "BrandPrimary") ?? UIColor.label
+        let accent = UIColor(named: "BrandWarm") ?? UIColor(red: 0.91, green: 0.73, blue: 0.78, alpha: 1.0)
+        let background = UIColor(named: "BrandPrimary") ?? UIColor(red: 0.06, green: 0.11, blue: 0.24, alpha: 1.0)
 
         let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
-        navAppearance.backgroundColor = .secondarySystemBackground
-        navAppearance.shadowColor = .separator
+        navAppearance.backgroundColor = background
+        navAppearance.shadowColor = accent.withAlphaComponent(0.15)
         navAppearance.titleTextAttributes = [
-            .foregroundColor: UIColor.label,
+            .foregroundColor: UIColor(named: "BrandCool") ?? UIColor.white,
             .font: UIFont.preferredFont(forTextStyle: .headline)
         ]
         navAppearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor.label,
+            .foregroundColor: UIColor(named: "BrandCool") ?? UIColor.white,
             .font: UIFont.preferredFont(forTextStyle: .largeTitle)
         ]
         UINavigationBar.appearance().standardAppearance = navAppearance
@@ -50,8 +52,8 @@ private enum Appearance {
 
         let tabAppearance = UITabBarAppearance()
         tabAppearance.configureWithOpaqueBackground()
-        tabAppearance.backgroundColor = .systemBackground
-        tabAppearance.shadowColor = .separator
+        tabAppearance.backgroundColor = background
+        tabAppearance.shadowColor = accent.withAlphaComponent(0.15)
         tabAppearance.stackedLayoutAppearance.selected.iconColor = accent
         tabAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: accent]
         UITabBar.appearance().standardAppearance = tabAppearance

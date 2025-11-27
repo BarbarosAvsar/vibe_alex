@@ -1,143 +1,130 @@
 import Foundation
 
 struct AssetComparisonEngine {
-    func makeSeries(from snapshot: DashboardSnapshot, bennerEntries: [BennerCycleEntry]) -> [AssetComparisonSeries] {
-        AssetCategory.allCases.map { category in
-            let history = makeHistory(for: category, snapshot: snapshot)
-            let projection = makeProjection(for: category, bennerEntries: bennerEntries, history: history)
-            return AssetComparisonSeries(category: category, history: history, projection: projection)
+    func makeAssets(from snapshot: DashboardSnapshot, forecasts: [BennerCycleEntry]) -> [ComparisonAssetSeries] {
+        ComparisonAsset.allCases.map { asset in
+            let history = makeHistory(for: asset, snapshot: snapshot)
+            let projection = makeProjection(for: asset, forecasts: forecasts, history: history)
+            return ComparisonAssetSeries(asset: asset, history: history, projection: projection)
         }
     }
 
-    private func makeHistory(for category: AssetCategory, snapshot: DashboardSnapshot) -> [AssetComparisonPoint] {
-        switch category {
-        case .internationalEquities:
-            return macroSeries(kind: .growth, snapshot: snapshot) ?? defaultHistory(baseValue: category.baseValue)
-        case .realEstate:
-            return macroSeries(kind: .inflation, snapshot: snapshot) ?? defaultHistory(baseValue: category.baseValue * 0.9)
-        case .preciousMetals:
-            return metalHistory(snapshot: snapshot)
-        }
-    }
-
-    private func macroSeries(kind: MacroIndicatorKind, snapshot: DashboardSnapshot) -> [AssetComparisonPoint]? {
-        guard let series = snapshot.macroSeries.first(where: { $0.kind == kind }),
-              series.points.isEmpty == false else { return nil }
-        return series.points.map { AssetComparisonPoint(year: $0.year, value: $0.value) }
-    }
-
-    private func metalHistory(snapshot: DashboardSnapshot) -> [AssetComparisonPoint] {
+    private func makeHistory(for asset: ComparisonAsset, snapshot: DashboardSnapshot) -> [ComparisonPoint] {
         let currentYear = Calendar.current.component(.year, from: Date())
-        guard let average = snapshot.metals.map(\.price).average else {
-            return defaultHistory(baseValue: AssetCategory.preciousMetals.baseValue)
-        }
+        let years = (0..<6).map { currentYear - (5 - $0) }
+        let base = asset.baseValue(snapshot: snapshot)
 
-        let normalizedBase = max(average / 100.0, 40)
-        return (0..<6).map { index in
-            let multiplier = 1 + (Double(index) * 0.04)
-            let year = currentYear - (5 - index)
-            return AssetComparisonPoint(year: year, value: normalizedBase * multiplier)
+        return years.enumerated().map { offset, year in
+            let factor = 1 + (Double(offset) * asset.historySlope)
+            return ComparisonPoint(year: year, value: base * factor)
         }
     }
 
-    private func defaultHistory(baseValue: Double) -> [AssetComparisonPoint] {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        return (0..<6).map { index in
-            let year = currentYear - (5 - index)
-            let multiplier = 1 + (Double(index) * 0.03)
-            return AssetComparisonPoint(year: year, value: baseValue * multiplier)
+    private func makeProjection(for asset: ComparisonAsset, forecasts: [BennerCycleEntry], history: [ComparisonPoint]) -> [ComparisonPoint] {
+        var value = history.last?.value ?? asset.base
+        return forecasts.filter { $0.year >= (history.last?.year ?? 0) }.map { entry in
+            value += value * asset.multiplier(for: entry.phase)
+            return ComparisonPoint(year: entry.year, value: value)
         }
-    }
-
-    private func makeProjection(for category: AssetCategory, bennerEntries: [BennerCycleEntry], history: [AssetComparisonPoint]) -> [AssetComparisonPoint] {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        let relevantEntries = bennerEntries.filter { $0.year >= currentYear }
-        var value = history.last?.value ?? category.baseValue
-        var projection: [AssetComparisonPoint] = []
-
-        for entry in relevantEntries {
-            value += value * category.multiplier(for: entry.phase)
-            projection.append(AssetComparisonPoint(year: entry.year, value: value))
-        }
-
-        return projection
     }
 }
 
-struct AssetComparisonSeries: Identifiable {
-    let category: AssetCategory
-    let history: [AssetComparisonPoint]
-    let projection: [AssetComparisonPoint]
+struct ComparisonAssetSeries: Identifiable {
+    let asset: ComparisonAsset
+    let history: [ComparisonPoint]
+    let projection: [ComparisonPoint]
 
-    var id: AssetCategory { category }
+    var id: ComparisonAsset { asset }
 }
 
-struct AssetComparisonPoint: Identifiable {
+struct ComparisonPoint: Identifiable {
     let year: Int
     let value: Double
-
     var id: Int { year }
 }
 
-enum AssetCategory: String, CaseIterable, Identifiable {
-    case internationalEquities
-    case realEstate
-    case preciousMetals
+enum ComparisonAsset: String, CaseIterable, Identifiable {
+    case equityDE, equityUSA, equityLON
+    case realEstateDE, realEstateES, realEstateFR, realEstateLON
+    case gold, silver
 
     var id: String { rawValue }
 
-    var title: String {
+    var name: String {
         switch self {
-        case .internationalEquities: return "Internationale Aktien"
-        case .realEstate: return "Immobilienmärkte"
-        case .preciousMetals: return "Edelmetalle"
-        }
-    }
-
-    var subtitle: String {
-        switch self {
-        case .internationalEquities:
-            return "MSCI World Näherung über Wachstum"
-        case .realEstate:
-            return "Kaufkraftbereinigte Immobilienpreise"
-        case .preciousMetals:
-            return "Physische Gold/ Silber Benchmarks"
+        case .equityDE: return "Deutschland Aktien"
+        case .equityUSA: return "USA Aktien"
+        case .equityLON: return "London Aktien"
+        case .realEstateDE: return "Deutschland Immobilien"
+        case .realEstateES: return "Spanien Immobilien"
+        case .realEstateFR: return "Frankreich Immobilien"
+        case .realEstateLON: return "London Immobilien"
+        case .gold: return "Gold"
+        case .silver: return "Silber"
         }
     }
 
     var icon: String {
         switch self {
-        case .internationalEquities: return "globe.europe.africa.fill"
-        case .realEstate: return "house.lodge.fill"
-        case .preciousMetals: return "rhombus.fill"
+        case .equityDE, .equityUSA, .equityLON: return "chart.bar.fill"
+        case .realEstateDE, .realEstateES, .realEstateFR, .realEstateLON: return "house.fill"
+        case .gold: return "diamond.fill"
+        case .silver: return "sparkles"
         }
     }
 
-    var baseValue: Double {
+    var group: AssetGroup {
         switch self {
-        case .internationalEquities: return 110
+        case .equityDE, .equityUSA, .equityLON: return .equities
+        case .realEstateDE, .realEstateES, .realEstateFR, .realEstateLON: return .realEstate
+        case .gold, .silver: return .metals
+        }
+    }
+
+    var historySlope: Double {
+        switch group {
+        case .equities: return 0.05
+        case .realEstate: return 0.035
+        case .metals: return 0.045
+        }
+    }
+
+    var base: Double {
+        switch group {
+        case .equities: return 120
         case .realEstate: return 95
-        case .preciousMetals: return 120
+        case .metals: return 100
+        }
+    }
+
+    func baseValue(snapshot: DashboardSnapshot) -> Double {
+        switch self {
+        case .gold:
+            return snapshot.metals.first(where: { $0.name.lowercased().contains("gold") })?.price ?? base
+        case .silver:
+            return snapshot.metals.first(where: { $0.name.lowercased().contains("silber") || $0.symbol == "XAG" })?.price ?? base * 0.3
+        default:
+            return base
         }
     }
 
     func multiplier(for phase: BennerPhase) -> Double {
-        switch self {
-        case .internationalEquities:
+        switch group {
+        case .equities:
             switch phase {
-            case .goodTimes: return 0.06
-            case .hardTimes: return -0.03
-            case .panic: return -0.12
-            }
-        case .realEstate:
-            switch phase {
-            case .goodTimes: return 0.04
+            case .goodTimes: return 0.05
             case .hardTimes: return -0.02
             case .panic: return -0.08
             }
-        case .preciousMetals:
+        case .realEstate:
             switch phase {
-            case .goodTimes: return 0.02
+            case .goodTimes: return 0.03
+            case .hardTimes: return -0.015
+            case .panic: return -0.06
+            }
+        case .metals:
+            switch phase {
+            case .goodTimes: return 0.015
             case .hardTimes: return 0.03
             case .panic: return 0.08
             }
@@ -145,10 +132,8 @@ enum AssetCategory: String, CaseIterable, Identifiable {
     }
 }
 
-private extension Collection where Element == Double {
-    var average: Double? {
-        guard isEmpty == false else { return nil }
-        let total = reduce(0, +)
-        return total / Double(count)
-    }
+enum AssetGroup: String, CaseIterable {
+    case equities = "Aktienmärkte"
+    case realEstate = "Immobilienpreise"
+    case metals = "Edelmetalle"
 }

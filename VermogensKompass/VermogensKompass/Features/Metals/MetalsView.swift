@@ -4,6 +4,7 @@ import Charts
 @MainActor
 struct MetalsView: View {
     @Environment(AppState.self) private var appState
+    @Environment(CurrencySettings.self) private var currencySettings
     @Binding var showSettings: Bool
     let onRequestConsultation: () -> Void
     @State private var selectedMetalID: String?
@@ -30,6 +31,9 @@ struct MetalsView: View {
             }
             .navigationTitle("Edelmetalle")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    LogoMark()
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
                         showSettings = true
@@ -56,51 +60,42 @@ struct MetalsView: View {
             EmptyView()
         } else {
             let activeID = selectedMetalID ?? metals.first?.id
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 10) {
                 Text("Edelmetall auswählen")
                     .font(.headline)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(metals) { metal in
-                            Button {
-                                selectedMetalID = metal.id
-                            } label: {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(metal.name)
-                                        .font(.subheadline.weight(.semibold))
-                                    Text(metal.symbol)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .padding(.horizontal, 14)
-                                .padding(.vertical, 10)
-                                .frame(minWidth: 120, alignment: .leading)
-                                .background(selectionBackground(isActive: activeID == metal.id), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                        .stroke(selectionBorder(isActive: activeID == metal.id), lineWidth: 1.5)
-                                )
+                HStack(spacing: 10) {
+                    ForEach(metals) { metal in
+                        let isActive = activeID == metal.id
+                        Button {
+                            selectedMetalID = metal.id
+                        } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "diamond.fill")
+                                Text(metal.name)
                             }
-                            .buttonStyle(.plain)
+                            .font(.subheadline.weight(.semibold))
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 10)
+                            .background(
+                                isActive ? Theme.accent.opacity(0.12) : Theme.surface.opacity(0.6),
+                                in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    .strokeBorder(isActive ? Theme.accent.opacity(0.4) : Theme.border.opacity(0.4), lineWidth: 1)
+                            )
                         }
+                        .buttonStyle(.plain)
                     }
                 }
             }
         }
     }
 
-    private func selectionBackground(isActive: Bool) -> Color {
-        isActive ? Theme.accent.opacity(0.15) : Theme.surface.opacity(0.2)
-    }
-
-    private func selectionBorder(isActive: Bool) -> Color {
-        isActive ? Theme.accent : Theme.border.opacity(0.6)
-    }
-
     @ViewBuilder
     private func bennerProjection(for metal: MetalAsset) -> some View {
         let projections = projectionEntries().prefix(3)
-        DashboardSection("Prognose für 3 Jahre", subtitle: "\(metal.name) im Benner-Cycle Ausblick") {
+        DashboardSection("Prognose für 3 Jahre", subtitle: "\(metal.name) Ausblick") {
             VStack(spacing: 12) {
                 ForEach(projections) { entry in
                     HStack {
@@ -134,7 +129,7 @@ struct MetalsView: View {
             Chart(points) { point in
                 LineMark(
                     x: .value("Jahr", point.year),
-                    y: .value("Index", point.value)
+                    y: .value("Wert", point.value)
                 )
                 .interpolationMethod(.catmullRom)
                 .foregroundStyle(point.isProjection ? Theme.accentStrong.opacity(0.8) : Theme.accentStrong)
@@ -142,13 +137,16 @@ struct MetalsView: View {
                 if point.isProjection {
                     AreaMark(
                         x: .value("Jahr", point.year),
-                        y: .value("Index", point.value)
+                        y: .value("Wert", point.value)
                     )
                     .interpolationMethod(.catmullRom)
                     .foregroundStyle(Theme.accentStrong.opacity(0.15))
                 }
             }
             .frame(height: 260)
+            .chartXScale(domain: xDomain(points))
+            .chartYScale(domain: yDomain(points))
+            .chartYAxisLabel("Wert in \(currencySettings.selectedCurrency.code)")
             .cardStyle()
         }
     }
@@ -196,7 +194,7 @@ struct MetalsView: View {
         let history = (0..<6).map { index -> MetalTrendPoint in
             let year = currentYear - (5 - index)
             let factor = 1 + (Double(index) * 0.03)
-            let base = max(metal.price / 100, 25)
+            let base = max(convertedPrice(for: metal) / 100, 25)
             return MetalTrendPoint(year: year, value: base * factor, isProjection: false)
         }
         let projections = appState.bennerCycleEntries
@@ -208,6 +206,25 @@ struct MetalsView: View {
                 partial.append(MetalTrendPoint(year: entry.year, value: nextValue, isProjection: true))
             }
         return history + projections
+    }
+
+    private func convertedPrice(for metal: MetalAsset) -> Double {
+        currencySettings.converter.convert(
+            amount: metal.price,
+            from: metal.currency,
+            to: currencySettings.selectedCurrency
+        )
+    }
+
+    private func xDomain(_ points: [MetalTrendPoint]) -> ClosedRange<Int> {
+        let minYear = points.map(\.year).min() ?? Calendar.current.component(.year, from: Date())
+        let maxYear = points.map(\.year).max() ?? minYear
+        return minYear...maxYear
+    }
+
+    private func yDomain(_ points: [MetalTrendPoint]) -> ClosedRange<Double> {
+        let maxValue = points.map(\.value).max() ?? 100
+        return 0...(maxValue * 1.1)
     }
 
     private func scenarios(for metal: MetalAsset, snapshot: DashboardSnapshot) -> [CrisisScenario] {

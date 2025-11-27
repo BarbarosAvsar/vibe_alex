@@ -107,7 +107,7 @@ struct SettingsSheet: View {
     private var notificationStatusDescription: String {
         switch appState.notificationStatus {
         case .authorized:
-            return "Sie erhalten Warnhinweise bei Benner-Panikphasen oder größeren Krisen."
+            return "Sie erhalten Warnhinweise bei Prognose-Wechseln oder größeren Krisen."
         case .denied:
             return "Benachrichtigungen sind ausgeschaltet. Aktivieren Sie sie in den iOS-Einstellungen."
         case .provisional:

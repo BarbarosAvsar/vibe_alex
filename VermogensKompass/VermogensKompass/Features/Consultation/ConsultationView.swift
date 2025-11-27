@@ -8,6 +8,9 @@ struct ConsultationView: View {
         NavigationStack {
             ConsultationFormView()
                 .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        LogoMark()
+                    }
                     ToolbarItem(placement: .topBarTrailing) {
                         ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
                             showSettings = true

@@ -32,7 +32,7 @@ enum BennerPhase: String, Codable, CaseIterable {
         case .panic:
             return "Historisch folgten auf diese Jahre heftige Markteinbrüche. Liquidität sichern und Risiko begrenzen."
         case .goodTimes:
-            return "Überdurchschnittliche Bewertungen laut Benner. Gewinne sichern und Exposure reduzieren."
+            return "Überdurchschnittliche Bewertungen. Gewinne sichern und Exposure reduzieren."
         case .hardTimes:
             return "Marktpreise gelten als günstig. Positionsaufbau und Sparpläne bieten sich an."
         }

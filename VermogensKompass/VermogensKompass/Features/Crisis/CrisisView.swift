@@ -3,7 +3,6 @@ import SwiftUI
 struct CrisisView: View {
     @Environment(AppState.self) private var appState
     @Binding var showSettings: Bool
-    private let summaryGenerator = CrisisSummaryGenerator()
     private let timeline = CrisisTimelineEntry.sampleTimeline
 
     var body: some View {
@@ -12,17 +11,14 @@ struct CrisisView: View {
                 VStack(spacing: 24) {
                     learnCard
                     timelineSection
-
-                    AsyncStateView(state: appState.dashboardState) {
-                        Task { await appState.refreshDashboard(force: true) }
-                    } content: { snapshot in
-                        crisisOverviewSection(snapshot: snapshot)
-                    }
                 }
                 .padding()
             }
             .navigationTitle("Krisen")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    LogoMark()
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
                         showSettings = true
@@ -77,97 +73,6 @@ struct CrisisView: View {
         }
     }
 
-    @ViewBuilder
-    private func crisisOverviewSection(snapshot: DashboardSnapshot) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            if let summary = summaryGenerator.summarize(events: snapshot.crises) {
-                DashboardSection("Kurzüberblick", subtitle: "On-Device Zusammenfassung") {
-                    CrisisSummaryCard(summary: summary)
-                }
-            }
-            if snapshot.crises.isEmpty == false {
-                DashboardSection("Aktuelle Meldungen", subtitle: "Live-Ereignisse des Krisenmonitors") {
-                    VStack(spacing: 16) {
-                        ForEach(snapshot.crises) { event in
-                            CrisisCard(event: event)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-struct CrisisCard: View {
-    let event: CrisisEvent
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(event.title)
-                    .font(.headline)
-                Spacer()
-                Text(event.severityBadge)
-                    .font(.caption2)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 4)
-                    .background(badgeColor, in: Capsule())
-            }
-            HStack {
-                Text(event.region)
-                    .font(.subheadline)
-                Spacer()
-                Text(event.category.rawValue.capitalized)
-                    .font(.caption2)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Theme.border.opacity(0.25), in: Capsule())
-            }
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
-            if let summary = event.summary {
-                Text(summary)
-                    .font(.subheadline)
-                    .foregroundStyle(Theme.textSecondary)
-            }
-            Text(event.occurredAt, style: .relative)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Text("Quelle: \(event.sourceName ?? event.source.rawValue)")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-        }
-        .cardStyle()
-    }
-
-    private var badgeColor: Color {
-        switch event.severityBadge {
-        case "Hoch": return Theme.accentStrong.opacity(0.85)
-        case "Moderat": return Theme.accent.opacity(0.85)
-        default: return Theme.border.opacity(0.7)
-        }
-    }
-}
-
-struct CrisisSummaryCard: View {
-    let summary: CrisisSummary
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(summary.headline)
-                .font(.headline)
-            ForEach(summary.highlights, id: \.self) { highlight in
-                HStack(alignment: .top, spacing: 8) {
-                    Image(systemName: "sparkles")
-                        .foregroundStyle(Theme.accent)
-                    Text(highlight)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-            }
-        }
-        .cardStyle()
-    }
 }
 
 private struct CrisisTimelineCard: View {
@@ -300,12 +205,12 @@ struct CrisisTimelineEntry: Identifiable {
             Impact(asset: "Immobilien", value: -5, icon: "building.columns.fill"),
             Impact(asset: "Edelmetalle", value: 25, icon: "diamond.fill")
         ], isForecast: false, tint: Theme.accent, insight: nil),
-        .init(year: 2028, title: "Prognose: Nächster Benner-Zyklus", tag: "Prognose", summary: "Benner-Zyklus erwartet wirtschaftliche Schwierigkeiten.", impacts: [
+        .init(year: 2028, title: "Prognose: Nächste Marktphase", tag: "Prognose", summary: "Modell erwartet wirtschaftliche Schwierigkeiten.", impacts: [
             Impact(asset: "Aktien", value: -25, icon: "chart.line.downtrend.xyaxis"),
             Impact(asset: "Immobilien", value: -15, icon: "building.columns.fill"),
             Impact(asset: "Edelmetalle", value: 35, icon: "diamond.fill")
         ], isForecast: true, tint: Theme.accentInfo, insight: nil),
-        .init(year: 2045, title: "Prognose: Benner Panik-Phase", tag: "Prognose", summary: "Benner-Zyklus deutet auf mögliche Panikphase hin, ähnlich 1929 oder 2008.", impacts: [
+        .init(year: 2045, title: "Prognose: Panikphase", tag: "Prognose", summary: "Modell deutet auf mögliche Panikphase hin, ähnlich 1929 oder 2008.", impacts: [
             Impact(asset: "Aktien", value: -35, icon: "chart.line.downtrend.xyaxis"),
             Impact(asset: "Immobilien", value: -20, icon: "building.columns.fill"),
             Impact(asset: "Edelmetalle", value: 50, icon: "diamond.fill")

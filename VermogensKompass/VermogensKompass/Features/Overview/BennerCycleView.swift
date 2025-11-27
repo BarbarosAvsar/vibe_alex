@@ -70,7 +70,7 @@ private struct BennerCycleFocusCard: View {
     private var progressLabel: String {
         switch entry.phase {
         case .panic:
-            return "Panikjahre markieren Wendepunkte im ca. 54-jährigen Benner-Zyklus."
+            return "Panikjahre markieren Wendepunkte im langfristigen Prognosemodell."
         case .goodTimes:
             return "Good Times Jahr \(entry.orderInPhase) von \(entry.phaseLength) nach dem letzten Panikjahr."
         case .hardTimes:

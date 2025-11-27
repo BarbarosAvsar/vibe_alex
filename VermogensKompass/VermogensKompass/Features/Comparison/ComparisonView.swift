@@ -206,30 +206,6 @@ private struct AssetComparisonChart: View {
     }
 }
 
-private struct ComparisonStatCard: View {
-    let title: String
-    let value: String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(title.uppercased())
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Text(value)
-                .font(.title3.weight(.semibold))
-            Text("Prognose")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-        }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-            Theme.surface.opacity(0.5),
-            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-        )
-    }
-}
-
 private enum ComparisonMode: String, CaseIterable, Identifiable {
     case history
     case forecast
@@ -241,40 +217,5 @@ private enum ComparisonMode: String, CaseIterable, Identifiable {
         case .history: return "Historisch"
         case .forecast: return "Prognose"
         }
-    }
-}
-                    LineMark(
-                        x: .value("Jahr", point.year),
-                        y: .value("Index", point.value)
-                    )
-                    .interpolationMethod(.catmullRom)
-                    .foregroundStyle(color)
-                }
-            }
-            RuleMark(x: .value("Heute", currentYear))
-                .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
-                .annotation(position: .topTrailing) {
-                    Text("Heute")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
-        }
-        .frame(height: 260)
-        .chartXAxisLabel("Jahr")
-        .chartYAxisLabel("Index (Basis=100)")
-        .chartYScale(domain: chartDomain)
-        .cardStyle()
-    }
-
-    private var chartDomain: ClosedRange<Double> {
-        let values = mode == .history ? series.history : series.projection
-        let allValues = values.map(\.value)
-        var minValue = (allValues.min() ?? 0) - 5
-        var maxValue = (allValues.max() ?? 0) + 5
-        if maxValue - minValue < 5 {
-            minValue -= 2
-            maxValue += 2
-        }
-        return minValue...maxValue
     }
 }

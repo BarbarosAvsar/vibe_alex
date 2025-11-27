@@ -38,11 +38,11 @@ struct ContentView: View {
                         .tag(Tab.overview)
 
                     ComparisonView(showSettings: $showSettings)
-                        .tabItem { Label("Vergleich", systemImage: "chart.bar.doc.horizontal") }
+                        .tabItem { Label("Vergleich", systemImage: "chart.bar.fill") }
                         .tag(Tab.comparison)
 
                     MetalsView(showSettings: $showSettings, onRequestConsultation: openConsultation)
-                        .tabItem { Label("Edelmetalle", systemImage: "rhombus.fill") }
+                        .tabItem { Label("Edelmetalle", systemImage: "diamond.fill") }
                         .tag(Tab.metals)
 
                     CrisisView(showSettings: $showSettings)

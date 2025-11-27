@@ -1,15 +1,21 @@
 import SwiftUI
 
 enum Theme {
-    static let background = Color("BrandBackground")
-    static let surface = Color("BrandSurface")
-    static let accent = Color("BrandAccent")
-    static let accentStrong = Color("BrandAccentStrong")
-    static let textPrimary = Color("BrandTextPrimary")
-    static let textSecondary = Color("BrandTextSecondary")
-    static let textMuted = Color("BrandMuted")
-    static let textOnAccent = Color("BrandTextOnAccent")
-    static let border = Color("BrandBorder")
+    // System-driven surfaces for automatic light/dark appearance
+    static let background = Color(.systemBackground)
+    static let surface = Color(.secondarySystemBackground)
+    static let border = Color(.separator)
+
+    // Brand accents (Farbcode RGB): Primary, Warm (CTA), Cool (Info)
+    static let accent = Color("BrandPrimary")
+    static let accentStrong = Color("BrandWarm")
+    static let accentInfo = Color("BrandCool")
+
+    // Text colors align to Apple system dynamic text
+    static let textPrimary = Color(.label)
+    static let textSecondary = Color(.secondaryLabel)
+    static let textMuted = Color(.tertiaryLabel)
+    static let textOnAccent = Color("BrandPrimary")
 }
 
 extension View {

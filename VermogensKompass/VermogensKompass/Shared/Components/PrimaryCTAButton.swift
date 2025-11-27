@@ -28,24 +28,27 @@ struct PrimaryCTAButton: View {
                     Text(title)
                         .font(.headline)
                         .foregroundStyle(Theme.textOnAccent)
-                    Text(subtitle)
-                        .font(.subheadline)
-                        .foregroundStyle(Theme.textOnAccent.opacity(0.8))
-                }
-                Spacer()
-                Image(systemName: "arrow.right")
-                    .font(.headline)
+                Text(subtitle)
+                    .font(.subheadline)
                     .foregroundStyle(Theme.textOnAccent.opacity(0.8))
             }
-            .padding()
-            .background(
-                LinearGradient(colors: [Theme.accent, Theme.accent.opacity(0.85)],
-                               startPoint: .topLeading,
-                               endPoint: .bottomTrailing),
-                in: RoundedRectangle(cornerRadius: 20, style: .continuous)
-            )
-            .accessibilityHint("Öffnet das Beratungsformular")
+            Spacer()
+            Image(systemName: "arrow.right")
+                .font(.headline)
+                .foregroundStyle(Theme.textOnAccent.opacity(0.8))
         }
-        .buttonStyle(.plain)
+        .padding()
+        .background(
+            LinearGradient(colors: [
+                Theme.accentStrong,
+                Theme.accentStrong.opacity(0.92)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing),
+            in: RoundedRectangle(cornerRadius: 20, style: .continuous)
+        )
+        .accessibilityHint("Öffnet das Beratungsformular")
+    }
+    .buttonStyle(.plain)
     }
 }

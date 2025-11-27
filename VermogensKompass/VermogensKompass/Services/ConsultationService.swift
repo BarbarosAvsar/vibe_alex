@@ -3,7 +3,7 @@ import Foundation
 struct ConsultationRequest: Encodable {
     let name: String
     let email: String
-    let phone: String?
+    let phone: String
     let message: String
     let locale: String
 }

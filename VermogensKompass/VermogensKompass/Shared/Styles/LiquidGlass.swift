@@ -1,35 +1,55 @@
 import SwiftUI
 
 struct LiquidGlassBackground: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
         GeometryReader { proxy in
-            let gradient = Gradient(colors: [
-                Theme.background,
-                Theme.background.opacity(0.95),
-                Theme.surface
-            ])
+            let warmOpacity = colorScheme == .dark ? 0.24 : 0.14
+            let coolOpacity = colorScheme == .dark ? 0.22 : 0.12
+            let primaryOpacity = colorScheme == .dark ? 0.12 : 0.08
 
-            LinearGradient(gradient: gradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(
+                colors: [
+                    Theme.background,
+                    Theme.surface,
+                    Theme.background
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
                 .overlay {
                     RadialGradient(
                         colors: [
-                            Theme.accent.opacity(0.35),
+                            Theme.accentInfo.opacity(coolOpacity),
                             .clear
                         ],
                         center: .topTrailing,
                         startRadius: 32,
                         endRadius: max(proxy.size.width, proxy.size.height)
                     )
-                    .blur(radius: 80)
+                    .blur(radius: 96)
                 }
                 .overlay {
                     RadialGradient(
                         colors: [
-                            Theme.accentStrong.opacity(0.2),
+                            Theme.accentStrong.opacity(warmOpacity),
                             .clear
                         ],
                         center: .bottomLeading,
-                        startRadius: 24,
+                        startRadius: 48,
+                        endRadius: max(proxy.size.width, proxy.size.height)
+                    )
+                    .blur(radius: 128)
+                }
+                .overlay {
+                    RadialGradient(
+                        colors: [
+                            Theme.accent.opacity(primaryOpacity),
+                            .clear
+                        ],
+                        center: .center,
+                        startRadius: 64,
                         endRadius: max(proxy.size.width, proxy.size.height)
                     )
                     .blur(radius: 120)
@@ -52,7 +72,7 @@ struct LiquidGlassCard: ViewModifier {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .strokeBorder(Theme.border.opacity(0.5), lineWidth: 1)
             )
-            .shadow(color: Theme.textPrimary.opacity(0.08), radius: 18, x: 0, y: 8)
+            .shadow(color: Theme.accent.opacity(0.08), radius: 18, x: 0, y: 8)
     }
 }
 

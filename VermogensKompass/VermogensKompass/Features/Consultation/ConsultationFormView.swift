@@ -21,7 +21,7 @@ struct ConsultationFormView: View {
                     .autocapitalization(.none)
                     .focused($focusedField, equals: .email)
 
-                TextField("Telefon (optional)", text: $viewModel.phone)
+                TextField("Telefon*", text: $viewModel.phone)
                     .textContentType(.telephoneNumber)
                     .keyboardType(.phonePad)
                     .focused($focusedField, equals: .phone)

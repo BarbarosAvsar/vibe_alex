@@ -26,6 +26,9 @@ final class ConsultationFormViewModel: ObservableObject {
         if email.trimmed.isEmpty || emailPredicate.evaluate(with: email.trimmed) == false {
             return "Bitte geben Sie eine gültige E-Mail-Adresse an."
         }
+        if phone.trimmed.count < 5 {
+            return "Bitte geben Sie Ihre Telefonnummer an."
+        }
         if message.trimmed.count < 10 {
             return "Ihre Nachricht sollte mindestens 10 Zeichen enthalten."
         }
@@ -41,7 +44,7 @@ final class ConsultationFormViewModel: ObservableObject {
         let payload = ConsultationRequest(
             name: name.trimmed,
             email: email.trimmed,
-            phone: phone.trimmed.isEmpty ? nil : phone.trimmed,
+            phone: phone.trimmed,
             message: message.trimmed,
             locale: Locale.current.identifier
         )

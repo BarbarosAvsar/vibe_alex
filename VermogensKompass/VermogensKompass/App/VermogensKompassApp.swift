@@ -29,23 +29,18 @@ struct VermoegensKompassApp: App {
 
 private enum Appearance {
     static func configure() {
-        guard
-            let surface = UIColor(named: "BrandSurface"),
-            let background = UIColor(named: "BrandBackground"),
-            let accent = UIColor(named: "BrandAccent"),
-            let textPrimary = UIColor(named: "BrandTextPrimary")
-        else { return }
+        let accent = UIColor(named: "BrandPrimary") ?? UIColor.label
 
         let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
-        navAppearance.backgroundColor = surface
-        navAppearance.shadowColor = UIColor(named: "BrandBorder")
+        navAppearance.backgroundColor = .secondarySystemBackground
+        navAppearance.shadowColor = .separator
         navAppearance.titleTextAttributes = [
-            .foregroundColor: textPrimary,
+            .foregroundColor: UIColor.label,
             .font: UIFont.preferredFont(forTextStyle: .headline)
         ]
         navAppearance.largeTitleTextAttributes = [
-            .foregroundColor: textPrimary,
+            .foregroundColor: UIColor.label,
             .font: UIFont.preferredFont(forTextStyle: .largeTitle)
         ]
         UINavigationBar.appearance().standardAppearance = navAppearance
@@ -55,8 +50,8 @@ private enum Appearance {
 
         let tabAppearance = UITabBarAppearance()
         tabAppearance.configureWithOpaqueBackground()
-        tabAppearance.backgroundColor = background
-        tabAppearance.shadowColor = UIColor(named: "BrandBorder")
+        tabAppearance.backgroundColor = .systemBackground
+        tabAppearance.shadowColor = .separator
         tabAppearance.stackedLayoutAppearance.selected.iconColor = accent
         tabAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: accent]
         UITabBar.appearance().standardAppearance = tabAppearance

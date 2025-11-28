@@ -62,38 +62,42 @@ struct LiquidGlassBackground: View {
 
 struct LiquidGlassCard: ViewModifier {
     func body(content: Content) -> some View {
+        let shape = RoundedRectangle(cornerRadius: 24, style: .continuous)
         content
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                shape
                     .fill(Theme.surface)
-                    .overlay(
+                    .overlay {
                         LinearGradient(
                             colors: [
-                                Color.white.opacity(0.12),
-                                Color.white.opacity(0.04)
+                                Color.white.opacity(0.14),
+                                Color.white.opacity(0.05)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
-                    )
-                    .overlay(
+                        .mask(shape)
+                    }
+                    .overlay {
                         LinearGradient(
                             colors: [
-                                Theme.accent.opacity(0.10),
+                                Theme.accent.opacity(0.12),
                                 Theme.accentInfo.opacity(0.08)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
-                    )
+                        .mask(shape)
+                    }
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                shape
                     .strokeBorder(Theme.border.opacity(0.8), lineWidth: 1)
             )
-            .shadow(color: Theme.accent.opacity(0.16), radius: 18, x: 0, y: 8)
+            .shadow(color: Theme.accent.opacity(0.14), radius: 18, x: 0, y: 8)
+            .compositingGroup()
     }
 }
 

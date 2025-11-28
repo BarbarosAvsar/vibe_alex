@@ -28,7 +28,7 @@ struct OverviewView: View {
                     LogoMark()
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
+                    ToolbarStatusControl {
                         showSettings = true
                     }
                 }
@@ -147,7 +147,7 @@ private struct MacroKPI: View {
                 .font(.title3.weight(.semibold))
             Text(indicator.deltaDescription)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Theme.textMuted)
         }
         .padding()
         .background(

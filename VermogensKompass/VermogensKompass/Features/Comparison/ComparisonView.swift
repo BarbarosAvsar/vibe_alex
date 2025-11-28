@@ -31,7 +31,7 @@ struct ComparisonView: View {
                     LogoMark()
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
+                    ToolbarStatusControl {
                         showSettings = true
                     }
                 }
@@ -68,7 +68,7 @@ struct ComparisonView: View {
                                     }
                                 } label: {
                                     HStack(spacing: 6) {
-                                        Image(systemName: item.asset.icon)
+                                        assetIcon(for: item.asset)
                                         Text(item.asset.name)
                                     }
                                     .font(.subheadline.weight(.semibold))
@@ -112,10 +112,22 @@ struct ComparisonView: View {
                         Spacer()
                         Text("Historisch \(cagr(for: item)) • Prognose \(projectionDelta(for: item))")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Theme.textSecondary)
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func assetIcon(for asset: ComparisonAsset) -> some View {
+        switch asset {
+        case .gold:
+            BrilliantDiamondIcon(size: 14)
+        case .silver:
+            Image(systemName: asset.icon)
+        default:
+            Image(systemName: asset.icon)
         }
     }
 
@@ -182,7 +194,7 @@ private struct AssetComparisonChart: View {
                 .annotation(position: .topTrailing) {
                     Text("Heute")
                         .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                 }
         }
         .frame(height: 260)

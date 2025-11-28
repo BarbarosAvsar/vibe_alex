@@ -35,7 +35,7 @@ struct MetalsView: View {
                     LogoMark()
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
+                    ToolbarStatusControl {
                         showSettings = true
                     }
                 }
@@ -70,7 +70,7 @@ struct MetalsView: View {
                             selectedMetalID = metal.id
                         } label: {
                             HStack(spacing: 8) {
-                                Image(systemName: "diamond.fill")
+                                BrilliantDiamondIcon(size: 14)
                                 Text(metal.name)
                             }
                             .font(.subheadline.weight(.semibold))
@@ -104,7 +104,7 @@ struct MetalsView: View {
                                 .font(.headline)
                             Text(entry.phase.subtitle)
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Theme.textSecondary)
                         }
                         Spacer()
                         ProgressView(value: entry.progress)
@@ -169,7 +169,7 @@ struct MetalsView: View {
                         }
                         Text(scenario.description)
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Theme.textMuted)
                         ProgressView(value: scenario.score)
                             .tint(Theme.accent)
                     }

@@ -13,7 +13,7 @@ struct MetalCard: View {
                         .font(.headline)
                     Text(asset.symbol)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                 }
                 Spacer()
                 Text(displayPrice, format: .currency(code: currencySettings.selectedCurrency.code))
@@ -31,7 +31,7 @@ struct MetalCard: View {
 
                 Text(asset.lastUpdated, style: .time)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textMuted)
             }
 
             Divider().opacity(0.2)
@@ -57,7 +57,7 @@ struct MetalCard: View {
 
             Text("Quelle: \(asset.dataSource.rawValue)")
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Theme.textMuted)
         }
         .cardStyle()
     }

@@ -30,11 +30,11 @@ struct SettingsSheet: View {
                         Spacer()
                         Text(notificationStatusValue)
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Theme.textSecondary)
                     }
                     Text(notificationStatusDescription)
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
 
                     Button(action: handleNotificationAction) {
                         if isRequestingNotifications {
@@ -58,19 +58,19 @@ struct SettingsSheet: View {
                         Label("Datenschutz", systemImage: "lock.shield")
                         Text("Persönliche Daten verlassen Ihr Gerät nur, wenn Sie eine Anfrage senden. Es erfolgt keine lokale Speicherung.")
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Theme.textSecondary)
                     }
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Transparenz", systemImage: "chart.pie.fill")
                         Text("Alle Wirtschaftsdaten stammen aus offenen APIs von GoldPrice.org und der Weltbank.")
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Theme.textSecondary)
                     }
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Kontakt", systemImage: "paperplane")
                         Text("Nutzen Sie den Tab Beratung für individuelle Fragen. Antworten erfolgen DSGVO-konform per E-Mail.")
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Theme.textSecondary)
                     }
                 }
             }

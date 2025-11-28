@@ -141,12 +141,12 @@ struct ConsultationFormView: View {
                 Image(systemName: "info.circle.fill")
                 Text(title)
                     .font(.headline)
-            }
-            Text(text)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
         }
-        .padding()
+        Text(text)
+            .font(.subheadline)
+            .foregroundStyle(Theme.textMuted)
+    }
+    .padding()
         .background(
             Theme.accentInfo.opacity(0.24),
             in: RoundedRectangle(cornerRadius: 16, style: .continuous)

@@ -37,7 +37,7 @@ struct PrivacyPolicyView: View {
                 VStack(spacing: 20) {
                     Text("Wir verarbeiten Ihre Daten ausschließlich auf dem Gerät oder über Apple Mail. Es gibt keine versteckten Tracker oder Cloud-Profile.")
                         .font(.callout)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.leading)
 
                     ForEach(sections) { section in
@@ -46,7 +46,7 @@ struct PrivacyPolicyView: View {
                                 .font(.headline)
                             Text(section.content)
                                 .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Theme.textMuted)
                         }
                         .cardStyle()
                     }

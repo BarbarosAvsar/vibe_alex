@@ -5,13 +5,14 @@ struct LiquidGlassBackground: View {
         GeometryReader { proxy in
             let warmOpacity = 0.22
             let coolOpacity = 0.18
-            let primaryOpacity = 0.12
+            let primaryOpacity = 0.16
+            let base = Theme.background
 
             LinearGradient(
                 colors: [
-                    Theme.background.opacity(0.95),
-                    Theme.background,
-                    Theme.surface
+                    base,
+                    base.opacity(0.94),
+                    base.opacity(0.9)
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -52,6 +53,7 @@ struct LiquidGlassBackground: View {
                     )
                     .blur(radius: 120)
                 }
+                .background(base)
                 .ignoresSafeArea()
         }
     }
@@ -63,14 +65,34 @@ struct LiquidGlassCard: ViewModifier {
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
-                Theme.surface,
-                in: RoundedRectangle(cornerRadius: 24, style: .continuous)
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(Theme.surface)
+                    .overlay(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.12),
+                                Color.white.opacity(0.04)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .overlay(
+                        LinearGradient(
+                            colors: [
+                                Theme.accent.opacity(0.10),
+                                Theme.accentInfo.opacity(0.08)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .strokeBorder(Theme.border.opacity(0.5), lineWidth: 1)
+                    .strokeBorder(Theme.border.opacity(0.8), lineWidth: 1)
             )
-            .shadow(color: Theme.accent.opacity(0.12), radius: 18, x: 0, y: 8)
+            .shadow(color: Theme.accent.opacity(0.16), radius: 18, x: 0, y: 8)
     }
 }
 

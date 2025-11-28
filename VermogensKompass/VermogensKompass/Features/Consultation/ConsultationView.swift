@@ -7,16 +7,16 @@ struct ConsultationView: View {
     var body: some View {
         NavigationStack {
             ConsultationFormView()
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        LogoMark()
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        ToolbarStatusControl(lastUpdated: appState.lastUpdated) {
-                            showSettings = true
-                        }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    LogoMark()
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarStatusControl {
+                        showSettings = true
                     }
                 }
+            }
         }
     }
 }

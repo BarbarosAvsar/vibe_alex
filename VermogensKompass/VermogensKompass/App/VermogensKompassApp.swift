@@ -38,11 +38,11 @@ private enum Appearance {
         navAppearance.backgroundColor = background
         navAppearance.shadowColor = accent.withAlphaComponent(0.15)
         navAppearance.titleTextAttributes = [
-            .foregroundColor: UIColor(named: "BrandCool") ?? UIColor.white,
+            .foregroundColor: UIColor.white,
             .font: UIFont.preferredFont(forTextStyle: .headline)
         ]
         navAppearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(named: "BrandCool") ?? UIColor.white,
+            .foregroundColor: UIColor.white,
             .font: UIFont.preferredFont(forTextStyle: .largeTitle)
         ]
         UINavigationBar.appearance().standardAppearance = navAppearance
@@ -56,6 +56,8 @@ private enum Appearance {
         tabAppearance.shadowColor = accent.withAlphaComponent(0.15)
         tabAppearance.stackedLayoutAppearance.selected.iconColor = accent
         tabAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: accent]
+        tabAppearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.7)
+        tabAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white.withAlphaComponent(0.85)]
         UITabBar.appearance().standardAppearance = tabAppearance
         UITabBar.appearance().scrollEdgeAppearance = tabAppearance
     }

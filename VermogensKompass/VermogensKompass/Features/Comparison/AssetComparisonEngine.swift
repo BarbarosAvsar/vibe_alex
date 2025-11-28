@@ -68,7 +68,7 @@ enum ComparisonAsset: String, CaseIterable, Identifiable {
         switch self {
         case .equityDE, .equityUSA, .equityLON: return "chart.bar.fill"
         case .realEstateDE, .realEstateES, .realEstateFR, .realEstateLON: return "house.fill"
-        case .gold: return "diamond.fill"
+        case .gold: return "star.fill"
         case .silver: return "sparkles"
         }
     }

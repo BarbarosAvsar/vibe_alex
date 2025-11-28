@@ -24,12 +24,12 @@ struct NotificationOnboardingView: View {
                     Text("Erhalten Sie einmalige Push-Mitteilungen bei Hochrisiko-Ereignissen. Wir senden nur Meldungen, wenn die Lage ernst ist.")
                         .multilineTextAlignment(.center)
                         .font(.callout)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                     if let statusHint = statusHintText {
                         Text(statusHint)
                             .font(.footnote)
                             .multilineTextAlignment(.center)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Theme.textSecondary)
                     }
                 }
                     .padding(.top, 8)
@@ -40,7 +40,7 @@ struct NotificationOnboardingView: View {
                                 .font(.headline)
                             Text("Nur Krisen ab Schweregrad 5 und keine Werbung.")
                                 .font(.footnote)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Theme.textMuted)
                         }
                     }
                     .toggleStyle(.switch)
@@ -60,7 +60,7 @@ struct NotificationOnboardingView: View {
                         Label("Keine Daten verlassen Ihr Gerät. Grundlage: App Store Guideline 5.1.1.", systemImage: "checkmark.seal")
                             .font(.footnote)
                     }
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textMuted)
 
                     if let errorMessage {
                         Text(errorMessage)
@@ -147,7 +147,7 @@ struct NotificationPermissionBanner: View {
                     .font(.headline)
                 Text(statusMessage)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textMuted)
                 Button(action: action) {
                     Text(buttonTitle)
                         .font(.caption.bold())

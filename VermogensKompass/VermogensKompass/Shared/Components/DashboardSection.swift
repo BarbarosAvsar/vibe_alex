@@ -19,7 +19,7 @@ struct DashboardSection<Content: View>: View {
                 if subtitle.isEmpty == false {
                     Text(subtitle)
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                 }
             }
             content()

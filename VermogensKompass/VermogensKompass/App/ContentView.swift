@@ -42,7 +42,13 @@ struct ContentView: View {
                         .tag(Tab.comparison)
 
                     MetalsView(showSettings: $showSettings, onRequestConsultation: openConsultation)
-                        .tabItem { Label("Edelmetalle", systemImage: "diamond.fill") }
+                        .tabItem {
+                            Label {
+                                Text("Edelmetalle")
+                            } icon: {
+                                BrilliantDiamondIcon()
+                            }
+                        }
                         .tag(Tab.metals)
 
                     CrisisView(showSettings: $showSettings)

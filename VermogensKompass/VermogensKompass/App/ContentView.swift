@@ -43,10 +43,9 @@ struct ContentView: View {
 
                     MetalsView(showSettings: $showSettings, onRequestConsultation: openConsultation)
                         .tabItem {
-                            Label {
+                            VStack {
+                                BrilliantDiamondIcon(size: 22)
                                 Text("Edelmetalle")
-                            } icon: {
-                                BrilliantDiamondIcon()
                             }
                         }
                         .tag(Tab.metals)

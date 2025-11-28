@@ -50,6 +50,7 @@
 		B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6090C3527069CC67168D75F0 /* CrisisMonitorService.swift */; };
 		B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78F97A04D7E8CA2A8D6E403 /* BennerCycleService.swift */; };
 		BF753BBDF0E65E8927E6958A /* MetricCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */; };
+		7A2E57C5B1A64E7E9F3A9B2F /* BrilliantDiamondIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2E57C4B1A64E7E9F3A9B2F /* BrilliantDiamondIcon.swift */; };
 		C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF9AE1D9DD225C2A46C6FDB /* DashboardSnapshot.swift */; };
 		E7C1A12C2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C1A12B2CA0FDCF0069E9E1 /* MacroChartInsightEngine.swift */; };
 		E7C1A12E2CA0FDCF0069E9E1 /* CrisisSummaryGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C1A12D2CA0FDCF0069E9E1 /* CrisisSummaryGenerator.swift */; };
@@ -107,6 +108,7 @@
 		A18761A9AC8E8D195D3E9B47 /* CrisisEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrisisEvent.swift; path = CrisisEvent.swift; sourceTree = "<group>"; };
 		A27AF7A2B67E3562ED7B4A05 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = Info.plist; sourceTree = "<group>"; };
 		A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetricCard.swift; path = MetricCard.swift; sourceTree = "<group>"; };
+		7A2E57C4B1A64E7E9F3A9B2F /* BrilliantDiamondIcon.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BrilliantDiamondIcon.swift; path = BrilliantDiamondIcon.swift; sourceTree = "<group>"; };
 		AB06057FA458C0237615DD23 /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = BackgroundTasks.framework; sourceTree = DEVELOPER_DIR; };
 		BDBC564B4244F3139DF6FC1A /* MockData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MockData.swift; path = MockData.swift; sourceTree = "<group>"; };
 		C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrimaryCTAButton.swift; path = PrimaryCTAButton.swift; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 				F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */,
 				F973AB3375CF3856D42A0B76 /* DashboardSection.swift */,
 				34F5B8C7E1A64C1B9A1A3D7E /* LogoMark.swift */,
+				7A2E57C4B1A64E7E9F3A9B2F /* BrilliantDiamondIcon.swift */,
 				06ABC094EDBC2CF47952C99C /* MetalCard.swift */,
 				A54DE1B5EFB7D877B640A1C2 /* MetricCard.swift */,
 				C2BD1AEA35441F80EDBC857B /* PrimaryCTAButton.swift */,
@@ -582,6 +585,7 @@
 				F5AA4C132CA11D8F00E3A1C1 /* PrivacyPolicyView.swift in Sources */,
 				F2E8F2712C9F55D600CCDC5F /* NotificationOnboardingView.swift in Sources */,
 				6F233A8033D277072438B147 /* LiquidGlass.swift in Sources */,
+				7A2E57C5B1A64E7E9F3A9B2F /* BrilliantDiamondIcon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

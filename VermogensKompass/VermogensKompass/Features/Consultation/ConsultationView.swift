@@ -6,7 +6,13 @@ struct ConsultationView: View {
 
     var body: some View {
         NavigationStack {
-            ConsultationFormView()
+            ZStack {
+                LiquidGlassBackground()
+                ScrollView {
+                    ConsultationFormView()
+                        .padding()
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     LogoMark()
@@ -17,6 +23,7 @@ struct ConsultationView: View {
                     }
                 }
             }
+            .background(Theme.background)
         }
     }
 }

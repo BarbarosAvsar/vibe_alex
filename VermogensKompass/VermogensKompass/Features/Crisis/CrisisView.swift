@@ -7,12 +7,15 @@ struct CrisisView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    learnCard
-                    timelineSection
+            ZStack {
+                LiquidGlassBackground()
+                ScrollView {
+                    VStack(spacing: 24) {
+                        learnCard
+                        timelineSection
+                    }
+                    .padding()
                 }
-                .padding()
             }
             .navigationTitle("Krisen")
             .toolbar {
@@ -28,6 +31,7 @@ struct CrisisView: View {
             .refreshable {
                 await appState.refreshDashboard(force: true)
             }
+            .background(Theme.background)
         }
     }
 

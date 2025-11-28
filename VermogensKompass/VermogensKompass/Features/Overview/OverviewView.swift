@@ -8,18 +8,21 @@ struct OverviewView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                AsyncStateView(state: appState.dashboardState) {
-                    Task { await appState.refreshDashboard(force: true) }
-                } content: { snapshot in
-                    VStack(spacing: 24) {
-                        warningHero()
-                        metalFocusSection(snapshot)
-                        macroSection(snapshot)
-                        WhyEdelmetalleSection()
-                        PrimaryCTAButton(action: onRequestConsultation)
+            ZStack {
+                LiquidGlassBackground()
+                ScrollView {
+                    AsyncStateView(state: appState.dashboardState) {
+                        Task { await appState.refreshDashboard(force: true) }
+                    } content: { snapshot in
+                        VStack(spacing: 24) {
+                            warningHero()
+                            metalFocusSection(snapshot)
+                            macroSection(snapshot)
+                            WhyEdelmetalleSection()
+                            PrimaryCTAButton(action: onRequestConsultation)
+                        }
+                        .padding()
                     }
-                    .padding()
                 }
             }
             .navigationTitle("Übersicht")
@@ -36,6 +39,7 @@ struct OverviewView: View {
             .refreshable {
                 await appState.refreshDashboard(force: true)
             }
+            .background(Theme.background)
         }
     }
 

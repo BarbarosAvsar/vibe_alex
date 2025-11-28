@@ -14,22 +14,25 @@ struct MetalsView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                AsyncStateView(state: appState.dashboardState) {
-                    Task { await appState.refreshDashboard(force: true) }
-                } content: { snapshot in
-                    VStack(spacing: 24) {
-                        metalSelector(for: snapshot.metals)
-                        if let focus = selectedMetal(from: snapshot.metals) {
-                            MetalCard(asset: focus)
-                            trendChart(for: focus, snapshot: snapshot)
-                            bennerProjection(for: focus)
-                            crisisResilience(for: focus, snapshot: snapshot)
-                            WhyEdelmetalleSection()
+            ZStack {
+                LiquidGlassBackground()
+                ScrollView {
+                    AsyncStateView(state: appState.dashboardState) {
+                        Task { await appState.refreshDashboard(force: true) }
+                    } content: { snapshot in
+                        VStack(spacing: 24) {
+                            metalSelector(for: snapshot.metals)
+                            if let focus = selectedMetal(from: snapshot.metals) {
+                                MetalCard(asset: focus)
+                                trendChart(for: focus, snapshot: snapshot)
+                                bennerProjection(for: focus)
+                                crisisResilience(for: focus, snapshot: snapshot)
+                                WhyEdelmetalleSection()
+                            }
+                            PrimaryCTAButton(action: onRequestConsultation)
                         }
-                        PrimaryCTAButton(action: onRequestConsultation)
+                        .padding()
                     }
-                    .padding()
                 }
             }
             .navigationTitle("Edelmetalle")
@@ -46,6 +49,7 @@ struct MetalsView: View {
             .refreshable {
                 await appState.refreshDashboard(force: true)
             }
+            .background(Theme.background)
         }
     }
 

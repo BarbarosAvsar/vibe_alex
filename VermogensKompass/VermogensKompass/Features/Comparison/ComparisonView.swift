@@ -14,18 +14,21 @@ struct ComparisonView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                AsyncStateView(state: appState.dashboardState) {
-                    Task { await appState.refreshDashboard(force: true) }
-                } content: { snapshot in
-                    VStack(spacing: 24) {
-                        assetSelection(series)
-                        comparisonChart(series)
-                        performanceOverview(series)
-                    }
-                    .padding()
-                    .task(id: appState.lastUpdated ?? Date.distantPast) {
-                        await loadSeries(from: snapshot)
+            ZStack {
+                LiquidGlassBackground()
+                ScrollView {
+                    AsyncStateView(state: appState.dashboardState) {
+                        Task { await appState.refreshDashboard(force: true) }
+                    } content: { snapshot in
+                        VStack(spacing: 24) {
+                            assetSelection(series)
+                            comparisonChart(series)
+                            performanceOverview(series)
+                        }
+                        .padding()
+                        .task(id: appState.lastUpdated ?? Date.distantPast) {
+                            await loadSeries(from: snapshot)
+                        }
                     }
                 }
             }
@@ -43,6 +46,7 @@ struct ComparisonView: View {
             .refreshable {
                 await appState.refreshDashboard(force: true)
             }
+            .background(Theme.background)
         }
     }
 

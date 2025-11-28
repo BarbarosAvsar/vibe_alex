@@ -9,6 +9,8 @@ struct ComparisonView: View {
     private let comparisonEngine = AssetComparisonEngine()
     @State private var mode: ComparisonMode = .history
     @State private var activeAssets: Set<ComparisonAsset> = [.equityDE, .equityUSA, .gold]
+    @State private var series: [ComparisonAssetSeries] = []
+    @State private var isLoadingSeries = false
 
     var body: some View {
         NavigationStack {
@@ -16,13 +18,15 @@ struct ComparisonView: View {
                 AsyncStateView(state: appState.dashboardState) {
                     Task { await appState.refreshDashboard(force: true) }
                 } content: { snapshot in
-                    let series = comparisonEngine.makeAssets(from: snapshot, forecasts: appState.bennerCycleEntries)
                     VStack(spacing: 24) {
                         assetSelection(series)
                         comparisonChart(series)
                         performanceOverview(series)
                     }
                     .padding()
+                    .task(id: appState.lastUpdated ?? Date.distantPast) {
+                        await loadSeries(from: snapshot)
+                    }
                 }
             }
             .navigationTitle("Vergleich")
@@ -45,6 +49,10 @@ struct ComparisonView: View {
     @ViewBuilder
     private func assetSelection(_ series: [ComparisonAssetSeries]) -> some View {
         DashboardSection("Asset-Klassen Vergleich", subtitle: "Historisch & Prognose 2025–2050") {
+            if isLoadingSeries && series.isEmpty {
+                ProgressView("Lade Marktdaten…")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             Picker("Zeitraum", selection: $mode) {
                 ForEach(ComparisonMode.allCases) { item in
                     Text(item.label).tag(item)
@@ -96,7 +104,12 @@ struct ComparisonView: View {
     private func comparisonChart(_ series: [ComparisonAssetSeries]) -> some View {
         let selected = series.filter { activeAssets.contains($0.asset) }
         DashboardSection("Wertentwicklung", subtitle: "Tippen Sie auf den Chart um Details zu sehen") {
-            AssetComparisonChart(series: selected, mode: mode, currency: currencySettings.selectedCurrency.code)
+            if isLoadingSeries && selected.isEmpty {
+                ProgressView()
+                    .frame(height: 240)
+            } else {
+                AssetComparisonChart(series: selected, mode: mode, currency: currencySettings.selectedCurrency.code)
+            }
         }
     }
 
@@ -104,15 +117,19 @@ struct ComparisonView: View {
     private func performanceOverview(_ series: [ComparisonAssetSeries]) -> some View {
         let selected = series.filter { activeAssets.contains($0.asset) }
         DashboardSection("Performance Übersicht", subtitle: "Historisch und Prognose") {
-            VStack(spacing: 12) {
-                ForEach(selected) { item in
-                    HStack {
-                        Text(item.asset.name)
-                            .font(.subheadline.weight(.semibold))
-                        Spacer()
-                        Text("Historisch \(cagr(for: item)) • Prognose \(projectionDelta(for: item))")
-                            .font(.caption)
-                            .foregroundStyle(Theme.textSecondary)
+            if isLoadingSeries && selected.isEmpty {
+                ProgressView()
+            } else {
+                VStack(spacing: 12) {
+                    ForEach(selected) { item in
+                        HStack {
+                            Text(item.asset.name)
+                                .font(.subheadline.weight(.semibold))
+                            Spacer()
+                            Text("Historisch \(cagr(for: item)) • Prognose \(projectionDelta(for: item))")
+                                .font(.caption)
+                                .foregroundStyle(Theme.textSecondary)
+                        }
                     }
                 }
             }
@@ -129,6 +146,15 @@ struct ComparisonView: View {
         default:
             Image(systemName: asset.icon)
         }
+    }
+
+    @MainActor
+    private func loadSeries(from snapshot: DashboardSnapshot) async {
+        guard isLoadingSeries == false else { return }
+        isLoadingSeries = true
+        let loaded = await comparisonEngine.loadAssets(from: snapshot, forecasts: appState.bennerCycleEntries)
+        series = loaded
+        isLoadingSeries = false
     }
 
     private func cagr(for series: ComparisonAssetSeries) -> String {
@@ -214,8 +240,12 @@ private struct AssetComparisonChart: View {
 
     private var yDomain: ClosedRange<Double> {
         let values = series.flatMap { mode == .history ? $0.history.map(\.value) : $0.projection.map(\.value) }
-        let maxValue = values.max() ?? 100
-        return 0...(maxValue * 1.1)
+        guard let minValue = values.min(), let maxValue = values.max() else {
+            return 0...100
+        }
+        let padding = (maxValue - minValue) * 0.1
+        let lower = max(minValue - padding, 0)
+        return lower...(maxValue + padding)
     }
 }
 

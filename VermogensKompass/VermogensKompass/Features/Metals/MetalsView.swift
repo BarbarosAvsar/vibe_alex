@@ -8,6 +8,9 @@ struct MetalsView: View {
     @Binding var showSettings: Bool
     let onRequestConsultation: () -> Void
     @State private var selectedMetalID: String?
+    @State private var metalHistories: [String: [MetalTrendPoint]] = [:]
+    @State private var isLoadingHistory = false
+    private let marketService = MarketDataService()
 
     var body: some View {
         NavigationStack {
@@ -149,6 +152,9 @@ struct MetalsView: View {
             .chartYAxisLabel("Wert in \(currencySettings.selectedCurrency.code)")
             .cardStyle()
         }
+        .task(id: metal.id) {
+            await loadHistory(for: metal)
+        }
     }
 
     @ViewBuilder
@@ -190,6 +196,10 @@ struct MetalsView: View {
     }
 
     private func metalTrendPoints(for metal: MetalAsset) -> [MetalTrendPoint] {
+        if let cached = metalHistories[metal.id] {
+            return cached
+        }
+
         let currentYear = Calendar.current.component(.year, from: Date())
         let history = (0..<6).map { index -> MetalTrendPoint in
             let year = currentYear - (5 - index)
@@ -206,6 +216,27 @@ struct MetalsView: View {
                 partial.append(MetalTrendPoint(year: entry.year, value: nextValue, isProjection: true))
             }
         return history + projections
+    }
+
+    @MainActor
+    private func loadHistory(for metal: MetalAsset) async {
+        guard metalHistories[metal.id] == nil, isLoadingHistory == false else { return }
+        guard let instrument = metalInstrument(for: metal) else { return }
+        isLoadingHistory = true
+        defer { isLoadingHistory = false }
+
+        if let points = try? await marketService.fetchHistory(for: instrument, limitYears: 10) {
+            let mapped = points.map { MetalTrendPoint(year: $0.year, value: $0.value, isProjection: false) }
+            metalHistories[metal.id] = mapped
+        }
+    }
+
+    private func metalInstrument(for metal: MetalAsset) -> MarketInstrument? {
+        switch metal.symbol.lowercased() {
+        case "xau": return .xau
+        case "xag": return .xag
+        default: return nil
+        }
     }
 
     private func convertedPrice(for metal: MetalAsset) -> Double {

@@ -5,12 +5,12 @@ struct LiquidGlassBackground: View {
         GeometryReader { proxy in
             let warmOpacity = 0.22
             let coolOpacity = 0.18
-            let primaryOpacity = 0.16
+            let primaryOpacity = 0.18
             let base = Theme.background
 
             LinearGradient(
                 colors: [
-                    base,
+                    base.opacity(0.98),
                     base.opacity(0.94),
                     base.opacity(0.9)
                 ],
@@ -55,6 +55,7 @@ struct LiquidGlassBackground: View {
                 }
                 .background(base)
                 .ignoresSafeArea()
+                .compositingGroup()
         }
     }
 }

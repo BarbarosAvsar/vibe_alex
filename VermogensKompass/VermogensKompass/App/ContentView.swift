@@ -101,6 +101,7 @@ struct ContentView: View {
                 showNotificationOnboarding = true
             }
         }
+        .background(Theme.background)
     }
 
     private func openConsultation() {

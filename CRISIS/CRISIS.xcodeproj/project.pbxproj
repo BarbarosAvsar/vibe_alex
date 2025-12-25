@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F67000000000000000000001 /* CrisisFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */; };
+		F67000000000000000000002 /* BennerCycleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AC6E6DCC5FEE66A1657EDC /* BennerCycleServiceTests.swift */; };
+		F67000000000000000000003 /* CurrencyConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC25ECA1B6230C9BA90907 /* CurrencyConverterTests.swift */; };
+		F67000000000000000000004 /* ConsultationFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D9137AF411F7D41CB19E6B /* ConsultationFormViewModelTests.swift */; };
+		F67000000000000000000005 /* AdaptiveLayoutPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000003 /* AdaptiveLayoutPolicyTests.swift */; };
+		F67000000000000000000006 /* APILoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000004 /* APILoadingTests.swift */; };
+		F67000000000000000000007 /* CrisisFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */; };
+		F67000000000000000000008 /* BennerCycleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AC6E6DCC5FEE66A1657EDC /* BennerCycleServiceTests.swift */; };
+		F67000000000000000000009 /* CurrencyConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC25ECA1B6230C9BA90907 /* CurrencyConverterTests.swift */; };
+		F6700000000000000000000A /* ConsultationFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D9137AF411F7D41CB19E6B /* ConsultationFormViewModelTests.swift */; };
+		F6700000000000000000000B /* AdaptiveLayoutPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000003 /* AdaptiveLayoutPolicyTests.swift */; };
+		F6700000000000000000000C /* APILoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000004 /* APILoadingTests.swift */; };
+		F6700000000000000000000D /* CrisisFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */; };
+		F6700000000000000000000E /* BennerCycleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AC6E6DCC5FEE66A1657EDC /* BennerCycleServiceTests.swift */; };
+		F6700000000000000000000F /* CurrencyConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC25ECA1B6230C9BA90907 /* CurrencyConverterTests.swift */; };
+		F67000000000000000000010 /* ConsultationFormViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D9137AF411F7D41CB19E6B /* ConsultationFormViewModelTests.swift */; };
+		F67000000000000000000011 /* AdaptiveLayoutPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000003 /* AdaptiveLayoutPolicyTests.swift */; };
+		F67000000000000000000012 /* APILoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000004 /* APILoadingTests.swift */; };
 		F65000000000000000000001 /* AdaptiveLayoutPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000003 /* AdaptiveLayoutPolicyTests.swift */; };
 		F65000000000000000000002 /* APILoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000004 /* APILoadingTests.swift */; };
 		F62000000000000000000001 /* AdaptiveStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000001 /* AdaptiveStack.swift */; };
@@ -82,6 +100,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		F66500000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7072653FA7D019007BD0FE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F61000000000000000000001;
+			remoteInfo = CRISISTahoe;
+		};
+		F66500000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7072653FA7D019007BD0FE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F61000000000000000000002;
+			remoteInfo = CRISISVision;
+		};
+		F66500000000000000000003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7072653FA7D019007BD0FE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F61000000000000000000003;
+			remoteInfo = CRISISWatch;
+		};
 		E6B9829F2C9F5EFE00EFA8D4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7072653FA7D019007BD0FE5 /* Project object */;
@@ -106,6 +145,9 @@
 		F6000000000000000000000A /* CRISISTahoe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CRISISTahoe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6000000000000000000000B /* CRISISVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CRISISVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6000000000000000000000C /* CRISISWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CRISISWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66400000000000000000001 /* CRISISTahoeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CRISISTahoeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66400000000000000000002 /* CRISISVisionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CRISISVisionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66400000000000000000003 /* CRISISWatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CRISISWatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SyncStatusBanner.swift; path = SyncStatusBanner.swift; sourceTree = "<group>"; };
 		F5AA4C122CA11D8F00E3A1C1 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrivacyPolicyView.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		05012142113DBB560C687635 /* MetalAsset.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalAsset.swift; path = MetalAsset.swift; sourceTree = "<group>"; };
@@ -205,13 +247,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F61100000000000000000008 /* Frameworks */ = {
+	F61100000000000000000008 /* Frameworks */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			2498CF8D66F54C21B112ABA5 /* Foundation.framework in Frameworks */,
+			831592B39948BCF6B40CC3AF /* SwiftUI.framework in Frameworks */,
+			69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+		F66100000000000000000002 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2498CF8D66F54C21B112ABA5 /* Foundation.framework in Frameworks */,
-				831592B39948BCF6B40CC3AF /* SwiftUI.framework in Frameworks */,
-				69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66100000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66100000000000000000008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +282,7 @@
 		isa = PBXFrameworksBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
-			);
+		);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -434,6 +497,9 @@
 				F6000000000000000000000A /* CRISISTahoe.app */,
 				F6000000000000000000000B /* CRISISVision.app */,
 				F6000000000000000000000C /* CRISISWatch.app */,
+				F66400000000000000000001 /* CRISISTahoeTests.xctest */,
+				F66400000000000000000002 /* CRISISVisionTests.xctest */,
+				F66400000000000000000003 /* CRISISWatchTests.xctest */,
 				E6B982972C9F5EFE00EFA8D4 /* CRISISTests.xctest */,
 			);
 			name = Products;
@@ -575,9 +641,63 @@
 			productReference = F6000000000000000000000C /* CRISISWatch.app */;
 			productType = "com.apple.product-type.application";
 		};
-	E6B982962C9F5EFE00EFA8D4 /* CRISISTests */ = {
-		isa = PBXNativeTarget;
-		buildConfigurationList = E6B9829B2C9F5EFE00EFA8D4 /* Build configuration list for PBXNativeTarget "CRISISTests" */;
+		F66000000000000000000001 /* CRISISTahoeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F66200000000000000000001 /* Build configuration list for PBXNativeTarget "CRISISTahoeTests" */;
+			buildPhases = (
+				F66100000000000000000001 /* Sources */,
+				F66100000000000000000002 /* Frameworks */,
+				F66100000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F66600000000000000000001 /* PBXTargetDependency */,
+			);
+			name = CRISISTahoeTests;
+			productName = CRISISTahoeTests;
+			productReference = F66400000000000000000001 /* CRISISTahoeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F66000000000000000000002 /* CRISISVisionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F66200000000000000000002 /* Build configuration list for PBXNativeTarget "CRISISVisionTests" */;
+			buildPhases = (
+				F66100000000000000000004 /* Sources */,
+				F66100000000000000000005 /* Frameworks */,
+				F66100000000000000000006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F66600000000000000000002 /* PBXTargetDependency */,
+			);
+			name = CRISISVisionTests;
+			productName = CRISISVisionTests;
+			productReference = F66400000000000000000002 /* CRISISVisionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F66000000000000000000003 /* CRISISWatchTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F66200000000000000000003 /* Build configuration list for PBXNativeTarget "CRISISWatchTests" */;
+			buildPhases = (
+				F66100000000000000000007 /* Sources */,
+				F66100000000000000000008 /* Frameworks */,
+				F66100000000000000000009 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F66600000000000000000003 /* PBXTargetDependency */,
+			);
+			name = CRISISWatchTests;
+			productName = CRISISWatchTests;
+			productReference = F66400000000000000000003 /* CRISISWatchTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E6B982962C9F5EFE00EFA8D4 /* CRISISTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6B9829B2C9F5EFE00EFA8D4 /* Build configuration list for PBXNativeTarget "CRISISTests" */;
 			buildPhases = (
 				E6B982992C9F5EFE00EFA8D4 /* Sources */,
 				E6B982982C9F5EFE00EFA8D4 /* Frameworks */,
@@ -614,6 +734,18 @@
 					F61000000000000000000003 = {
 						CreatedOnToolsVersion = 16.0;
 					};
+					F66000000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = F61000000000000000000001;
+					};
+					F66000000000000000000002 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = F61000000000000000000002;
+					};
+					F66000000000000000000003 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = F61000000000000000000003;
+					};
 					E6B982962C9F5EFE00EFA8D4 = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 8BD61DE3DBC24CEB427EE4D3;
@@ -639,6 +771,9 @@
 				F61000000000000000000001 /* CRISISTahoe */,
 				F61000000000000000000002 /* CRISISVision */,
 				F61000000000000000000003 /* CRISISWatch */,
+				F66000000000000000000001 /* CRISISTahoeTests */,
+				F66000000000000000000002 /* CRISISVisionTests */,
+				F66000000000000000000003 /* CRISISWatchTests */,
 				E6B982962C9F5EFE00EFA8D4 /* CRISISTests */,
 			);
 		};
@@ -670,11 +805,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F61100000000000000000009 /* Resources */ = {
+	F61100000000000000000009 /* Resources */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			87FB7CD2DBB6A28B66C594AF /* Assets.xcassets in Resources */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+		F66100000000000000000003 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87FB7CD2DBB6A28B66C594AF /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66100000000000000000006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66100000000000000000009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -761,6 +917,8 @@
 				E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */,
 				44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */,
 				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
+				B1CA4B89AC1A95FCD934932F /* ConsultationService.swift in Sources */,
+				988C5AE2D0906C31A211BE1F /* ConsultationFormViewModel.swift in Sources */,
 				B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */,
 				B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */,
 				2976AE82FA0B3E81FC022794 /* MacroIndicatorService.swift in Sources */,
@@ -800,6 +958,8 @@
 				E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */,
 				44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */,
 				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
+				B1CA4B89AC1A95FCD934932F /* ConsultationService.swift in Sources */,
+				988C5AE2D0906C31A211BE1F /* ConsultationFormViewModel.swift in Sources */,
 				B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */,
 				B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */,
 				2976AE82FA0B3E81FC022794 /* MacroIndicatorService.swift in Sources */,
@@ -835,19 +995,62 @@
 				E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */,
 				44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */,
 				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
+				B1CA4B89AC1A95FCD934932F /* ConsultationService.swift in Sources */,
+				988C5AE2D0906C31A211BE1F /* ConsultationFormViewModel.swift in Sources */,
 				B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */,
 				B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */,
 				2976AE82FA0B3E81FC022794 /* MacroIndicatorService.swift in Sources */,
 				8951793C6E0EA1968F4064C3 /* MetalPriceService.swift in Sources */,
+				E84B88F41893339C93DB7329 /* ExchangeRateService.swift in Sources */,
 				A5E012130E5E54EDA023731D /* HTTPClient.swift in Sources */,
 				13FF4E194AF18A47906483F8 /* NotificationManager.swift in Sources */,
 				106D8C2819EB3D3F3A67AF83 /* AsyncState.swift in Sources */,
 				3AC1BEB9CB770A214EA68855 /* CrisisEvent.swift in Sources */,
 				C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */,
 				9B4F5FEC61BF556D9B2C19A7 /* BennerCyclePhase.swift in Sources */,
+				8A3BCD86A1B134BA8472CB0B /* DisplayCurrency.swift in Sources */,
 				CA5D8141306DE7B128199721 /* MetalAsset.swift in Sources */,
 				F0866BAA76D16387AF80AEEA /* MacroIndicator.swift in Sources */,
 				5042C4D19A498B135562AFDD /* AsyncStateView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66100000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F67000000000000000000006 /* APILoadingTests.swift in Sources */,
+				F67000000000000000000005 /* AdaptiveLayoutPolicyTests.swift in Sources */,
+				F67000000000000000000001 /* CrisisFeedTests.swift in Sources */,
+				F67000000000000000000003 /* CurrencyConverterTests.swift in Sources */,
+				F67000000000000000000002 /* BennerCycleServiceTests.swift in Sources */,
+				F67000000000000000000004 /* ConsultationFormViewModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66100000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6700000000000000000000C /* APILoadingTests.swift in Sources */,
+				F6700000000000000000000B /* AdaptiveLayoutPolicyTests.swift in Sources */,
+				F67000000000000000000007 /* CrisisFeedTests.swift in Sources */,
+				F67000000000000000000009 /* CurrencyConverterTests.swift in Sources */,
+				F67000000000000000000008 /* BennerCycleServiceTests.swift in Sources */,
+				F6700000000000000000000A /* ConsultationFormViewModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66100000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F67000000000000000000012 /* APILoadingTests.swift in Sources */,
+				F67000000000000000000011 /* AdaptiveLayoutPolicyTests.swift in Sources */,
+				F6700000000000000000000D /* CrisisFeedTests.swift in Sources */,
+				F6700000000000000000000F /* CurrencyConverterTests.swift in Sources */,
+				F6700000000000000000000E /* BennerCycleServiceTests.swift in Sources */,
+				F67000000000000000000010 /* ConsultationFormViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -867,6 +1070,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		F66600000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F61000000000000000000001 /* CRISISTahoe */;
+			targetProxy = F66500000000000000000001 /* PBXContainerItemProxy */;
+		};
+		F66600000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F61000000000000000000002 /* CRISISVision */;
+			targetProxy = F66500000000000000000002 /* PBXContainerItemProxy */;
+		};
+		F66600000000000000000003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F61000000000000000000003 /* CRISISWatch */;
+			targetProxy = F66500000000000000000003 /* PBXContainerItemProxy */;
+		};
 		E6B982A02C9F5EFE00EFA8D4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8BD61DE3DBC24CEB427EE4D3 /* CRISIS */;
@@ -1062,6 +1280,111 @@
 			};
 			name = Release;
 		};
+		F66300000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.macosTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CRISISTahoe.app/Contents/MacOS/CRISISTahoe";
+			};
+			name = Debug;
+		};
+		F66300000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.macosTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CRISISTahoe.app/Contents/MacOS/CRISISTahoe";
+			};
+			name = Release;
+		};
+		F66300000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.visionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xros_simulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CRISISVision.app/CRISISVision";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		F66300000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.visionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xros_simulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CRISISVision.app/CRISISVision";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		F66300000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.watchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CRISISWatch.app/CRISISWatch";
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		F66300000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.watchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CRISISWatch.app/CRISISWatch";
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
 		F63100000000000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1223,6 +1546,33 @@
 			buildConfigurations = (
 				F63100000000000000000005 /* Debug */,
 				F63100000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F66200000000000000000001 /* Build configuration list for PBXNativeTarget "CRISISTahoeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F66300000000000000000001 /* Debug */,
+				F66300000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F66200000000000000000002 /* Build configuration list for PBXNativeTarget "CRISISVisionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F66300000000000000000003 /* Debug */,
+				F66300000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F66200000000000000000003 /* Build configuration list for PBXNativeTarget "CRISISWatchTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F66300000000000000000005 /* Debug */,
+				F66300000000000000000006 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

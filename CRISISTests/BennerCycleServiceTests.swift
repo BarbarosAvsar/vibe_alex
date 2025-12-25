@@ -1,5 +1,14 @@
 import XCTest
+
+#if canImport(CRISIS)
 @testable import CRISIS
+#elseif canImport(CRISISTahoe)
+@testable import CRISISTahoe
+#elseif canImport(CRISISVision)
+@testable import CRISISVision
+#elseif canImport(CRISISWatch)
+@testable import CRISISWatch
+#endif
 
 final class BennerCycleServiceTests: XCTestCase {
     private let service = BennerCycleService(range: 1780...2150)

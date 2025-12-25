@@ -69,6 +69,22 @@
 - Cache with clarity (TTL, eviction, max size). Use `FileManager` or `URLCache` appropriately; never cache secrets.
 - Offline: queue mutations, reconcile on reconnect, and show sync status. Avoid silent data loss.
 
+### External API Integration (URLSession)
+- Build requests with `URLComponents` + `URLRequest`; set headers, HTTP method, timeouts, and cache policy explicitly.
+- Use `URLSession.data(for:)`/`dataTask` with `async/await`; validate `HTTPURLResponse` status codes before decoding.
+- Decode with `JSONDecoder` (set date strategies explicitly); map API DTOs into domain models before UI.
+- Use `URLSessionConfiguration.default` for cacheable data and `.ephemeral` for sensitive flows; set `waitsForConnectivity` when appropriate.
+- Keep API keys out of source control (Info.plist or env vars); proxy secrets server-side when possible.
+
+### CRISIS External API Map
+- **Metals pricing:** GoldPrice.org (`https://data-asg.goldprice.org/dbXRates/USD`) -> `MetalPriceService`.
+- **Macro indicators:** World Bank API (`https://api.worldbank.org/v2/country/{ISO}/indicator/{code}`) -> `MacroIndicatorService` (inflation, GDP growth, defense spending).
+- **Crisis feed:** NewsAPI.org (`/v2/top-headlines`, `/v2/everything`) + World Bank governance/GDP indicators -> `CrisisMonitorService`.
+- **Market history:** Stooq CSV (`https://stooq.pl/q/d/l/?s={instrument}&i=d`) -> `MarketDataService` (equities, real estate, metals history).
+- **FX rates:** ECB eurofxref (`https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml`) -> `ExchangeRateService`.
+- **Consultation submissions:** Midainvest contact endpoint (`https://api.midainvest.com/contact`) -> `ConsultationService`.
+- **Benner cycle:** computed locally (explicit exception) -> `BennerCycleService`.
+
 ## Performance & Diagnostics
 - Profile with Instruments (Time Profiler, Allocations, Energy, Network). Track cold/warm launch.
 - Keep the main thread free: move I/O and heavy work off the main actor; batch UI updates.
@@ -225,3 +241,4 @@
 - AVFoundation: https://developer.apple.com/documentation/avfoundation
 - MapKit: https://developer.apple.com/documentation/mapkit
 - Core Location: https://developer.apple.com/documentation/corelocation
+

@@ -1,4 +1,4 @@
-name: iOS CI
+﻿name: iOS CI
 
 on:
   push:
@@ -22,15 +22,16 @@ jobs:
         run: xcodebuild -version
 
       - name: Resolve packages
-        run: xcodebuild -resolvePackageDependencies -project VermogensKompass/VermogensKompass.xcodeproj -scheme VermogensKompass
+        run: xcodebuild -resolvePackageDependencies -project CRISIS/CRISIS.xcodeproj -scheme CRISIS
 
       - name: Build & Test
         run: |
           set -o pipefail
           xcodebuild \
-            -project VermogensKompass/VermogensKompass.xcodeproj \
-            -scheme VermogensKompass \
+            -project CRISIS/CRISIS.xcodeproj \
+            -scheme CRISIS \
             -destination 'platform=iOS Simulator,name=iPhone 15' \
             clean test
         env:
           NSUnbufferedIO: "YES"
+

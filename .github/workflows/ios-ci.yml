@@ -1,4 +1,4 @@
-name: iOS Release CI
+﻿name: iOS Release CI
 
 # Required GitHub Secrets for both variants
 #   APPLE_TEAM_ID                       -> 10-character Apple Developer Team ID used for signing/export.
@@ -37,17 +37,17 @@ on:
           - both
 
 env:
-  PROJECT_PATH: VermogensKompass/VermogensKompass.xcodeproj
-  SCHEME: VermogensKompass
+  PROJECT_PATH: CRISIS/CRISIS.xcodeproj
+  SCHEME: CRISIS
   BUNDLE_IDENTIFIER: de.vibecode.vermoegenskompass
-  APP_NAME: VermogensKompass
-  ARCHIVE_PATH: build/VermogensKompass.xcarchive
-  IPA_PATH: build/VermogensKompass.ipa
+  APP_NAME: CRISIS
+  ARCHIVE_PATH: build/CRISIS.xcarchive
+  IPA_PATH: build/CRISIS.ipa
   EXPORT_OPTIONS_PATH: ExportOptions.plist
 
 jobs:
   variant_a_xcodebuild:
-    name: Variant A – xcodebuild / altool
+    name: Variant A â€“ xcodebuild / altool
     runs-on: macos-latest
     if: ${{ !vars.IOS_CI_VARIANT || vars.IOS_CI_VARIANT == 'xcodebuild' || vars.IOS_CI_VARIANT == 'both' || inputs.use_variant == 'xcodebuild' || inputs.use_variant == 'both' }}
     env:
@@ -182,7 +182,7 @@ jobs:
             ${{ env.EXPORT_OPTIONS_PATH }}
 
   variant_b_fastlane:
-    name: Variant B – Fastlane lane
+    name: Variant B â€“ Fastlane lane
     runs-on: macos-latest
     needs: []
     if: ${{ vars.IOS_CI_VARIANT == 'fastlane' || vars.IOS_CI_VARIANT == 'both' || inputs.use_variant == 'fastlane' || inputs.use_variant == 'both' }}
@@ -266,3 +266,4 @@ jobs:
           path: |
             build/*.ipa
             build/*.xcarchive
+

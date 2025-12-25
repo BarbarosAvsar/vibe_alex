@@ -4,56 +4,57 @@
 - **How to update:** When you review a page, add an entry with status, date, and what changed in the guide.
 
 ## Status legend
-- ✅ Covered in guide (summary-level or checklist)
-- 🟡 Not fully reviewed; referenced for awareness
-- ⏳ Pending/not yet reviewed
+- âœ… Covered in guide (summary-level or checklist)
+- ðŸŸ¡ Not fully reviewed; referenced for awareness
+- â³ Pending/not yet reviewed
 
 ## Covered or referenced in the guide
-- ✅ https://developer.apple.com/documentation (Featured documentation hub)
-- ✅ https://developer.apple.com/app-store/guidelines/ (App Store guidelines hub)
-- ✅ https://developer.apple.com/app-store/review/guidelines/ (Design/legal/business clusters)
-- ✅ https://developer.apple.com/tutorials/swiftui/
-- ✅ https://developer.apple.com/tutorials/develop-in-swift/welcome-to-develop-in-swift-tutorials
-- ✅ https://developer.apple.com/design/human-interface-guidelines/designing-for-ios
-- ✅ https://developer.apple.com/design/human-interface-guidelines/inclusion
-- ✅ https://developer.apple.com/design/resources/#ios-apps
-- ✅ https://developer.apple.com/design/human-interface-guidelines/right-to-left
-- ✅ https://developer.apple.com/documentation/xcode/localization
-- ✅ https://developer.apple.com/documentation/accessibility
-- ✅ https://developer.apple.com/documentation/uikit/protecting-the-user-s-privacy
-- ✅ https://developer.apple.com/documentation/authenticationservices/supporting-passkeys
-- ✅ https://developer.apple.com/documentation/security/keychain-services/
-- ✅ https://developer.apple.com/documentation/security
-- ✅ https://developer.apple.com/documentation/foundation
-- ✅ https://developer.apple.com/documentation/xcode/
-- ✅ https://developer.apple.com/documentation/xcode/improving-your-app-s-performance
-- ✅ https://developer.apple.com/ipados/get-started/
-- ✅ https://developer.apple.com/documentation/apple-silicon/running-your-ios-apps-in-macos
-- ✅ https://developer.apple.com/app-store/submitting/
-- ✅ https://developer.apple.com/app-store/business-models/
-- ✅ https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-18-release-notes
-- ✅ https://developer.apple.com/videos/all-videos/
-- ✅ https://developer.apple.com/forums/
-- ✅ https://developer.apple.com/documentation/bundleresources/privacy_manifest_files — 2025-12-02 — Added privacy manifest and required reason API guidance (Privacy & Data Governance).
-- ✅ https://developer.apple.com/documentation/apptrackingtransparency/ — 2025-12-02 — Added ATT prompts/behavior (Privacy & Data Governance).
-- ✅ https://developer.apple.com/documentation/backgroundtasks — 2025-12-02 — Added BackgroundTasks checklist (Background Execution & Notifications).
-- ✅ https://developer.apple.com/documentation/usernotifications — 2025-12-02 — Added notification categories/prompts best practices (Background Execution & Notifications).
-- ✅ https://developer.apple.com/documentation/devicecheck — 2025-12-02 — Added App Attest/DeviceCheck integrity notes (Privacy & Data Governance).
-- ✅ https://developer.apple.com/documentation/appstoreserverapi — 2025-12-02 — Added App Store Server API receipt/notification handling (StoreKit & Business).
-- ✅ https://developer.apple.com/documentation/coredata — 2025-12-02 — Added Core Data migrations/contexts guidance (Framework & Feature How-Tos).
-- ✅ https://developer.apple.com/documentation/cloudkit — 2025-12-02 — Added CloudKit database/sync/quotas/conflicts guidance (Framework & Feature How-Tos).
-- ✅ https://developer.apple.com/documentation/coreml — 2025-12-02 — Added Core ML on-device/ANE model considerations (Framework & Feature How-Tos).
-- ✅ https://developer.apple.com/documentation/vision — 2025-12-02 — Added Vision request usage/confidence/redaction guidance (Framework & Feature How-Tos).
-- ✅ https://developer.apple.com/documentation/metal — 2025-12-02 — Added Metal performance/compatibility notes (Framework & Feature How-Tos).
-- ✅ https://developer.apple.com/documentation/avfoundation — 2025-12-02 — Added AVFoundation capture/playback/offline guidance (Framework & Feature How-Tos).
-- ✅ https://developer.apple.com/documentation/mapkit — 2025-12-02 — Added MapKit use for mapping/search; noted tile usage caution (Framework & Feature How-Tos).
-- ✅ https://developer.apple.com/documentation/corelocation — 2025-12-02 — Added Core Location permission/accuracy/battery practices (Framework & Feature How-Tos).
-- ✅ Local: `prototype/Featured - Apple Developer Documentation.url`
-- ✅ Local: `prototype/Guidelines - App Store - Apple Developer.url`
-- ✅ Local: `reference/clean_code_swift.md`
+- âœ… https://developer.apple.com/documentation (Featured documentation hub)
+- âœ… https://developer.apple.com/app-store/guidelines/ (App Store guidelines hub)
+- âœ… https://developer.apple.com/app-store/review/guidelines/ (Design/legal/business clusters)
+- âœ… https://developer.apple.com/tutorials/swiftui/
+- âœ… https://developer.apple.com/tutorials/develop-in-swift/welcome-to-develop-in-swift-tutorials
+- âœ… https://developer.apple.com/design/human-interface-guidelines/designing-for-ios
+- âœ… https://developer.apple.com/design/human-interface-guidelines/inclusion
+- âœ… https://developer.apple.com/design/resources/#ios-apps
+- âœ… https://developer.apple.com/design/human-interface-guidelines/right-to-left
+- âœ… https://developer.apple.com/documentation/xcode/localization
+- âœ… https://developer.apple.com/documentation/accessibility
+- âœ… https://developer.apple.com/documentation/uikit/protecting-the-user-s-privacy
+- âœ… https://developer.apple.com/documentation/authenticationservices/supporting-passkeys
+- âœ… https://developer.apple.com/documentation/security/keychain-services/
+- âœ… https://developer.apple.com/documentation/security
+- âœ… https://developer.apple.com/documentation/foundation
+- âœ… https://developer.apple.com/documentation/foundation/urlsession - 2025-12-25 - Added URLSession API integration checklist (Data, State, and Offline).
+- âœ… https://developer.apple.com/documentation/xcode/
+- âœ… https://developer.apple.com/documentation/xcode/improving-your-app-s-performance
+- âœ… https://developer.apple.com/ipados/get-started/
+- âœ… https://developer.apple.com/documentation/apple-silicon/running-your-ios-apps-in-macos
+- âœ… https://developer.apple.com/app-store/submitting/
+- âœ… https://developer.apple.com/app-store/business-models/
+- âœ… https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-18-release-notes
+- âœ… https://developer.apple.com/videos/all-videos/
+- âœ… https://developer.apple.com/forums/
+- âœ… https://developer.apple.com/documentation/bundleresources/privacy_manifest_files â€” 2025-12-02 â€” Added privacy manifest and required reason API guidance (Privacy & Data Governance).
+- âœ… https://developer.apple.com/documentation/apptrackingtransparency/ â€” 2025-12-02 â€” Added ATT prompts/behavior (Privacy & Data Governance).
+- âœ… https://developer.apple.com/documentation/backgroundtasks â€” 2025-12-02 â€” Added BackgroundTasks checklist (Background Execution & Notifications).
+- âœ… https://developer.apple.com/documentation/usernotifications â€” 2025-12-02 â€” Added notification categories/prompts best practices (Background Execution & Notifications).
+- âœ… https://developer.apple.com/documentation/devicecheck â€” 2025-12-02 â€” Added App Attest/DeviceCheck integrity notes (Privacy & Data Governance).
+- âœ… https://developer.apple.com/documentation/appstoreserverapi â€” 2025-12-02 â€” Added App Store Server API receipt/notification handling (StoreKit & Business).
+- âœ… https://developer.apple.com/documentation/coredata â€” 2025-12-02 â€” Added Core Data migrations/contexts guidance (Framework & Feature How-Tos).
+- âœ… https://developer.apple.com/documentation/cloudkit â€” 2025-12-02 â€” Added CloudKit database/sync/quotas/conflicts guidance (Framework & Feature How-Tos).
+- âœ… https://developer.apple.com/documentation/coreml â€” 2025-12-02 â€” Added Core ML on-device/ANE model considerations (Framework & Feature How-Tos).
+- âœ… https://developer.apple.com/documentation/vision â€” 2025-12-02 â€” Added Vision request usage/confidence/redaction guidance (Framework & Feature How-Tos).
+- âœ… https://developer.apple.com/documentation/metal â€” 2025-12-02 â€” Added Metal performance/compatibility notes (Framework & Feature How-Tos).
+- âœ… https://developer.apple.com/documentation/avfoundation â€” 2025-12-02 â€” Added AVFoundation capture/playback/offline guidance (Framework & Feature How-Tos).
+- âœ… https://developer.apple.com/documentation/mapkit â€” 2025-12-02 â€” Added MapKit use for mapping/search; noted tile usage caution (Framework & Feature How-Tos).
+- âœ… https://developer.apple.com/documentation/corelocation â€” 2025-12-02 â€” Added Core Location permission/accuracy/battery practices (Framework & Feature How-Tos).
+- âœ… Local: `prototype/Featured - Apple Developer Documentation.url`
+- âœ… Local: `prototype/Guidelines - App Store - Apple Developer.url`
+- âœ… Local: `reference/clean_code_swift.md`
 
 ## Pending (not yet reviewed in detail)
-- ⏳ All other developer.apple.com pages, WWDC sessions, sample code, and PDFs not listed above.
+- â³ All other developer.apple.com pages, WWDC sessions, sample code, and PDFs not listed above.
 
 ## Notes
 - When adding new coverage, include the URL, date reviewed, and where in `ultimate_ios_developer_guide.md` you integrated the content.

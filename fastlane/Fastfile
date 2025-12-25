@@ -8,14 +8,14 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Build VermogensKompass and upload it to TestFlight via pilot"
+  desc "Build CRISIS and upload it to TestFlight via pilot"
   lane :beta do
-    project_path = ENV.fetch("PROJECT_PATH", "VermogensKompass/VermogensKompass.xcodeproj")
-    scheme = ENV.fetch("SCHEME", "VermogensKompass")
-    archive_path = ENV.fetch("ARCHIVE_PATH", "build/VermogensKompass.xcarchive")
-    ipa_name = ENV.fetch("APP_NAME", "VermogensKompass")
-    bundle_identifier = ENV.fetch("BUNDLE_IDENTIFIER", "de.vibecode.vermoegenskompass")
-    provisioning_profile_name = ENV.fetch("APPLE_PROVISIONING_PROFILE_NAME", "VermogensKompass_AppStore")
+    project_path = ENV.fetch("PROJECT_PATH", "CRISIS/CRISIS.xcodeproj")
+    scheme = ENV.fetch("SCHEME", "CRISIS")
+    archive_path = ENV.fetch("ARCHIVE_PATH", "build/CRISIS.xcarchive")
+    ipa_name = ENV.fetch("APP_NAME", "CRISIS")
+    bundle_identifier = ENV.fetch("BUNDLE_IDENTIFIER", "de.vibecode.crisis")
+    provisioning_profile_name = ENV.fetch("APPLE_PROVISIONING_PROFILE_NAME", "CRISIS_AppStore")
 
     api_key = app_store_connect_api_key(
       key_id: ENV.fetch("APP_STORE_CONNECT_API_KEY_ID"),
@@ -53,3 +53,4 @@ platform :ios do
     )
   end
 end
+

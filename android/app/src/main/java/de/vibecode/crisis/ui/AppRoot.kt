@@ -267,7 +267,7 @@ fun AppRoot(
 enum class TopLevelDestination(val route: String, val label: Int, val icon: @Composable () -> Unit) {
     Overview("overview", R.string.tab_overview, { androidx.compose.material3.Icon(Icons.Default.Home, null) }),
     Comparison("comparison", R.string.tab_comparison, { androidx.compose.material3.Icon(Icons.Default.ShowChart, null) }),
-    Metals("metals", R.string.tab_metals, { de.vibecode.crisis.ui.components.BrilliantDiamondIcon(size = 20.dp) }),
+    Metals("metals", R.string.tab_metals, { de.vibecode.crisis.ui.components.BrilliantDiamondIcon(iconSize = 20.dp) }),
     Crisis("crisis", R.string.tab_crisis, { androidx.compose.material3.Icon(Icons.Default.Warning, null) }),
     Consultation("consultation", R.string.tab_consultation, { androidx.compose.material3.Icon(Icons.Default.Person, null) });
 

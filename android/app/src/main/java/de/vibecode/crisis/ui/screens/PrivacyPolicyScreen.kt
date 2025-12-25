@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -22,6 +23,7 @@ import de.vibecode.crisis.ui.components.LogoMark
 import de.vibecode.crisis.ui.theme.CrisisColors
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun PrivacyPolicyScreen(onClose: () -> Unit) {
     Column {
         TopAppBar(

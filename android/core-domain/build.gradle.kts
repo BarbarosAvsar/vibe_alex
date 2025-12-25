@@ -10,8 +10,18 @@ android {
     defaultConfig {
         minSdk = 24
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
     implementation(project(":core-model"))
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 }

@@ -51,7 +51,6 @@ jobs:
     runs-on: macos-latest
     if: ${{ !vars.IOS_CI_VARIANT || vars.IOS_CI_VARIANT == 'xcodebuild' || vars.IOS_CI_VARIANT == 'both' || inputs.use_variant == 'xcodebuild' || inputs.use_variant == 'both' }}
     env:
-      KEYCHAIN_PATH: ${{ runner.temp }}/app-signing.keychain-db
       KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
     steps:
       - name: Checkout source
@@ -73,6 +72,7 @@ jobs:
             echo "APPLE_CERTIFICATE_P12_BASE64 is not configured" >&2
             exit 1
           fi
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
@@ -187,7 +187,6 @@ jobs:
     needs: []
     if: ${{ vars.IOS_CI_VARIANT == 'fastlane' || vars.IOS_CI_VARIANT == 'both' || inputs.use_variant == 'fastlane' || inputs.use_variant == 'both' }}
     env:
-      KEYCHAIN_PATH: ${{ runner.temp }}/app-signing.keychain-db
       KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
     steps:
       - name: Checkout source
@@ -208,6 +207,7 @@ jobs:
             echo "APPLE_CERTIFICATE_P12_BASE64 is not configured" >&2
             exit 1
           fi
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"

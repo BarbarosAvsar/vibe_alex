@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.atStartOfDayIn
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.xmlpull.v1.XmlPullParser
@@ -45,7 +45,7 @@ private class EcbRateParser {
                 val timeValue = parser.getAttributeValue(null, "time")
                 if (timeValue != null) {
                     date = runCatching {
-                        LocalDate.parse(timeValue).toInstant(TimeZone.UTC)
+                        LocalDate.parse(timeValue).atStartOfDayIn(TimeZone.UTC)
                     }.getOrNull()
                 }
                 val currency = parser.getAttributeValue(null, "currency")

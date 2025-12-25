@@ -1,4 +1,4 @@
-﻿package de.vibecode.crisis.ui.screens
+package de.vibecode.crisis.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -43,6 +42,7 @@ fun NotificationOnboardingDialog(
 ) {
     var wantsAlerts by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    val toggleErrorText = stringResource(R.string.notification_onboarding_error_toggle)
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -102,7 +102,7 @@ fun NotificationOnboardingDialog(
                 Button(
                     onClick = {
                         if (!wantsAlerts) {
-                            errorMessage = stringResource(R.string.notification_onboarding_error_toggle)
+                            errorMessage = toggleErrorText
                             return@Button
                         }
                         onEnable()

@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import de.vibecode.crisis.ui.theme.CrisisColors
 
 @Composable
-fun BrilliantDiamondIcon(size: Dp) {
-    Canvas(modifier = Modifier.size(size)) {
+fun BrilliantDiamondIcon(iconSize: Dp) {
+    Canvas(modifier = Modifier.size(iconSize)) {
         val s = size.minDimension
         val top = Offset(s * 0.5f, s * 0.06f)
         val leftTop = Offset(s * 0.18f, s * 0.32f)

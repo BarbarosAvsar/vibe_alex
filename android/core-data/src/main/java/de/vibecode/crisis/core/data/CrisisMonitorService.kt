@@ -11,7 +11,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonArray
@@ -212,5 +212,5 @@ private data class WorldBankValue(val year: Int, val value: Double)
 
 private fun yearInstant(year: Int): Instant {
     val date = LocalDate(year, 1, 1)
-    return date.toInstant(TimeZone.UTC)
+    return date.atStartOfDayIn(TimeZone.UTC)
 }

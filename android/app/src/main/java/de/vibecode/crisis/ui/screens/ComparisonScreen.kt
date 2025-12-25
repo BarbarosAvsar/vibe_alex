@@ -1,4 +1,4 @@
-﻿package de.vibecode.crisis.ui.screens
+package de.vibecode.crisis.ui.screens
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.verticalScroll
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -56,6 +55,7 @@ import de.vibecode.crisis.ui.components.LogoMark
 import de.vibecode.crisis.ui.components.SettingsButton
 import de.vibecode.crisis.ui.theme.CrisisColors
 import java.util.Calendar
+import kotlin.math.pow
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -138,6 +138,7 @@ fun ComparisonScreen(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun AssetSelection(
     mode: ComparisonMode,
     onModeChange: (ComparisonMode) -> Unit,
@@ -242,24 +243,26 @@ private fun PerformanceSection(
         val selected = series.filter { activeAssets.contains(it.asset) }
         val hasHistory = selected.any { it.history.isNotEmpty() }
 
-        if (isLoading && !hasHistory) {
-            Text(text = stringResource(R.string.comparison_loading))
-            return
-        }
-        if (!hasHistory) {
-            Text(text = stringResource(R.string.comparison_no_data), color = CrisisColors.textSecondary)
-            return
-        }
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            selected.forEach { item ->
-                Row {
-                    Text(text = item.asset.displayName, style = MaterialTheme.typography.labelLarge)
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "Historisch ${cagr(item.history)} / Prognose ${projectionDelta(item.history, item.projection)}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = CrisisColors.textSecondary
-                    )
+        when {
+            isLoading && !hasHistory -> {
+                Text(text = stringResource(R.string.comparison_loading))
+            }
+            !hasHistory -> {
+                Text(text = stringResource(R.string.comparison_no_data), color = CrisisColors.textSecondary)
+            }
+            else -> {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    selected.forEach { item ->
+                        Row {
+                            Text(text = item.asset.displayName, style = MaterialTheme.typography.labelLarge)
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                text = "Historisch ${cagr(item.history)} / Prognose ${projectionDelta(item.history, item.projection)}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = CrisisColors.textSecondary
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -271,7 +274,8 @@ private fun cagr(history: List<ComparisonPoint>): String {
     val last = history.lastOrNull() ?: return "n/v"
     if (first.year == last.year) return "n/v"
     val years = (last.year - first.year).toDouble()
-    val growth = kotlin.math.pow(kotlin.math.max(last.value, 0.1) / kotlin.math.max(first.value, 0.1), 1 / years) - 1
+    val base = kotlin.math.max(last.value, 0.1) / kotlin.math.max(first.value, 0.1)
+    val growth = base.pow(1 / years) - 1
     return String.format("%.1f%%", growth * 100)
 }
 

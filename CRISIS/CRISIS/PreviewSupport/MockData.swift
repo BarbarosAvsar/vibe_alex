@@ -1,5 +1,8 @@
 import Foundation
 
+#if DEBUG
+@testable import CRISIS
+
 enum MockData {
     static let snapshot: DashboardSnapshot = {
         let metals = [
@@ -79,3 +82,4 @@ enum MockData {
         )
     }()
 }
+#endif

@@ -108,11 +108,6 @@ struct ContentView: View {
     }
 }
 
-#Preview("Root view") {
-    ContentView()
-        .environment(AppState(repository: DashboardRepository(mockData: MockData.snapshot)))
-}
-
 extension ContentView {
     enum Tab: Hashable {
         case overview

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F65000000000000000000001 /* AdaptiveLayoutPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000003 /* AdaptiveLayoutPolicyTests.swift */; };
+		F65000000000000000000002 /* APILoadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65000000000000000000004 /* APILoadingTests.swift */; };
 		F62000000000000000000001 /* AdaptiveStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000001 /* AdaptiveStack.swift */; };
 		F62000000000000000000002 /* PlatformDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000002 /* PlatformDashboardView.swift */; };
 		F62000000000000000000003 /* ConsultationPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000003 /* ConsultationPanelView.swift */; };
@@ -90,6 +92,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F65000000000000000000003 /* AdaptiveLayoutPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLayoutPolicyTests.swift; sourceTree = "<group>"; };
+		F65000000000000000000004 /* APILoadingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APILoadingTests.swift; sourceTree = "<group>"; };
 		F60000000000000000000001 /* AdaptiveStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdaptiveStack.swift; path = AdaptiveStack.swift; sourceTree = "<group>"; };
 		F60000000000000000000002 /* PlatformDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlatformDashboardView.swift; path = PlatformDashboardView.swift; sourceTree = "<group>"; };
 		F60000000000000000000003 /* ConsultationPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConsultationPanelView.swift; path = ConsultationPanelView.swift; sourceTree = "<group>"; };
@@ -413,6 +417,8 @@
 		E6B982932C9F5EFE00EFA8D4 /* CRISISTests */ = {
 			isa = PBXGroup;
 			children = (
+				F65000000000000000000004 /* APILoadingTests.swift */,
+				F65000000000000000000003 /* AdaptiveLayoutPolicyTests.swift */,
 				E6B982942C9F5EFE00EFA8D4 /* CrisisFeedTests.swift */,
 				A9AC6E6DCC5FEE66A1657EDC /* BennerCycleServiceTests.swift */,
 				D7CC25ECA1B6230C9BA90907 /* CurrencyConverterTests.swift */,
@@ -849,6 +855,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F65000000000000000000002 /* APILoadingTests.swift in Sources */,
+				F65000000000000000000001 /* AdaptiveLayoutPolicyTests.swift in Sources */,
 				E6B982952C9F5EFE00EFA8D4 /* CrisisFeedTests.swift in Sources */,
 				D7CC25EDA1B6230C9BA90907 /* CurrencyConverterTests.swift in Sources */,
 				C1CEDCF7C05E5E7A7CB2D61E /* BennerCycleServiceTests.swift in Sources */,

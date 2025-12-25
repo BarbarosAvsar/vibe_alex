@@ -37,6 +37,18 @@ struct AdaptiveStack<Content: View>: View {
     }
 
     private var prefersHorizontal: Bool {
+        AdaptiveLayoutPolicy.prefersHorizontal(
+            horizontalSizeClass: horizontalSizeClass,
+            verticalSizeClass: verticalSizeClass
+        )
+    }
+}
+
+enum AdaptiveLayoutPolicy {
+    static func prefersHorizontal(
+        horizontalSizeClass: UserInterfaceSizeClass?,
+        verticalSizeClass: UserInterfaceSizeClass?
+    ) -> Bool {
         if let horizontalSizeClass {
             return horizontalSizeClass == .regular
         }

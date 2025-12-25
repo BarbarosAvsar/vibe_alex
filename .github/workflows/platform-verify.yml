@@ -1,0 +1,88 @@
+name: Platform Verify
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  platform-builds:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - scheme: CRISISTahoe
+            sdk_match: macosx26
+            destination: "platform=macOS,arch=arm64"
+          - scheme: CRISISVision
+            sdk_match: xros26
+            destination: "generic/platform=visionOS"
+          - scheme: CRISISWatch
+            sdk_match: watchos26
+            destination: "generic/platform=watchOS"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select latest Xcode
+        run: |
+          if [ -d /Applications/Xcode.app ]; then
+            sudo xcode-select -s /Applications/Xcode.app
+          else
+            sudo xcode-select -s /Applications/Xcode_15.4.app
+          fi
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Check SDK availability
+        id: sdk
+        run: |
+          if xcodebuild -showsdks | tr -d '\r' | grep -q "${{ matrix.sdk_match }}"; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip build (SDK unavailable)
+        if: steps.sdk.outputs.available != 'true'
+        run: |
+          echo "SDK '${{ matrix.sdk_match }}' not available; skipping ${{ matrix.scheme }}."
+
+      - name: Verify signing and entitlements
+        if: steps.sdk.outputs.available == 'true'
+        run: |
+          set -euo pipefail
+          settings=$(xcodebuild -project CRISIS/CRISIS.xcodeproj -scheme "${{ matrix.scheme }}" -showBuildSettings | tr -d '\r')
+          entitlements=$(echo "$settings" | awk -F ' = ' '/CODE_SIGN_ENTITLEMENTS/ {print $2; exit}')
+          code_sign_style=$(echo "$settings" | awk -F ' = ' '/CODE_SIGN_STYLE/ {print $2; exit}')
+          bundle_id=$(echo "$settings" | awk -F ' = ' '/PRODUCT_BUNDLE_IDENTIFIER/ {print $2; exit}')
+
+          if [ -z "$code_sign_style" ]; then
+            echo "CODE_SIGN_STYLE not set for ${{ matrix.scheme }}" >&2
+            exit 1
+          fi
+
+          if [ -z "$bundle_id" ]; then
+            echo "PRODUCT_BUNDLE_IDENTIFIER not set for ${{ matrix.scheme }}" >&2
+            exit 1
+          fi
+
+          if [ -n "$entitlements" ] && [ ! -f "$entitlements" ]; then
+            echo "Entitlements file missing: $entitlements" >&2
+            exit 1
+          fi
+
+      - name: Build target
+        if: steps.sdk.outputs.available == 'true'
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project CRISIS/CRISIS.xcodeproj \
+            -scheme "${{ matrix.scheme }}" \
+            -destination "${{ matrix.destination }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            build

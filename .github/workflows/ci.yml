@@ -14,9 +14,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Select bundled Xcode
+      - name: Select latest Xcode
         run: |
-          sudo xcode-select -s /Applications/Xcode_15.4.app
+          if [ -d /Applications/Xcode.app ]; then
+            sudo xcode-select -s /Applications/Xcode.app
+          else
+            sudo xcode-select -s /Applications/Xcode_15.4.app
+          fi
 
       - name: Show Xcode version
         run: xcodebuild -version
@@ -24,13 +28,65 @@ jobs:
       - name: Resolve packages
         run: xcodebuild -resolvePackageDependencies -project CRISIS/CRISIS.xcodeproj -scheme CRISIS
 
+      - name: Select iOS simulator
+        id: simulator
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import subprocess
+
+          data = subprocess.check_output(["xcrun", "simctl", "list", "-j"]).decode("utf-8")
+          payload = json.loads(data)
+          runtimes = [
+              runtime for runtime in payload.get("runtimes", [])
+              if runtime.get("platform") == "iOS" and runtime.get("isAvailable")
+          ]
+
+          def version_tuple(value):
+              return tuple(int(part) for part in value.split(".") if part.isdigit())
+
+          runtimes.sort(key=lambda runtime: version_tuple(runtime.get("version", "0")), reverse=True)
+          available = False
+          destination = ""
+          runtime_version = ""
+          device_name = ""
+
+          if runtimes:
+              runtime = runtimes[0]
+              runtime_version = runtime.get("version", "")
+              if version_tuple(runtime_version)[:1] >= (26,):
+                  devices = payload.get("devices", {}).get(runtime.get("identifier", ""), [])
+                  device = next((item for item in devices if item.get("isAvailable") and "iPhone" in item.get("name", "")), None)
+                  if device is None:
+                      device = next((item for item in devices if item.get("isAvailable")), None)
+                  if device:
+                      available = True
+                      destination = f"id={device.get('udid')}"
+                      device_name = device.get("name", "")
+
+          print(f"available={'true' if available else 'false'}")
+          if destination:
+              print(f"destination={destination}")
+          if runtime_version:
+              print(f"runtime={runtime_version}")
+          if device_name:
+              print(f"device_name={device_name}")
+          PY
+
+      - name: Skip iOS tests (SDK unavailable)
+        if: steps.simulator.outputs.available != 'true'
+        run: |
+          echo "No iOS 26 simulator runtime available. Skipping iOS tests."
+
       - name: Build & Test
+        if: steps.simulator.outputs.available == 'true'
         run: |
           set -o pipefail
           xcodebuild \
             -project CRISIS/CRISIS.xcodeproj \
             -scheme CRISIS \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination "${{ steps.simulator.outputs.destination }}" \
             clean test
         env:
           NSUnbufferedIO: "YES"

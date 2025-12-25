@@ -20,10 +20,17 @@ struct ComparisonView: View {
                     AsyncStateView(state: appState.dashboardState) {
                         Task { await appState.refreshDashboard(force: true) }
                     } content: { _ in
-                        VStack(spacing: 24) {
-                            assetSelection(series)
-                            comparisonChart(series)
-                            performanceOverview(series)
+                        AdaptiveStack(spacing: 24) {
+                            VStack(alignment: .leading, spacing: 24) {
+                                assetSelection(series)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                            VStack(alignment: .leading, spacing: 24) {
+                                comparisonChart(series)
+                                performanceOverview(series)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding()
                         .task(id: appState.lastUpdated ?? Date.distantPast) {
@@ -34,10 +41,10 @@ struct ComparisonView: View {
             }
             .navigationTitle("Vergleich")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
                     ToolbarStatusControl {
                         showSettings = true
                     }

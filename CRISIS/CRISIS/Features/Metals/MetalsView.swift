@@ -21,14 +21,26 @@ struct MetalsView: View {
                         Task { await appState.refreshDashboard(force: true) }
                     } content: { snapshot in
                         VStack(spacing: 24) {
-                            metalSelector(for: snapshot.metals)
-                            if let focus = selectedMetal(from: snapshot.metals) {
-                                MetalCard(asset: focus)
-                                trendChart(for: focus)
-                                bennerProjection(for: focus)
-                                crisisResilience(for: focus, snapshot: snapshot)
-                                WhyEdelmetalleSection()
+                            AdaptiveStack(spacing: 24) {
+                                VStack(alignment: .leading, spacing: 24) {
+                                    metalSelector(for: snapshot.metals)
+                                    if let focus = selectedMetal(from: snapshot.metals) {
+                                        MetalCard(asset: focus)
+                                        bennerProjection(for: focus)
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                                VStack(alignment: .leading, spacing: 24) {
+                                    if let focus = selectedMetal(from: snapshot.metals) {
+                                        trendChart(for: focus)
+                                        crisisResilience(for: focus, snapshot: snapshot)
+                                        WhyEdelmetalleSection()
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
+
                             PrimaryCTAButton(action: onRequestConsultation)
                         }
                         .padding()
@@ -37,10 +49,10 @@ struct MetalsView: View {
             }
             .navigationTitle("Edelmetalle")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
                     ToolbarStatusControl {
                         showSettings = true
                     }

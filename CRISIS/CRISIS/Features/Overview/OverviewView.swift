@@ -15,10 +15,20 @@ struct OverviewView: View {
                         Task { await appState.refreshDashboard(force: true) }
                     } content: { snapshot in
                         VStack(spacing: 24) {
-                            warningHero()
-                            metalFocusSection(snapshot)
-                            macroSection(snapshot)
-                            WhyEdelmetalleSection()
+                            AdaptiveStack(spacing: 24) {
+                                VStack(alignment: .leading, spacing: 24) {
+                                    warningHero()
+                                    metalFocusSection(snapshot)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                                VStack(alignment: .leading, spacing: 24) {
+                                    macroSection(snapshot)
+                                    WhyEdelmetalleSection()
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+
                             PrimaryCTAButton(action: onRequestConsultation)
                         }
                         .padding()
@@ -27,10 +37,10 @@ struct OverviewView: View {
             }
             .navigationTitle("Übersicht")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
                     ToolbarStatusControl {
                         showSettings = true
                     }

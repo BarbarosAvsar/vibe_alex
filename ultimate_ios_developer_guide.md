@@ -95,14 +95,25 @@
 
 ## Platform Fit
 - **iPhone:** Thumb-friendly targets, tab bars for top-level, clear back navigation.
-- **iPadOS:** Support multitasking, context menus, pointer hover states, and wide layouts (e.g., split view, sidebar).
+- **iPadOS 26:** Support multitasking, Stage Manager, pointer/keyboard shortcuts, and wide layouts (e.g., split view, sidebar).
+- **macOS Tahoe (macOS 26):** Favor toolbar + menu commands, resizable windows, and keyboard-first navigation; use sidebars and tables where appropriate.
 - **Apple silicon Macs:** Test with pointer/keyboard; ensure window resizing behaves; avoid gestures with no pointer analog.
+- **watchOS 26:** Keep content glanceable, short, and tappable; use focused flows with minimal depth and avoid dense dashboards.
+- **visionOS 26:** Default to windowed UI, keep content readable at distance, and avoid forced immersion; use immersive spaces only for clear spatial value.
 - **Dynamic environments:** Handle orientation changes, varying refresh rates, and Low Power Mode gracefully.
 
+### Adaptive Layout & Orientation
+- Provide both vertical and horizontal layouts for key screens.
+- Use `ViewThatFits` or `AnyLayout` to swap `VStackLayout` vs `HStackLayout` based on size class or width.
+- Read `horizontalSizeClass` and `verticalSizeClass` to switch navigation patterns (tabs on compact, split view on regular).
+- Avoid fixed widths/heights; rely on flexible stacks, grids, and `Layout` for adaptive composition.
+- Test rotation, split view, and window resizing in previews and on-device.
+
 ## Framework & Feature How-Tos (checklists)
-- **SwiftUI:** Use `NavigationStack`/`TabView`, leverage `@StateObject` for ownership, `@Environment` for dependencies, and `ViewThatFits` for adaptive layouts. Test with Dynamic Type and RTL in previews.
+- **SwiftUI:** Use `NavigationStack`/`TabView`, leverage `@StateObject` for ownership, `@Environment` for dependencies, and `ViewThatFits`/`AnyLayout` for adaptive layouts. Test with Dynamic Type and RTL in previews.
 - **UIKit:** Favor modern collection/table diffable data sources; adopt compositional layouts; keep view controllers thin; migrate to Auto Layout anchors/NSDiffableDataSource/Modern cell registrations.
 - **Foundation & data:** Use `Codable` with validation; `URLComponents` for query building; `Measurement`/`DateComponentsFormatter` for units; `FormatStyle` APIs for localization-friendly formatting.
+- **Multi-platform targets:** Share core models/services in a Swift package or shared module; use `#if os(...)` and `@available` guards for platform-only code; keep platform-specific assets and Info.plist entries separate.
 - **Concurrency:** Prefer `async/await` and `Task` groups; confine shared state to actors; bridge callbacks with `CheckedContinuation`; cancel work on disappear.
 - **Networking:** Use `URLSession` with `URLSessionConfiguration.ephemeral` for sensitive flows; prefer `HTTPURLResponse` status checks; adopt `NWConnection`/`Network` framework for sockets; backoff and retry with jitter.
 - **Persistence:** Core Data/CloudKit for structured sync; `FileManager` for blobs; `Keychain` for secrets; make migrations idempotent and tested.
@@ -213,18 +224,20 @@
 - Featured documentation hub: https://developer.apple.com/documentation (`prototype/Featured - Apple Developer Documentation.url`)
 - App Store guidelines hub: https://developer.apple.com/app-store/guidelines/ (`prototype/Guidelines - App Store - Apple Developer.url`)
 - HIG for iOS & inclusion: https://developer.apple.com/design/human-interface-guidelines/designing-for-ios and https://developer.apple.com/design/human-interface-guidelines/inclusion
+- HIG for iPadOS, macOS, watchOS, visionOS: https://developer.apple.com/design/human-interface-guidelines/designing-for-ipados, https://developer.apple.com/design/human-interface-guidelines/designing-for-macos, https://developer.apple.com/design/human-interface-guidelines/designing-for-watchos, https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos
 - Design resources: https://developer.apple.com/design/resources/#ios-apps
 - Accessibility: https://developer.apple.com/documentation/accessibility
 - Right-to-left & localization: https://developer.apple.com/design/human-interface-guidelines/right-to-left and https://developer.apple.com/documentation/xcode/localization
 - SwiftUI tutorials: https://developer.apple.com/tutorials/swiftui/
 - Develop in Swift: https://developer.apple.com/tutorials/develop-in-swift/welcome-to-develop-in-swift-tutorials
+- SwiftUI adaptive layout: https://developer.apple.com/documentation/swiftui/viewthatfits, https://developer.apple.com/documentation/swiftui/anylayout, https://developer.apple.com/documentation/swiftui/layout, https://developer.apple.com/documentation/swiftui/environmentvalues/horizontalsizeclass, https://developer.apple.com/documentation/swiftui/environmentvalues/verticalsizeclass
 - Privacy & security: https://developer.apple.com/documentation/uikit/protecting-the-user-s-privacy, https://developer.apple.com/documentation/authenticationservices/supporting-passkeys, https://developer.apple.com/documentation/security/keychain-services/, https://developer.apple.com/documentation/security
 - Foundation: https://developer.apple.com/documentation/foundation
 - Xcode & performance: https://developer.apple.com/documentation/xcode/ and https://developer.apple.com/documentation/xcode/improving-your-app-s-performance
-- Platform adaptation: https://developer.apple.com/ipados/get-started/ and https://developer.apple.com/documentation/apple-silicon/running-your-ios-apps-in-macos
+- Platform adaptation: https://developer.apple.com/ipados/get-started/, https://developer.apple.com/documentation/apple-silicon/running-your-ios-apps-in-macos, https://developer.apple.com/documentation/uikit/mac_catalyst, https://developer.apple.com/documentation/watchkit, https://developer.apple.com/documentation/watchconnectivity, https://developer.apple.com/documentation/visionos
 - App Store operations: https://developer.apple.com/app-store/submitting/, https://developer.apple.com/app-store/business-models/
 - Review guidelines detail: https://developer.apple.com/app-store/review/guidelines/#design and https://developer.apple.com/app-store/review/guidelines/
-- Release notes: https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-18-release-notes
+- Release notes: https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-26-release-notes, https://developer.apple.com/documentation/watchos-release-notes/watchos-26-release-notes, https://developer.apple.com/documentation/visionos-release-notes/visionos-26-release-notes, https://developer.apple.com/documentation/macos-release-notes/macos-26-release-notes
 - Community & learning: https://developer.apple.com/videos/all-videos/ and https://developer.apple.com/forums/
 - Clean code for Swift: `reference/clean_code_swift.md` (local extract) and source https://github.com/MaatheusGois/clean-code-swift
 - Privacy manifests: https://developer.apple.com/documentation/bundleresources/privacy_manifest_files

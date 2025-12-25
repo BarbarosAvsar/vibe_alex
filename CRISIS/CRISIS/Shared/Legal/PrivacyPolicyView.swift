@@ -55,7 +55,7 @@ struct PrivacyPolicyView: View {
             }
             .navigationTitle("Datenschutzerklärung")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
                     Link("Website", destination: URL(string: "https://vermoegenskompass.de/datenschutz")!)
                 }
             }

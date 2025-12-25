@@ -14,9 +14,16 @@ struct CrisisView: View {
                     AsyncStateView(state: appState.dashboardState) {
                         Task { await appState.refreshDashboard(force: true) }
                     } content: { snapshot in
-                        VStack(spacing: 24) {
-                            overviewSection(snapshot.crises)
-                            crisisFeedSection(snapshot.crises)
+                        AdaptiveStack(spacing: 24) {
+                            VStack(alignment: .leading, spacing: 24) {
+                                overviewSection(snapshot.crises)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                            VStack(alignment: .leading, spacing: 24) {
+                                crisisFeedSection(snapshot.crises)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding()
                     }
@@ -24,10 +31,10 @@ struct CrisisView: View {
             }
             .navigationTitle("Krisen")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
                     ToolbarStatusControl {
                         showSettings = true
                     }

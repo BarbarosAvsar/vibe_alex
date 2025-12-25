@@ -14,10 +14,10 @@ struct ConsultationView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
                     ToolbarStatusControl {
                         showSettings = true
                     }

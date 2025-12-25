@@ -1,7 +1,7 @@
 import Foundation
 
 enum AppConfig {
-    static let minimumSupportedOS = "iOS 18"
+    static let minimumSupportedOS = "iOS 26"
 
     static let focusCountryISO = "DEU"
     static let consultationEndpoint = URL(string: "https://api.midainvest.com/contact")!

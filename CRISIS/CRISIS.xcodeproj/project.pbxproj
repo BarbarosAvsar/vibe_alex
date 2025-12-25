@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F62000000000000000000001 /* AdaptiveStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000001 /* AdaptiveStack.swift */; };
+		F62000000000000000000002 /* PlatformDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000002 /* PlatformDashboardView.swift */; };
+		F62000000000000000000003 /* ConsultationPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000003 /* ConsultationPanelView.swift */; };
+		F62000000000000000000004 /* MacContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000004 /* MacContentView.swift */; };
+		F62000000000000000000005 /* VisionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000005 /* VisionContentView.swift */; };
+		F62000000000000000000006 /* WatchContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000006 /* WatchContentView.swift */; };
+		F62000000000000000000007 /* CRISISTahoeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000007 /* CRISISTahoeApp.swift */; };
+		F62000000000000000000008 /* CRISISVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000008 /* CRISISVisionApp.swift */; };
+		F62000000000000000000009 /* CRISISWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60000000000000000000009 /* CRISISWatchApp.swift */; };
 		F5AA4C112CA11D6E00E3A1C1 /* SyncStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */; };
 		F5AA4C132CA11D8F00E3A1C1 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AA4C122CA11D8F00E3A1C1 /* PrivacyPolicyView.swift */; };
 		01964462257EDF68CCED9DAA /* Preview Content.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FECDABE89A019C2B5861345D /* Preview Content.xcassets */; };
@@ -81,6 +90,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F60000000000000000000001 /* AdaptiveStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdaptiveStack.swift; path = AdaptiveStack.swift; sourceTree = "<group>"; };
+		F60000000000000000000002 /* PlatformDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlatformDashboardView.swift; path = PlatformDashboardView.swift; sourceTree = "<group>"; };
+		F60000000000000000000003 /* ConsultationPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConsultationPanelView.swift; path = ConsultationPanelView.swift; sourceTree = "<group>"; };
+		F60000000000000000000004 /* MacContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MacContentView.swift; path = MacContentView.swift; sourceTree = "<group>"; };
+		F60000000000000000000005 /* VisionContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VisionContentView.swift; path = VisionContentView.swift; sourceTree = "<group>"; };
+		F60000000000000000000006 /* WatchContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WatchContentView.swift; path = WatchContentView.swift; sourceTree = "<group>"; };
+		F60000000000000000000007 /* CRISISTahoeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CRISISTahoeApp.swift; path = CRISISTahoeApp.swift; sourceTree = "<group>"; };
+		F60000000000000000000008 /* CRISISVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CRISISVisionApp.swift; path = CRISISVisionApp.swift; sourceTree = "<group>"; };
+		F60000000000000000000009 /* CRISISWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CRISISWatchApp.swift; path = CRISISWatchApp.swift; sourceTree = "<group>"; };
+		F6000000000000000000000A /* CRISISTahoe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CRISISTahoe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6000000000000000000000B /* CRISISVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CRISISVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6000000000000000000000C /* CRISISWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CRISISWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SyncStatusBanner.swift; path = SyncStatusBanner.swift; sourceTree = "<group>"; };
 		F5AA4C122CA11D8F00E3A1C1 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrivacyPolicyView.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		05012142113DBB560C687635 /* MetalAsset.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MetalAsset.swift; path = MetalAsset.swift; sourceTree = "<group>"; };
@@ -148,22 +169,52 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		ACA5F0D9230EC4520449F1C2 /* Frameworks */ = {
+	ACA5F0D9230EC4520449F1C2 /* Frameworks */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			2498CF8D66F54C21B112ABA5 /* Foundation.framework in Frameworks */,
+			831592B39948BCF6B40CC3AF /* SwiftUI.framework in Frameworks */,
+			20294A5D7AB3FB7F8454F02E /* Charts.framework in Frameworks */,
+			E8723C7944C2F2898A54486E /* BackgroundTasks.framework in Frameworks */,
+			69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+		F61100000000000000000002 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				2498CF8D66F54C21B112ABA5 /* Foundation.framework in Frameworks */,
 				831592B39948BCF6B40CC3AF /* SwiftUI.framework in Frameworks */,
-				20294A5D7AB3FB7F8454F02E /* Charts.framework in Frameworks */,
-				E8723C7944C2F2898A54486E /* BackgroundTasks.framework in Frameworks */,
 				69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E6B982982C9F5EFE00EFA8D4 /* Frameworks */ = {
+		F61100000000000000000005 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2498CF8D66F54C21B112ABA5 /* Foundation.framework in Frameworks */,
+				831592B39948BCF6B40CC3AF /* SwiftUI.framework in Frameworks */,
+				69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F61100000000000000000008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2498CF8D66F54C21B112ABA5 /* Foundation.framework in Frameworks */,
+				831592B39948BCF6B40CC3AF /* SwiftUI.framework in Frameworks */,
+				69BE4F0ED8B41AD96CFAB7C5 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+	E6B982982C9F5EFE00EFA8D4 /* Frameworks */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +385,7 @@
 		B85EA27F27F49CD0B2E0A764 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F60000000000000000000001 /* AdaptiveStack.swift */,
 				CA2DF0D060038C26BF32CA41 /* AsyncStateView.swift */,
 				F5AA4C102CA11D6E00E3A1C1 /* SyncStatusBanner.swift */,
 				F973AB3375CF3856D42A0B76 /* DashboardSection.swift */,
@@ -373,6 +425,9 @@
 			isa = PBXGroup;
 			children = (
 				353183EBB39C30CF147F5E8B /* CRISIS.app */,
+				F6000000000000000000000A /* CRISISTahoe.app */,
+				F6000000000000000000000B /* CRISISVision.app */,
+				F6000000000000000000000C /* CRISISWatch.app */,
 				E6B982972C9F5EFE00EFA8D4 /* CRISISTests.xctest */,
 			);
 			name = Products;
@@ -428,7 +483,15 @@
 				16CCB805849B18312345FD27 /* AppState.swift */,
 				3210A792E90E0A7C3807801B /* ContentView.swift */,
 				40C8229FF889B06599889FED /* CRISISApp.swift */,
+				F60000000000000000000007 /* CRISISTahoeApp.swift */,
+				F60000000000000000000008 /* CRISISVisionApp.swift */,
+				F60000000000000000000009 /* CRISISWatchApp.swift */,
 				F8A7DA21DA3E6E4291E63889 /* CurrencySettings.swift */,
+				F60000000000000000000002 /* PlatformDashboardView.swift */,
+				F60000000000000000000003 /* ConsultationPanelView.swift */,
+				F60000000000000000000004 /* MacContentView.swift */,
+				F60000000000000000000005 /* VisionContentView.swift */,
+				F60000000000000000000006 /* WatchContentView.swift */,
 				A7C8217B9F6814F1A9321CBA /* SettingsSheet.swift */,
 			);
 			name = App;
@@ -438,26 +501,77 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8BD61DE3DBC24CEB427EE4D3 /* CRISIS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BAA648609B9BD763F624E397 /* Build configuration list for PBXNativeTarget "CRISIS" */;
-			buildPhases = (
-				EE2D0B8D768D911CBAB04C96 /* Sources */,
-				ACA5F0D9230EC4520449F1C2 /* Frameworks */,
-				CFD2E4BC6C78FCD087A332CB /* Resources */,
-			);
+	8BD61DE3DBC24CEB427EE4D3 /* CRISIS */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = BAA648609B9BD763F624E397 /* Build configuration list for PBXNativeTarget "CRISIS" */;
+		buildPhases = (
+			EE2D0B8D768D911CBAB04C96 /* Sources */,
+			ACA5F0D9230EC4520449F1C2 /* Frameworks */,
+			CFD2E4BC6C78FCD087A332CB /* Resources */,
+		);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = CRISIS;
 			productName = "VermÃ¶gensKompass";
-			productReference = 353183EBB39C30CF147F5E8B /* CRISIS.app */;
+		productReference = 353183EBB39C30CF147F5E8B /* CRISIS.app */;
+		productType = "com.apple.product-type.application";
+	};
+		F61000000000000000000001 /* CRISISTahoe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F63000000000000000000001 /* Build configuration list for PBXNativeTarget "CRISISTahoe" */;
+			buildPhases = (
+				F61100000000000000000001 /* Sources */,
+				F61100000000000000000002 /* Frameworks */,
+				F61100000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CRISISTahoe;
+			productName = CRISISTahoe;
+			productReference = F6000000000000000000000A /* CRISISTahoe.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E6B982962C9F5EFE00EFA8D4 /* CRISISTests */ = {
+		F61000000000000000000002 /* CRISISVision */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E6B9829B2C9F5EFE00EFA8D4 /* Build configuration list for PBXNativeTarget "CRISISTests" */;
+			buildConfigurationList = F63000000000000000000002 /* Build configuration list for PBXNativeTarget "CRISISVision" */;
+			buildPhases = (
+				F61100000000000000000004 /* Sources */,
+				F61100000000000000000005 /* Frameworks */,
+				F61100000000000000000006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CRISISVision;
+			productName = CRISISVision;
+			productReference = F6000000000000000000000B /* CRISISVision.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F61000000000000000000003 /* CRISISWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F63000000000000000000003 /* Build configuration list for PBXNativeTarget "CRISISWatch" */;
+			buildPhases = (
+				F61100000000000000000007 /* Sources */,
+				F61100000000000000000008 /* Frameworks */,
+				F61100000000000000000009 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CRISISWatch;
+			productName = CRISISWatch;
+			productReference = F6000000000000000000000C /* CRISISWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+	E6B982962C9F5EFE00EFA8D4 /* CRISISTests */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = E6B9829B2C9F5EFE00EFA8D4 /* Build configuration list for PBXNativeTarget "CRISISTests" */;
 			buildPhases = (
 				E6B982992C9F5EFE00EFA8D4 /* Sources */,
 				E6B982982C9F5EFE00EFA8D4 /* Frameworks */,
@@ -485,6 +599,15 @@
 					8BD61DE3DBC24CEB427EE4D3 = {
 						CreatedOnToolsVersion = 16.0;
 					};
+					F61000000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					F61000000000000000000002 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					F61000000000000000000003 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 					E6B982962C9F5EFE00EFA8D4 = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 8BD61DE3DBC24CEB427EE4D3;
@@ -507,26 +630,53 @@
 			projectRoot = "";
 			targets = (
 				8BD61DE3DBC24CEB427EE4D3 /* CRISIS */,
+				F61000000000000000000001 /* CRISISTahoe */,
+				F61000000000000000000002 /* CRISISVision */,
+				F61000000000000000000003 /* CRISISWatch */,
 				E6B982962C9F5EFE00EFA8D4 /* CRISISTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		CFD2E4BC6C78FCD087A332CB /* Resources */ = {
+	CFD2E4BC6C78FCD087A332CB /* Resources */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			87FB7CD2DBB6A28B66C594AF /* Assets.xcassets in Resources */,
+			01964462257EDF68CCED9DAA /* Preview Content.xcassets in Resources */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+		F61100000000000000000003 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				87FB7CD2DBB6A28B66C594AF /* Assets.xcassets in Resources */,
-				01964462257EDF68CCED9DAA /* Preview Content.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E6B9829A2C9F5EFE00EFA8D4 /* Resources */ = {
+		F61100000000000000000006 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87FB7CD2DBB6A28B66C594AF /* Assets.xcassets in Resources */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F61100000000000000000009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87FB7CD2DBB6A28B66C594AF /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+	E6B9829A2C9F5EFE00EFA8D4 /* Resources */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
@@ -584,8 +734,114 @@
 				13FF4E194AF18A47906483F8 /* NotificationManager.swift in Sources */,
 				F5AA4C132CA11D8F00E3A1C1 /* PrivacyPolicyView.swift in Sources */,
 				F2E8F2712C9F55D600CCDC5F /* NotificationOnboardingView.swift in Sources */,
+				F62000000000000000000001 /* AdaptiveStack.swift in Sources */,
 				6F233A8033D277072438B147 /* LiquidGlass.swift in Sources */,
 				7A2E57C5B1A64E7E9F3A9B2F /* BrilliantDiamondIcon.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F61100000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F62000000000000000000007 /* CRISISTahoeApp.swift in Sources */,
+				F62000000000000000000004 /* MacContentView.swift in Sources */,
+				F62000000000000000000002 /* PlatformDashboardView.swift in Sources */,
+				F62000000000000000000003 /* ConsultationPanelView.swift in Sources */,
+				F62000000000000000000001 /* AdaptiveStack.swift in Sources */,
+				8E0A9F24871B19F2BF03ABD4 /* AppState.swift in Sources */,
+				F8A7DA22DA3E6E4291E63889 /* CurrencySettings.swift in Sources */,
+				AD47249CF4332EEDFCDF5C30 /* AppConfig.swift in Sources */,
+				E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */,
+				44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */,
+				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
+				B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */,
+				B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */,
+				2976AE82FA0B3E81FC022794 /* MacroIndicatorService.swift in Sources */,
+				8951793C6E0EA1968F4064C3 /* MetalPriceService.swift in Sources */,
+				E84B88F41893339C93DB7329 /* ExchangeRateService.swift in Sources */,
+				A5E012130E5E54EDA023731D /* HTTPClient.swift in Sources */,
+				13FF4E194AF18A47906483F8 /* NotificationManager.swift in Sources */,
+				106D8C2819EB3D3F3A67AF83 /* AsyncState.swift in Sources */,
+				9B4F5FEC61BF556D9B2C19A7 /* BennerCyclePhase.swift in Sources */,
+				3AC1BEB9CB770A214EA68855 /* CrisisEvent.swift in Sources */,
+				C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */,
+				8A3BCD86A1B134BA8472CB0B /* DisplayCurrency.swift in Sources */,
+				CA5D8141306DE7B128199721 /* MetalAsset.swift in Sources */,
+				F0866BAA76D16387AF80AEEA /* MacroIndicator.swift in Sources */,
+				5042C4D19A498B135562AFDD /* AsyncStateView.swift in Sources */,
+				CD992FE1A17CE63A902FDA94 /* DashboardSection.swift in Sources */,
+				3B60987029A81AD7814C4F6E /* MetalCard.swift in Sources */,
+				561D5298703B7D1FFA33635E /* PrimaryCTAButton.swift in Sources */,
+				7A2E57C5B1A64E7E9F3A9B2F /* BrilliantDiamondIcon.swift in Sources */,
+				6F233A8033D277072438B147 /* LiquidGlass.swift in Sources */,
+				29E59C2E8AB2F7258FB0E5F3 /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F61100000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F62000000000000000000008 /* CRISISVisionApp.swift in Sources */,
+				F62000000000000000000005 /* VisionContentView.swift in Sources */,
+				F62000000000000000000002 /* PlatformDashboardView.swift in Sources */,
+				F62000000000000000000003 /* ConsultationPanelView.swift in Sources */,
+				F62000000000000000000001 /* AdaptiveStack.swift in Sources */,
+				8E0A9F24871B19F2BF03ABD4 /* AppState.swift in Sources */,
+				F8A7DA22DA3E6E4291E63889 /* CurrencySettings.swift in Sources */,
+				AD47249CF4332EEDFCDF5C30 /* AppConfig.swift in Sources */,
+				E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */,
+				44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */,
+				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
+				B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */,
+				B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */,
+				2976AE82FA0B3E81FC022794 /* MacroIndicatorService.swift in Sources */,
+				8951793C6E0EA1968F4064C3 /* MetalPriceService.swift in Sources */,
+				E84B88F41893339C93DB7329 /* ExchangeRateService.swift in Sources */,
+				A5E012130E5E54EDA023731D /* HTTPClient.swift in Sources */,
+				13FF4E194AF18A47906483F8 /* NotificationManager.swift in Sources */,
+				106D8C2819EB3D3F3A67AF83 /* AsyncState.swift in Sources */,
+				9B4F5FEC61BF556D9B2C19A7 /* BennerCyclePhase.swift in Sources */,
+				3AC1BEB9CB770A214EA68855 /* CrisisEvent.swift in Sources */,
+				C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */,
+				8A3BCD86A1B134BA8472CB0B /* DisplayCurrency.swift in Sources */,
+				CA5D8141306DE7B128199721 /* MetalAsset.swift in Sources */,
+				F0866BAA76D16387AF80AEEA /* MacroIndicator.swift in Sources */,
+				5042C4D19A498B135562AFDD /* AsyncStateView.swift in Sources */,
+				CD992FE1A17CE63A902FDA94 /* DashboardSection.swift in Sources */,
+				3B60987029A81AD7814C4F6E /* MetalCard.swift in Sources */,
+				561D5298703B7D1FFA33635E /* PrimaryCTAButton.swift in Sources */,
+				7A2E57C5B1A64E7E9F3A9B2F /* BrilliantDiamondIcon.swift in Sources */,
+				6F233A8033D277072438B147 /* LiquidGlass.swift in Sources */,
+				29E59C2E8AB2F7258FB0E5F3 /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F61100000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F62000000000000000000009 /* CRISISWatchApp.swift in Sources */,
+				F62000000000000000000006 /* WatchContentView.swift in Sources */,
+				8E0A9F24871B19F2BF03ABD4 /* AppState.swift in Sources */,
+				AD47249CF4332EEDFCDF5C30 /* AppConfig.swift in Sources */,
+				E6B982912C9F5D7F00EFA8D4 /* CrisisThresholds.swift in Sources */,
+				44B0F170C2748EBFD78A4701 /* DashboardRepository.swift in Sources */,
+				FAAD8CC003F33FBB6B379D94 /* DashboardCache.swift in Sources */,
+				B5F20F81493231BCAE91A422 /* BennerCycleService.swift in Sources */,
+				B5207DE87B210BB444314774 /* CrisisMonitorService.swift in Sources */,
+				2976AE82FA0B3E81FC022794 /* MacroIndicatorService.swift in Sources */,
+				8951793C6E0EA1968F4064C3 /* MetalPriceService.swift in Sources */,
+				A5E012130E5E54EDA023731D /* HTTPClient.swift in Sources */,
+				13FF4E194AF18A47906483F8 /* NotificationManager.swift in Sources */,
+				106D8C2819EB3D3F3A67AF83 /* AsyncState.swift in Sources */,
+				3AC1BEB9CB770A214EA68855 /* CrisisEvent.swift in Sources */,
+				C662CD3FC57AD0855F2821F6 /* DashboardSnapshot.swift in Sources */,
+				9B4F5FEC61BF556D9B2C19A7 /* BennerCyclePhase.swift in Sources */,
+				CA5D8141306DE7B128199721 /* MetalAsset.swift in Sources */,
+				F0866BAA76D16387AF80AEEA /* MacroIndicator.swift in Sources */,
+				5042C4D19A498B135562AFDD /* AsyncStateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -620,7 +876,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = CRISIS/Supporting/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis;
 				SDKROOT = iphoneos;
@@ -693,7 +949,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = CRISIS/Supporting/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis;
 				SDKROOT = iphoneos;
@@ -769,7 +1025,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisisTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -787,7 +1043,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisisTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -795,6 +1051,123 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CRISIS.app/CRISIS";
+			};
+			name = Release;
+		};
+		F63100000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CRISIS;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.macos;
+				PRODUCT_NAME = CRISISTahoe;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+		F63100000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CRISIS;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.macos;
+				PRODUCT_NAME = CRISISTahoe;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_VERSION = 5.10;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F63100000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CRISIS;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.vision;
+				PRODUCT_NAME = CRISISVision;
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xros_simulator";
+				SWIFT_VERSION = 5.10;
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		F63100000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CRISIS;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.vision;
+				PRODUCT_NAME = CRISISVision;
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xros_simulator";
+				SWIFT_VERSION = 5.10;
+				VALIDATE_PRODUCT = YES;
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		F63100000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CRISIS;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.watch;
+				PRODUCT_NAME = CRISISWatch;
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_VERSION = 5.10;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		F63100000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CRISIS;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = de.vibecode.crisis.watch;
+				PRODUCT_NAME = CRISISWatch;
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_VERSION = 5.10;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -815,6 +1188,33 @@
 			buildConfigurations = (
 				6DF40A1A15928E2ADDD9EF13 /* Release */,
 				D5FC8B24F7B3FE26CB829114 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F63000000000000000000001 /* Build configuration list for PBXNativeTarget "CRISISTahoe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F63100000000000000000001 /* Debug */,
+				F63100000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F63000000000000000000002 /* Build configuration list for PBXNativeTarget "CRISISVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F63100000000000000000003 /* Debug */,
+				F63100000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F63000000000000000000003 /* Build configuration list for PBXNativeTarget "CRISISWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F63100000000000000000005 /* Debug */,
+				F63100000000000000000006 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

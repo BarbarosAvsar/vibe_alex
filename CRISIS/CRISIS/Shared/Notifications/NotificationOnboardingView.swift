@@ -103,7 +103,7 @@ struct NotificationOnboardingView: View {
             }
             .navigationTitle("Mitteilungen")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
                     Button("Fertig") {
                         skipAction()
                         dismiss()

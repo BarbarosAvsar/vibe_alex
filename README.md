@@ -19,6 +19,21 @@ Key capabilities:
 - Provide a NewsAPI key by adding `NEWSAPI_API_KEY` to your environment or `Info.plist` (see `AppConfig.newsAPIKey`).
 - All other networking happens client-side against public APIs (GoldPrice.org, World Bank, ECB); no additional secrets are required.
 
+## Android (Jetpack Compose)
+The Android project lives in `android/` and mirrors the iOS data sources and UI flow.
+
+### Getting Started (Android)
+1. Open the `android/` folder in Android Studio (Hedgehog/Koala or newer).
+2. Ensure the Android SDK 34 platform is installed and let Gradle sync.
+3. (Optional) Add a NewsAPI key for the crisis feed:
+   - Set `NEWS_API_KEY=your_key` in `android/gradle.properties` or `~/.gradle/gradle.properties`.
+4. Run on an emulator or device (API 24+).
+
+### Android Configuration
+- Consultation endpoint: `android/core-data/src/main/java/de/vibecode/crisis/core/data/AppConfig.kt`
+- NewsAPI: if `NEWS_API_KEY` is blank, NewsAPI articles are skipped automatically.
+- All other APIs (GoldPrice.org, World Bank, ECB, Stooq) are public and require no keys.
+
 ## Reference Material
 - `reference/apple_documentation.md` â€” summary of every featured document on developer.apple.com/documentation.
 - `reference/app_store_guidelines.md` â€” condensed list of all numbered App Store Review rules (sections 1â€“5).

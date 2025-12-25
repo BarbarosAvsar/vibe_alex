@@ -1,0 +1,164 @@
+﻿<resources>
+    <string name="app_name">CRISIS 2050</string>
+
+    <string name="tab_overview">Übersicht</string>
+    <string name="tab_comparison">Vergleich</string>
+    <string name="tab_metals">Edelmetalle</string>
+    <string name="tab_crisis">Krisen</string>
+    <string name="tab_consultation">Beratung</string>
+
+    <string name="cta_title">Beratung anfragen</string>
+    <string name="cta_subtitle">Sichern Sie Ihr Vermögen mit Edelmetallen</string>
+
+    <string name="overview_title">Übersicht</string>
+    <string name="overview_hero_title">Vermögenssicherung</string>
+    <string name="overview_hero_subtitle">Aktuelle Prognose</string>
+    <string name="overview_forecast_label">Prognose</string>
+    <string name="overview_forecast_hint">Vorsicht empfohlen - Absicherung priorisieren.</string>
+    <string name="overview_metals_focus">Edelmetalle im Fokus</string>
+    <string name="overview_metals_focus_subtitle">Gold &amp; Silber im aktuellen Marktumfeld</string>
+    <string name="overview_macro_title">Makro-Lage</string>
+    <string name="overview_macro_subtitle">Inflation, Wechsel &amp; Wachstum je Region</string>
+
+    <string name="why_metals_title">Warum Edelmetalle und Struktur</string>
+    <string name="why_metals_bullet_1">Physischer Wert, unabhängig von Währungen</string>
+    <string name="why_metals_bullet_2">Schutz vor Inflation und Kaufkraftverlust</string>
+    <string name="why_metals_bullet_3">Stabilität in Kriegen und Wirtschaftskrisen</string>
+    <string name="why_metals_bullet_4">Strukturierter Vermögensschutz durch planbare Allokation</string>
+    <string name="why_metals_bullet_5">Sichere Lagerung im Zollfreilager außerhalb des Bankensystems</string>
+
+    <string name="comparison_title">Vergleich</string>
+    <string name="comparison_section_title">Asset-Klassen Vergleich</string>
+    <string name="comparison_section_subtitle">Historisch &amp; Prognose 2025–2050</string>
+    <string name="comparison_period">Zeitraum</string>
+    <string name="comparison_mode_history">Historisch</string>
+    <string name="comparison_mode_forecast">Prognose</string>
+    <string name="comparison_chart_title">Wertentwicklung</string>
+    <string name="comparison_chart_subtitle">Tippen Sie auf den Chart um Details zu sehen</string>
+    <string name="comparison_performance_title">Performance Übersicht</string>
+    <string name="comparison_performance_subtitle">Historisch und Prognose</string>
+    <string name="comparison_no_data">Keine Marktdaten verfügbar.</string>
+    <string name="comparison_loading">Lade Marktdaten…</string>
+
+    <string name="metals_title">Edelmetalle</string>
+    <string name="metals_selector_title">Edelmetall auswählen</string>
+    <string name="metals_projection_title">Prognose für 3 Jahre</string>
+    <string name="metals_projection_subtitle">%1$s Ausblick</string>
+    <string name="metals_trend_title">Historisch &amp; Prognose bis 2050</string>
+    <string name="metals_trend_subtitle">Indexentwicklung %1$s</string>
+    <string name="metals_trend_loading">Lade Marktdaten…</string>
+    <string name="metals_resilience_title">Resilienz in Krisen</string>
+    <string name="metals_resilience_subtitle">%1$s in unterschiedlichen Szenarien</string>
+    <string name="metals_scenario_inflation">Inflation</string>
+    <string name="metals_scenario_wars">Kriege</string>
+    <string name="metals_scenario_wars_detail">Geopolitische Spannungen erhöhen die Nachfrage nach sicheren Häfen.</string>
+    <string name="metals_scenario_recession">Wirtschaftskrisen</string>
+    <string name="metals_scenario_recession_detail">In Rezessionen dient %1$s als Liquiditätsreserve.</string>
+    <string name="metals_badge_protection">Schutz</string>
+    <string name="metals_badge_shield">Absicherung</string>
+    <string name="metals_badge_diversification">Diversifikation</string>
+
+    <string name="crisis_title">Krisen</string>
+    <string name="crisis_overview_title">Krisenlage</string>
+    <string name="crisis_overview_subtitle">Aktuelle Hinweise aus externen Quellen</string>
+    <string name="crisis_overview_empty">Keine aktuellen Hinweise.</string>
+    <string name="crisis_feed_title">Krisen-Feed</string>
+    <string name="crisis_feed_subtitle">Meldungen aus NewsAPI und World Bank</string>
+    <string name="crisis_feed_empty">Keine aktuellen Krisenmeldungen.</string>
+    <string name="crisis_category_financial">Finanzen</string>
+    <string name="crisis_category_geopolitical">Geopolitik</string>
+    <string name="crisis_badge_info">Info</string>
+    <string name="crisis_badge_moderate">Moderat</string>
+    <string name="crisis_badge_high">Hoch</string>
+
+    <string name="consultation_title">Beratung anfragen</string>
+    <string name="consultation_section_expectations">Was Sie erwartet</string>
+    <string name="consultation_expectation_1">Kostenlose Erstberatung durch Edelmetall-Experten</string>
+    <string name="consultation_expectation_2">Individuelle Vermögensstrukturierung</string>
+    <string name="consultation_expectation_3">Informationen zur Zollfreilager-Lagerung</string>
+    <string name="consultation_expectation_4">Steuerliche Aspekte und rechtliche Absicherung</string>
+    <string name="consultation_section_contact">Ihre Kontaktdaten</string>
+    <string name="consultation_section_message">Nachricht</string>
+    <string name="consultation_name">Name*</string>
+    <string name="consultation_email">E-Mail*</string>
+    <string name="consultation_phone">Telefon*</string>
+    <string name="consultation_message_hint">Wie können wir Ihnen helfen?*</string>
+    <string name="consultation_submit">Anfrage senden</string>
+    <string name="consultation_submit_success_title">Vielen Dank</string>
+    <string name="consultation_submit_success_message">Ihre Anfrage wurde gesendet. Wir melden uns zeitnah.</string>
+    <string name="consultation_submit_failure_title">Senden fehlgeschlagen</string>
+    <string name="consultation_privacy_note">Mit dem Absenden stimmen Sie zu, dass wir Ihre Anfrage gemäß Datenschutzerklärung beantworten. Wir speichern keine Daten dauerhaft auf diesem Gerät.</string>
+    <string name="consultation_section_more_info">Weitere Informationen</string>
+    <string name="consultation_info_1_title">Zollfreilager-Lagerung</string>
+    <string name="consultation_info_1_text">Physische Trennung vom Bankensystem, Versicherung und 24/7 Überwachung für maximale Sicherheit und Flexibilität.</string>
+    <string name="consultation_info_2_title">Wert - Struktur gewinnt</string>
+    <string name="consultation_info_2_text">Klare Allokation in Edelmetalle schafft Stabilität in Inflation, Währungsreformen und Krisen.</string>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_section_general">Allgemein</string>
+    <string name="settings_currency_label">Anzeigewährung</string>
+    <string name="settings_currency_hint">Steuert, in welcher Währung Edelmetallpreise im gesamten Interface angezeigt werden.</string>
+    <string name="settings_notifications_section">Benachrichtigungen</string>
+    <string name="settings_notifications_label">Benachrichtigungen</string>
+    <string name="settings_privacy_section">Beratung &amp; Datenschutz</string>
+    <string name="settings_privacy_policy">Datenschutzerklärung</string>
+    <string name="settings_privacy_note">Persönliche Daten verlassen Ihr Gerät nur, wenn Sie eine Anfrage senden. Es erfolgt keine lokale Speicherung.</string>
+    <string name="settings_transparency_note">Alle Wirtschaftsdaten stammen aus offenen APIs von GoldPrice.org und der Weltbank.</string>
+    <string name="settings_contact_note">Nutzen Sie den Tab Beratung für individuelle Fragen. Antworten erfolgen DSGVO-konform per E-Mail.</string>
+    <string name="settings_done">Fertig</string>
+
+    <string name="notifications_status_active">Aktiv</string>
+    <string name="notifications_status_denied">Deaktiviert</string>
+    <string name="notifications_status_limited">Begrenzt</string>
+    <string name="notifications_status_unknown">Unbekannt</string>
+    <string name="notifications_description_active">Sie erhalten Warnhinweise bei Prognose-Wechseln oder größeren Krisen.</string>
+    <string name="notifications_description_denied">Benachrichtigungen sind ausgeschaltet. Aktivieren Sie sie in den Android-Einstellungen.</string>
+    <string name="notifications_description_limited">Temporäre Berechtigung - bestätigen Sie sie, um kritische Hinweise zu behalten.</string>
+    <string name="notifications_description_undetermined">Noch keine Berechtigung angefragt.</string>
+    <string name="notifications_action_open_settings">Systemeinstellungen öffnen</string>
+    <string name="notifications_action_enable">Benachrichtigungen aktivieren</string>
+    <string name="notifications_action_adjust">Berechtigung bestätigen</string>
+
+    <string name="notification_onboarding_title">Mitteilungen</string>
+    <string name="notification_onboarding_headline">Krisen-Alerts</string>
+    <string name="notification_onboarding_body">Erhalten Sie einmalige Push-Mitteilungen bei Hochrisiko-Ereignissen. Wir senden nur Meldungen, wenn die Lage ernst ist.</string>
+    <string name="notification_onboarding_toggle_title">Echtzeit-Benachrichtigungen</string>
+    <string name="notification_onboarding_toggle_hint">Nur Krisen ab Schweregrad 5 und keine Werbung.</string>
+    <string name="notification_onboarding_device_hint">Sie können Ihre Entscheidung jederzeit in den Android-Einstellungen ändern.</string>
+    <string name="notification_onboarding_privacy_hint">Keine Daten verlassen Ihr Gerät. Grundlage: App Store Guideline 5.1.1.</string>
+    <string name="notification_onboarding_enable">Krisen-Alerts aktivieren</string>
+    <string name="notification_onboarding_later">Vielleicht später</string>
+    <string name="notification_onboarding_error_toggle">Aktivieren Sie die Umschaltung, um Benachrichtigungen zu erlauben.</string>
+    <string name="notification_onboarding_error_settings">Bitte erlauben Sie Mitteilungen in den Android-Einstellungen.</string>
+
+    <string name="notification_banner_denied">Krisen-Alerts deaktiviert</string>
+    <string name="notification_banner_limited">Krisen-Alerts in Ruhigstellung</string>
+    <string name="notification_banner_missing">Krisen-Alerts noch nicht aktiviert</string>
+    <string name="notification_banner_message_denied">Aktivieren Sie Benachrichtigungen, um akute Krisen sofort zu sehen.</string>
+    <string name="notification_banner_message_limited">App-Mitteilungen werden momentan nur still zugestellt. Aktivieren Sie Banner/Töne.</string>
+    <string name="notification_banner_message_missing">Tippen Sie hier, um Push-Mitteilungen für Hochrisiko-Lagen einzuschalten.</string>
+    <string name="notification_banner_action_settings">Einstellungen öffnen</string>
+    <string name="notification_banner_action_adjust">Einstellungen anpassen</string>
+
+    <string name="privacy_policy_title">Datenschutzerklärung</string>
+    <string name="privacy_policy_intro">Wir verarbeiten Ihre Daten ausschließlich auf dem Gerät oder über den Versand Ihrer Anfrage. Es gibt keine versteckten Tracker oder Cloud-Profile.</string>
+    <string name="privacy_section_controller_title">Verantwortliche Stelle</string>
+    <string name="privacy_section_controller_body">VermögensKompass (Vibecode GmbH) verarbeitet ausschließlich die Daten, die Sie aktiv teilen.</string>
+    <string name="privacy_section_collection_title">Datenerhebung im Überblick</string>
+    <string name="privacy_section_collection_body">• Markt- und Krisendaten stammen aus offen zugänglichen APIs (World Bank, USGS, NOAA, GoldPrice.org) und werden nur lokal ausgewertet.\n• Wir speichern keine personenbezogenen Daten auf unseren Servern.</string>
+    <string name="privacy_section_contact_title">Kontaktaufnahme</string>
+    <string name="privacy_section_contact_body">Wenn Sie auf „Beratung anfragen“ tippen, senden wir Ihre Nachricht an unser Beratungsteam. Der Versand erfolgt über eine gesicherte Verbindung; wir speichern dabei keine Kopie.</string>
+    <string name="privacy_section_notifications_title">Benachrichtigungen</string>
+    <string name="privacy_section_notifications_body">Krisen-Benachrichtigungen werden ausschließlich auf Ihrem Gerät verarbeitet. Sie können die Berechtigung jederzeit in den Android-Einstellungen widerrufen.</string>
+    <string name="privacy_section_tracking_title">Analytics &amp; Tracking</string>
+    <string name="privacy_section_tracking_body">Kein Tracking, keine Drittanbieter-SDKs. Die App funktioniert vollständig offline mit den zuletzt synchronisierten Daten.</string>
+    <string name="privacy_section_rights_title">Ihre Rechte</string>
+    <string name="privacy_section_rights_body">Sie können Auskunft, Berichtigung oder Löschung Ihrer Kontaktaufnahme verlangen, indem Sie uns unter datenschutz@vermoegenskompass.de kontaktieren.</string>
+
+    <string name="offline_banner_title">Offline-Daten</string>
+    <string name="offline_banner_no_sync">Noch keine erfolgreiche Synchronisierung</string>
+
+    <string name="crisis_notification_channel">Krisen-Alerts</string>
+    <string name="crisis_notification_title">Krisenlage: %1$s</string>
+    <string name="crisis_notification_body">Region: %1$s. Kategorie: %2$s.</string>
+</resources>

@@ -43,6 +43,25 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    val keystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
+    val releaseSigningConfig = if (!keystorePath.isNullOrBlank()) {
+        signingConfigs.create("release") {
+            storeFile = file(keystorePath)
+            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("ANDROID_KEY_ALIAS")
+            keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+        }
+    } else {
+        null
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            releaseSigningConfig?.let { signingConfig = it }
+        }
+    }
 }
 
 dependencies {

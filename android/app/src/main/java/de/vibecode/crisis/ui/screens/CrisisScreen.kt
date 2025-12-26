@@ -1,6 +1,7 @@
 package de.vibecode.crisis.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import de.vibecode.crisis.R
 import de.vibecode.crisis.core.domain.CrisisSummaryGenerator
+import de.vibecode.crisis.core.model.CrisisThresholdProfile
 import de.vibecode.crisis.core.model.AsyncState
 import de.vibecode.crisis.core.model.CrisisEvent
 import de.vibecode.crisis.core.model.DashboardSnapshot
@@ -47,7 +49,9 @@ fun CrisisScreen(
     dashboardState: AsyncState<DashboardSnapshot>,
     onRefresh: () -> Unit,
     onOpenSettings: () -> Unit,
-    windowSizeClass: WindowSizeClass
+    windowSizeClass: WindowSizeClass,
+    thresholdProfile: CrisisThresholdProfile,
+    onEventSelected: (CrisisEvent) -> Unit
 ) {
     val pullState = rememberPullRefreshState(refreshing = dashboardState is AsyncState.Loading, onRefresh = onRefresh)
     val summaryGenerator = remember { CrisisSummaryGenerator() }
@@ -70,10 +74,10 @@ fun CrisisScreen(
                     AdaptiveColumns(
                         windowSizeClass = windowSizeClass,
                         first = {
-                            CrisisOverviewSection(summaryGenerator, snapshot.crises)
+                            CrisisOverviewSection(summaryGenerator, snapshot.crises, thresholdProfile)
                         },
                         second = {
-                            CrisisFeedSection(snapshot.crises)
+                            CrisisFeedSection(snapshot.crises, onEventSelected)
                         }
                     )
                 }
@@ -90,13 +94,14 @@ fun CrisisScreen(
 @Composable
 private fun CrisisOverviewSection(
     summaryGenerator: CrisisSummaryGenerator,
-    events: List<CrisisEvent>
+    events: List<CrisisEvent>,
+    thresholdProfile: CrisisThresholdProfile
 ) {
     DashboardSection(
         title = stringResource(R.string.crisis_overview_title),
         subtitle = stringResource(R.string.crisis_overview_subtitle)
     ) {
-        val summary = summaryGenerator.summarize(events)
+        val summary = summaryGenerator.summarize(events, thresholdProfile.highRiskSeverityScore)
         if (summary == null) {
             Text(text = stringResource(R.string.crisis_overview_empty), color = CrisisColors.textSecondary)
         } else {
@@ -113,7 +118,10 @@ private fun CrisisOverviewSection(
 }
 
 @Composable
-private fun CrisisFeedSection(events: List<CrisisEvent>) {
+private fun CrisisFeedSection(
+    events: List<CrisisEvent>,
+    onEventSelected: (CrisisEvent) -> Unit
+) {
     DashboardSection(
         title = stringResource(R.string.crisis_feed_title),
         subtitle = stringResource(R.string.crisis_feed_subtitle)
@@ -123,7 +131,7 @@ private fun CrisisFeedSection(events: List<CrisisEvent>) {
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 events.forEach { event ->
-                    CrisisEventCard(event)
+                    CrisisEventCard(event, onEventSelected)
                 }
             }
         }
@@ -131,9 +139,15 @@ private fun CrisisFeedSection(events: List<CrisisEvent>) {
 }
 
 @Composable
-private fun CrisisEventCard(event: CrisisEvent) {
+private fun CrisisEventCard(
+    event: CrisisEvent,
+    onEventSelected: (CrisisEvent) -> Unit
+) {
     GlassCard {
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(
+            modifier = Modifier.clickable { onEventSelected(event) },
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             Row {
                 Text(text = event.title, style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.weight(1f))

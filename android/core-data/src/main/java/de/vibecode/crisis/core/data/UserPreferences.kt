@@ -5,10 +5,15 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import de.vibecode.crisis.core.model.DisplayCurrency
+import de.vibecode.crisis.core.model.CrisisSettings
+import de.vibecode.crisis.core.model.CrisisThresholdProfile
+import de.vibecode.crisis.core.model.CrisisWatchlists
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 
@@ -22,6 +27,9 @@ class UserPreferences(context: Context) {
     private val lastSyncKey = longPreferencesKey("last_sync_time")
     private val lastSyncErrorKey = stringPreferencesKey("last_sync_error")
     private val onboardingKey = booleanPreferencesKey("notification_onboarding_completed")
+    private val geoWatchlistKey = stringSetPreferencesKey("watchlist_geopolitical")
+    private val financialWatchlistKey = stringSetPreferencesKey("watchlist_financial")
+    private val thresholdProfileKey = stringPreferencesKey("crisis_threshold_profile")
 
     val selectedCurrencyFlow: Flow<DisplayCurrency> = dataStore.data.map { prefs ->
         val code = prefs[currencyKey] ?: DisplayCurrency.EUR.code
@@ -42,6 +50,18 @@ class UserPreferences(context: Context) {
 
     val onboardingCompletedFlow: Flow<Boolean> = dataStore.data.map { prefs ->
         prefs[onboardingKey] ?: false
+    }
+
+    val geopoliticalWatchlistFlow: Flow<Set<String>> = dataStore.data.map { prefs ->
+        prefs[geoWatchlistKey] ?: CrisisWatchlists.geopolitical.map { it.code }.toSet()
+    }
+
+    val financialWatchlistFlow: Flow<Set<String>> = dataStore.data.map { prefs ->
+        prefs[financialWatchlistKey] ?: CrisisWatchlists.financial.map { it.code }.toSet()
+    }
+
+    val crisisThresholdProfileFlow: Flow<CrisisThresholdProfile> = dataStore.data.map { prefs ->
+        CrisisThresholdProfile.fromId(prefs[thresholdProfileKey])
     }
 
     suspend fun setSelectedCurrency(currency: DisplayCurrency) {
@@ -80,5 +100,31 @@ class UserPreferences(context: Context) {
         dataStore.edit { prefs ->
             prefs[onboardingKey] = completed
         }
+    }
+
+    suspend fun setGeopoliticalWatchlist(codes: Set<String>) {
+        dataStore.edit { prefs ->
+            prefs[geoWatchlistKey] = codes
+        }
+    }
+
+    suspend fun setFinancialWatchlist(codes: Set<String>) {
+        dataStore.edit { prefs ->
+            prefs[financialWatchlistKey] = codes
+        }
+    }
+
+    suspend fun setCrisisThresholdProfile(profile: CrisisThresholdProfile) {
+        dataStore.edit { prefs ->
+            prefs[thresholdProfileKey] = profile.id
+        }
+    }
+
+    suspend fun getCrisisSettings(): CrisisSettings {
+        val prefs = dataStore.data.first()
+        val geopolitical = prefs[geoWatchlistKey] ?: CrisisWatchlists.geopolitical.map { it.code }.toSet()
+        val financial = prefs[financialWatchlistKey] ?: CrisisWatchlists.financial.map { it.code }.toSet()
+        val profile = CrisisThresholdProfile.fromId(prefs[thresholdProfileKey])
+        return CrisisSettings(profile, geopolitical, financial)
     }
 }

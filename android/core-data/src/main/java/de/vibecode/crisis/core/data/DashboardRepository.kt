@@ -8,14 +8,18 @@ import kotlinx.coroutines.coroutineScope
 class DashboardRepository(
     private val metalService: MetalPriceService,
     private val macroService: MacroIndicatorService,
-    private val crisisService: CrisisMonitorService
+    private val crisisService: CrisisMonitorService,
+    private val preferences: UserPreferences
 ) {
     suspend fun makeSnapshot(): DashboardSnapshot = coroutineScope {
         val metalsTask = async { metalService.fetchAssets() }
         val inflationTask = async { macroService.fetchIndicator(de.vibecode.crisis.core.model.MacroIndicatorKind.INFLATION) }
         val growthTask = async { macroService.fetchIndicator(de.vibecode.crisis.core.model.MacroIndicatorKind.GROWTH) }
         val defenseTask = async { macroService.fetchIndicator(de.vibecode.crisis.core.model.MacroIndicatorKind.DEFENSE) }
-        val crisisTask = async { crisisService.fetchEvents() }
+        val crisisTask = async {
+            val settings = preferences.getCrisisSettings()
+            crisisService.fetchEvents(settings)
+        }
 
         val metals = metalsTask.await()
         val (inflation, inflationSeries) = inflationTask.await()

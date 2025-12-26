@@ -12,9 +12,11 @@ import de.vibecode.crisis.core.data.ExchangeRateService
 import de.vibecode.crisis.core.data.FinancialStressCrisisFeed
 import de.vibecode.crisis.core.data.GeopoliticalAlertCrisisFeed
 import de.vibecode.crisis.core.data.MacroIndicatorService
+import de.vibecode.crisis.core.data.MarketHistoryCache
 import de.vibecode.crisis.core.data.MarketDataService
 import de.vibecode.crisis.core.data.MetalPriceService
 import de.vibecode.crisis.core.data.PoliticalFinancialNewsFeed
+import de.vibecode.crisis.core.data.NewsCache
 import de.vibecode.crisis.core.data.UserPreferences
 import de.vibecode.crisis.core.domain.BennerCycleService
 import de.vibecode.crisis.core.network.NetworkClient
@@ -26,6 +28,7 @@ class AppContainer(context: Context) {
     private val okHttpClient = NetworkClient.httpClient()
     private val goldPriceApi = NetworkClient.goldPriceApi()
     private val newsApi = NetworkClient.newsApi()
+    private val newsCache = NewsCache(appContext, json)
 
     val userPreferences = UserPreferences(appContext)
     val bennerCycleService = BennerCycleService()
@@ -34,19 +37,20 @@ class AppContainer(context: Context) {
     val macroIndicatorService = MacroIndicatorService(okHttpClient, json)
     val crisisMonitorService = CrisisMonitorService(
         listOf(
-            PoliticalFinancialNewsFeed(newsApi, BuildConfig.NEWS_API_KEY.ifBlank { null }),
+            PoliticalFinancialNewsFeed(newsApi, BuildConfig.NEWS_API_KEY.ifBlank { null }, newsCache),
             GeopoliticalAlertCrisisFeed(okHttpClient, json),
             FinancialStressCrisisFeed(okHttpClient, json)
         )
     )
 
-    val dashboardRepository = DashboardRepository(metalPriceService, macroIndicatorService, crisisMonitorService)
+    val dashboardRepository = DashboardRepository(metalPriceService, macroIndicatorService, crisisMonitorService, userPreferences)
     val dashboardCache = DashboardCache(appContext, json)
 
     val exchangeRateService = ExchangeRateService(okHttpClient)
     val currencyRepository = CurrencyRepository(userPreferences, exchangeRateService)
 
-    val marketDataService = MarketDataService(okHttpClient)
+    private val marketHistoryCache = MarketHistoryCache(appContext, json)
+    val marketDataService = MarketDataService(okHttpClient, marketHistoryCache)
     val comparisonEngine = AssetComparisonEngine(marketDataService)
 
     val consultationService = ConsultationService(okHttpClient, json, AppConfig.CONSULTATION_ENDPOINT)

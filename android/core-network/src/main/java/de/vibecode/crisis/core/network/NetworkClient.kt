@@ -1,13 +1,12 @@
 ﻿package de.vibecode.crisis.core.network
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 object NetworkClient {
     val json: Json = Json {
@@ -22,7 +21,6 @@ object NetworkClient {
             .build()
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
     private fun retrofit(baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)

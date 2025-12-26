@@ -16,10 +16,10 @@ jobs:
 
       - name: Select latest Xcode
         run: |
-          if [ -d /Applications/Xcode.app ]; then
-            sudo xcode-select -s /Applications/Xcode.app
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s "/Applications/Xcode_15.4.app/Contents/Developer"
           else
-            sudo xcode-select -s /Applications/Xcode_15.4.app
+            sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
           fi
 
       - name: Show Xcode version

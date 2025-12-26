@@ -9,7 +9,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import de.vibecode.crisis.core.data.UserPreferences
-import de.vibecode.crisis.core.domain.CrisisThresholds
 import de.vibecode.crisis.core.model.CrisisEvent
 import kotlinx.coroutines.flow.first
 
@@ -49,7 +48,8 @@ class NotificationHelper(
     suspend fun processHighPriorityAlert(events: List<CrisisEvent>) {
         if (currentStatus() != NotificationAuthorizationState.AUTHORIZED) return
         val event = events.maxByOrNull { it.severityScore } ?: return
-        if (event.severityScore < CrisisThresholds.HIGH_RISK_SEVERITY_SCORE) return
+        val profile = preferences.crisisThresholdProfileFlow.first()
+        if (event.severityScore < profile.highRiskSeverityScore) return
 
         val lastNotified = preferences.lastNotifiedIdFlow.first()
         if (lastNotified == event.id) return

@@ -1,9 +1,12 @@
-﻿package de.vibecode.crisis.core.data
+package de.vibecode.crisis.core.data
 
-import de.vibecode.crisis.core.domain.CrisisThresholds
+import de.vibecode.crisis.core.domain.CrisisSeverity
 import de.vibecode.crisis.core.model.CrisisCategory
 import de.vibecode.crisis.core.model.CrisisEvent
+import de.vibecode.crisis.core.model.CrisisSettings
+import de.vibecode.crisis.core.model.CrisisWatchlists
 import de.vibecode.crisis.core.model.DataSource
+import de.vibecode.crisis.core.model.WatchlistCountry
 import de.vibecode.crisis.core.network.NewsApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -19,16 +22,15 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import kotlin.math.abs
 
 interface CrisisFeedService {
-    suspend fun fetchEvents(): List<CrisisEvent>
+    suspend fun fetchEvents(settings: CrisisSettings): List<CrisisEvent>
 }
 
 class CrisisMonitorService(private val feeds: List<CrisisFeedService>) {
-    suspend fun fetchEvents(limit: Int = 12): List<CrisisEvent> = coroutineScope {
+    suspend fun fetchEvents(settings: CrisisSettings, limit: Int = 12): List<CrisisEvent> = coroutineScope {
         val results = feeds.map { feed ->
-            async { feed.fetchEvents() }
+            async { feed.fetchEvents(settings) }
         }.flatMap { it.await() }
 
         results.sortedByDescending { it.occurredAt }.take(limit)
@@ -37,28 +39,38 @@ class CrisisMonitorService(private val feeds: List<CrisisFeedService>) {
 
 class PoliticalFinancialNewsFeed(
     private val api: NewsApi,
-    private val apiKey: String?
+    private val apiKey: String?,
+    private val cache: NewsCache?
 ) : CrisisFeedService {
-    override suspend fun fetchEvents(): List<CrisisEvent> {
-        if (apiKey.isNullOrBlank()) return emptyList()
-
-        val financial = api.topHeadlines(category = "business", apiKey = apiKey)
-        val political = api.everything(query = AppConfig.NEWS_QUERY, apiKey = apiKey)
-
-        val merged = financial.articles.mapNotNull { article ->
-            mapArticle(article, CrisisCategory.FINANCIAL)
-        } + political.articles.mapNotNull { article ->
-            mapArticle(article, CrisisCategory.GEOPOLITICAL)
+    override suspend fun fetchEvents(settings: CrisisSettings): List<CrisisEvent> {
+        if (apiKey.isNullOrBlank()) {
+            return cache?.load()?.events ?: emptyList()
         }
 
-        val unique = LinkedHashMap<String, CrisisEvent>()
-        merged.forEach { event ->
-            if (!unique.containsKey(event.id)) {
-                unique[event.id] = event
+        return runCatching {
+            val key = apiKey!!
+            val financial = api.topHeadlines(category = "business", apiKey = key)
+            val political = api.everything(query = AppConfig.NEWS_QUERY, apiKey = key)
+
+            val merged = financial.articles.mapNotNull { article ->
+                mapArticle(article, CrisisCategory.FINANCIAL)
+            } + political.articles.mapNotNull { article ->
+                mapArticle(article, CrisisCategory.GEOPOLITICAL)
             }
-        }
 
-        return unique.values.take(10)
+            val unique = LinkedHashMap<String, CrisisEvent>()
+            merged.forEach { event ->
+                if (!unique.containsKey(event.id)) {
+                    unique[event.id] = event
+                }
+            }
+
+            val events = unique.values.take(10)
+            cache?.persist(events)
+            events
+        }.getOrElse {
+            cache?.load()?.events ?: emptyList()
+        }
     }
 
     private fun mapArticle(article: de.vibecode.crisis.core.network.NewsApiArticle, category: CrisisCategory): CrisisEvent? {
@@ -76,48 +88,35 @@ class PoliticalFinancialNewsFeed(
             sourceName = article.source.name,
             source = DataSource.NEWS_API,
             category = category,
-            severityScore = newsSeverityScore(publishedAt)
+            severityScore = CrisisSeverity.newsSeverityScore(publishedAt)
         )
-    }
-
-    private fun newsSeverityScore(publishedAt: Instant): Double {
-        val hours = (Clock.System.now() - publishedAt).inWholeHours
-        return when {
-            hours < 24 -> 6.0
-            hours < 72 -> 5.0
-            else -> 4.0
-        }
     }
 }
 
 class GeopoliticalAlertCrisisFeed(
     private val client: OkHttpClient,
-    private val json: Json,
-    private val watchList: List<Pair<String, String>> = listOf(
-        "Ukraine" to "UKR",
-        "Israel" to "ISR",
-        "Taiwan" to "TWN",
-        "South Africa" to "ZAF",
-        "Germany" to "DEU"
-    )
+    private val json: Json
 ) : CrisisFeedService {
-    override suspend fun fetchEvents(): List<CrisisEvent> = coroutineScope {
-        watchList.map { entry ->
-            async { fetchGovernanceAlert(entry) }
+    override suspend fun fetchEvents(settings: CrisisSettings): List<CrisisEvent> = coroutineScope {
+        val active = filteredWatchlist(CrisisWatchlists.geopolitical, settings.geopoliticalWatchlist)
+        if (active.isEmpty()) return@coroutineScope emptyList()
+        active.map { entry ->
+            async { fetchGovernanceAlert(entry, settings) }
         }.mapNotNull { it.await() }
     }
 
-    private suspend fun fetchGovernanceAlert(entry: Pair<String, String>): CrisisEvent? {
-        val (name, code) = entry
+    private suspend fun fetchGovernanceAlert(entry: WatchlistCountry, settings: CrisisSettings): CrisisEvent? {
+        val name = entry.name
+        val code = entry.code
         val url = "https://api.worldbank.org/v2/country/$code/indicator/PV.PSR.PIND?format=json&per_page=2"
         val latest = fetchWorldBankValue(url) ?: return null
         val value = latest.value
-        if (value >= CrisisThresholds.POLITICAL_INSTABILITY_CUTOFF) return null
+        if (value >= settings.thresholdProfile.governanceCutoff) return null
 
         val yearDate = yearInstant(latest.year)
         return CrisisEvent(
             id = "geo-$code",
-            title = "Politische Instabilität $name",
+            title = "Politische Instabilitaet $name",
             summary = "Governance-Index ${"%.2f".format(value)}",
             region = name,
             occurredAt = yearDate,
@@ -126,7 +125,7 @@ class GeopoliticalAlertCrisisFeed(
             sourceName = "World Bank",
             source = DataSource.WORLD_BANK_GOVERNANCE,
             category = CrisisCategory.GEOPOLITICAL,
-            severityScore = abs(value) * 2
+            severityScore = CrisisSeverity.governanceSeverity(value)
         )
     }
 
@@ -151,27 +150,23 @@ class GeopoliticalAlertCrisisFeed(
 
 class FinancialStressCrisisFeed(
     private val client: OkHttpClient,
-    private val json: Json,
-    private val watchList: List<Pair<String, String>> = listOf(
-        "Germany" to "DEU",
-        "United States" to "USA",
-        "United Kingdom" to "GBR",
-        "Japan" to "JPN",
-        "China" to "CHN"
-    )
+    private val json: Json
 ) : CrisisFeedService {
-    override suspend fun fetchEvents(): List<CrisisEvent> = coroutineScope {
-        watchList.map { entry ->
-            async { fetchAlert(entry) }
+    override suspend fun fetchEvents(settings: CrisisSettings): List<CrisisEvent> = coroutineScope {
+        val active = filteredWatchlist(CrisisWatchlists.financial, settings.financialWatchlist)
+        if (active.isEmpty()) return@coroutineScope emptyList()
+        active.map { entry ->
+            async { fetchAlert(entry, settings) }
         }.mapNotNull { it.await() }
     }
 
-    private suspend fun fetchAlert(entry: Pair<String, String>): CrisisEvent? {
-        val (name, code) = entry
+    private suspend fun fetchAlert(entry: WatchlistCountry, settings: CrisisSettings): CrisisEvent? {
+        val name = entry.name
+        val code = entry.code
         val url = "https://api.worldbank.org/v2/country/$code/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=2"
         val latest = fetchWorldBankValue(url) ?: return null
         val value = latest.value
-        if (value >= CrisisThresholds.RECESSION_GROWTH_CUTOFF) return null
+        if (value >= settings.thresholdProfile.recessionCutoff) return null
 
         val yearDate = yearInstant(latest.year)
         return CrisisEvent(
@@ -185,7 +180,7 @@ class FinancialStressCrisisFeed(
             sourceName = "World Bank",
             source = DataSource.WORLD_BANK_FINANCE,
             category = CrisisCategory.FINANCIAL,
-            severityScore = abs(value)
+            severityScore = CrisisSeverity.recessionSeverity(value)
         )
     }
 
@@ -210,7 +205,16 @@ class FinancialStressCrisisFeed(
 
 private data class WorldBankValue(val year: Int, val value: Double)
 
+private fun filteredWatchlist(
+    candidates: List<WatchlistCountry>,
+    enabledCodes: Set<String>
+): List<WatchlistCountry> {
+    if (enabledCodes.isEmpty()) return emptyList()
+    return candidates.filter { enabledCodes.contains(it.code) }
+}
+
 private fun yearInstant(year: Int): Instant {
     val date = LocalDate(year, 1, 1)
     return date.atStartOfDayIn(TimeZone.UTC)
 }
+

@@ -32,4 +32,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("xmlpull:xmlpull:1.1.3.1")
+    testImplementation("net.sf.kxml:kxml2:2.3.0")
 }

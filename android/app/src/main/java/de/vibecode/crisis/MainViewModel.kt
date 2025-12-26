@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import de.vibecode.crisis.core.model.AsyncState
 import de.vibecode.crisis.core.model.DashboardSnapshot
+import de.vibecode.crisis.core.model.CrisisThresholdProfile
 import de.vibecode.crisis.core.model.DisplayCurrency
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -39,6 +40,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val onboardingCompleted = container.userPreferences.onboardingCompletedFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    val geopoliticalWatchlist = container.userPreferences.geopoliticalWatchlistFlow
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptySet())
+
+    val financialWatchlist = container.userPreferences.financialWatchlistFlow
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptySet())
+
+    val crisisThresholdProfile = container.userPreferences.crisisThresholdProfileFlow
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CrisisThresholdProfile.STANDARD)
 
     private val lastSuccessfulSync = container.userPreferences.lastSuccessfulSyncFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
@@ -91,6 +101,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun markOnboardingCompleted() {
         viewModelScope.launch {
             container.userPreferences.setOnboardingCompleted(true)
+        }
+    }
+
+    fun setGeopoliticalWatchlist(codes: Set<String>) {
+        viewModelScope.launch {
+            container.userPreferences.setGeopoliticalWatchlist(codes)
+        }
+    }
+
+    fun setFinancialWatchlist(codes: Set<String>) {
+        viewModelScope.launch {
+            container.userPreferences.setFinancialWatchlist(codes)
+        }
+    }
+
+    fun setCrisisThresholdProfile(profile: CrisisThresholdProfile) {
+        viewModelScope.launch {
+            container.userPreferences.setCrisisThresholdProfile(profile)
         }
     }
 }

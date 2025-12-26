@@ -1,6 +1,7 @@
 ﻿package de.vibecode.crisis.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -46,6 +47,7 @@ import de.vibecode.crisis.ui.components.NotificationPermissionBanner
 import de.vibecode.crisis.ui.components.SyncStatusBanner
 import de.vibecode.crisis.ui.screens.ComparisonScreen
 import de.vibecode.crisis.ui.screens.ConsultationScreen
+import de.vibecode.crisis.ui.screens.CrisisDetailScreen
 import de.vibecode.crisis.ui.screens.CrisisScreen
 import de.vibecode.crisis.ui.screens.MetalsScreen
 import de.vibecode.crisis.ui.screens.OverviewScreen
@@ -68,6 +70,9 @@ fun AppRoot(
     val selectedCurrency by viewModel.selectedCurrency.collectAsStateWithLifecycle()
     val exchangeRates by viewModel.exchangeRates.collectAsStateWithLifecycle()
     val onboardingCompleted by viewModel.onboardingCompleted.collectAsStateWithLifecycle()
+    val geopoliticalWatchlist by viewModel.geopoliticalWatchlist.collectAsStateWithLifecycle()
+    val financialWatchlist by viewModel.financialWatchlist.collectAsStateWithLifecycle()
+    val thresholdProfile by viewModel.crisisThresholdProfile.collectAsStateWithLifecycle()
 
     var showSettings by remember { mutableStateOf(false) }
     var showOnboarding by remember { mutableStateOf(false) }
@@ -207,7 +212,30 @@ fun AppRoot(
                             dashboardState = dashboardState,
                             onRefresh = { viewModel.refreshDashboard(force = true) },
                             onOpenSettings = { showSettings = true },
-                            windowSizeClass = windowSizeClass
+                            windowSizeClass = windowSizeClass,
+                            thresholdProfile = thresholdProfile,
+                            onEventSelected = { event ->
+                                navController.navigate("crisis-detail/${Uri.encode(event.id)}")
+                            }
+                        )
+                    }
+                    composable("crisis-detail/{eventId}") { backStackEntry ->
+                        val eventId = backStackEntry.arguments?.getString("eventId")
+                        val events = when (val state = dashboardState) {
+                            is de.vibecode.crisis.core.model.AsyncState.Loaded -> state.value.crises
+                            else -> emptyList()
+                        }
+                        val event = events.firstOrNull { it.id == eventId }
+                        val related = if (event == null) {
+                            emptyList()
+                        } else {
+                            events.filter { it.region == event.region || it.category == event.category }
+                                .sortedByDescending { it.occurredAt }
+                        }
+                        CrisisDetailScreen(
+                            event = event,
+                            relatedEvents = related,
+                            onClose = { navController.popBackStack() }
                         )
                     }
                     composable(TopLevelDestination.Consultation.route) {
@@ -226,6 +254,9 @@ fun AppRoot(
                     SettingsSheet(
                         selectedCurrency = selectedCurrency,
                         notificationStatus = notificationStatus,
+                        thresholdProfile = thresholdProfile,
+                        geopoliticalWatchlist = geopoliticalWatchlist,
+                        financialWatchlist = financialWatchlist,
                         onCurrencySelected = { viewModel.setSelectedCurrency(it) },
                         onNotificationAction = { status ->
                             when (status) {
@@ -235,6 +266,9 @@ fun AppRoot(
                                 NotificationAuthorizationState.UNKNOWN -> requestNotifications()
                             }
                         },
+                        onThresholdProfileSelected = { viewModel.setCrisisThresholdProfile(it) },
+                        onGeopoliticalWatchlistChanged = { viewModel.setGeopoliticalWatchlist(it) },
+                        onFinancialWatchlistChanged = { viewModel.setFinancialWatchlist(it) },
                         onOpenPrivacyPolicy = {
                             showSettings = false
                             navController.navigate("privacy")

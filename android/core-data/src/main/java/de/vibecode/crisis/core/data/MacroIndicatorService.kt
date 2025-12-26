@@ -20,7 +20,15 @@ class MacroIndicatorService(
     private val json: Json
 ) {
     suspend fun fetchIndicator(kind: MacroIndicatorKind, limit: Int = 8): Pair<MacroIndicator, MacroSeries> {
-        val url = "https://api.worldbank.org/v2/country/${AppConfig.FOCUS_COUNTRY_ISO}/indicator/${kind.indicatorCode}?format=json&per_page=$limit"
+        return fetchIndicator(kind, AppConfig.FOCUS_COUNTRY_ISO, limit)
+    }
+
+    suspend fun fetchIndicator(
+        kind: MacroIndicatorKind,
+        countryIso: String,
+        limit: Int = 8
+    ): Pair<MacroIndicator, MacroSeries> {
+        val url = "https://api.worldbank.org/v2/country/$countryIso/indicator/${kind.indicatorCode}?format=json&per_page=$limit"
         val body = getBody(url)
         val points = parseSeries(body)
         val sorted = points.sortedBy { it.year }
@@ -47,7 +55,7 @@ class MacroIndicatorService(
         }
     }
 
-    private fun parseSeries(body: String): List<MacroDataPoint> {
+    internal fun parseSeries(body: String): List<MacroDataPoint> {
         if (body.isBlank()) return emptyList()
         val root = json.parseToJsonElement(body).jsonArray
         val entries = root.getOrNull(1)?.jsonArray ?: return emptyList()

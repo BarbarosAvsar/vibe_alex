@@ -31,13 +31,15 @@ class ExchangeRateService(private val client: OkHttpClient) {
     }
 }
 
-private class EcbRateParser {
+internal class EcbRateParser {
     val rates: MutableMap<String, Double> = mutableMapOf()
     var date: Instant? = null
 
     fun parse(xml: String) {
         if (xml.isBlank()) return
-        val parser = XmlPullParserFactory.newInstance().newPullParser()
+        val factory = XmlPullParserFactory.newInstance()
+        factory.isNamespaceAware = true
+        val parser = factory.newPullParser()
         parser.setInput(xml.reader())
         var event = parser.eventType
         while (event != XmlPullParser.END_DOCUMENT) {

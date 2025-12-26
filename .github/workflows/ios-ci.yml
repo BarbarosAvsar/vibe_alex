@@ -1,4 +1,4 @@
-﻿name: iOS Release CI
+name: iOS Release CI
 
 # Required GitHub Secrets for both variants
 #   APPLE_TEAM_ID                       -> 10-character Apple Developer Team ID used for signing/export.
@@ -47,7 +47,7 @@ env:
 
 jobs:
   variant_a_xcodebuild:
-    name: Variant A â€“ xcodebuild / altool
+    name: Variant A - xcodebuild / altool
     runs-on: macos-latest
     if: ${{ !vars.IOS_CI_VARIANT || vars.IOS_CI_VARIANT == 'xcodebuild' || vars.IOS_CI_VARIANT == 'both' || inputs.use_variant == 'xcodebuild' || inputs.use_variant == 'both' }}
     env:
@@ -187,7 +187,7 @@ jobs:
             ${{ env.EXPORT_OPTIONS_PATH }}
 
   variant_b_fastlane:
-    name: Variant B â€“ Fastlane lane
+    name: Variant B - Fastlane lane
     runs-on: macos-latest
     needs: []
     if: ${{ vars.IOS_CI_VARIANT == 'fastlane' || vars.IOS_CI_VARIANT == 'both' || inputs.use_variant == 'fastlane' || inputs.use_variant == 'both' }}
@@ -277,4 +277,5 @@ jobs:
           path: |
             build/*.ipa
             build/*.xcarchive
+
 

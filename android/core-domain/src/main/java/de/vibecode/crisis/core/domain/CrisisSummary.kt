@@ -18,10 +18,13 @@ data class CrisisSummary(
 )
 
 class CrisisSummaryGenerator {
-    fun summarize(events: List<CrisisEvent>): CrisisSummary? {
+    fun summarize(
+        events: List<CrisisEvent>,
+        highRiskThreshold: Double = CrisisThresholds.HIGH_RISK_SEVERITY_SCORE
+    ): CrisisSummary? {
         if (events.isEmpty()) return null
 
-        val severeEvents = events.filter { it.severityScore >= CrisisThresholds.HIGH_RISK_SEVERITY_SCORE }
+        val severeEvents = events.filter { it.severityScore >= highRiskThreshold }
         val headline = if (severeEvents.isEmpty()) {
             "Keine Hochrisiko-Ereignisse erkennbar"
         } else {

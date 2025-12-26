@@ -8,10 +8,31 @@ import kotlinx.datetime.LocalDate
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-class MarketDataService(private val client: OkHttpClient) {
+class MarketDataService(
+    private val client: OkHttpClient,
+    private val cache: MarketHistoryCache?
+) {
     suspend fun fetchHistory(instrument: MarketInstrument, limitYears: Int = 10): List<ComparisonPoint> {
         val url = "https://stooq.pl/q/d/l/?s=${instrument.symbol}&i=d"
+        val cached = cache?.loadHistory(instrument)
         val body = getBody(url)
+        if (body.isBlank()) return cached ?: emptyList()
+        val points = parseHistory(body, limitYears)
+        if (points.isNotEmpty()) {
+            cache?.persistHistory(instrument, points)
+            return points
+        }
+        return cached ?: emptyList()
+    }
+
+    private suspend fun getBody(url: String): String = withContext(Dispatchers.IO) {
+        val request = Request.Builder().url(url).build()
+        client.newCall(request).execute().use { response ->
+            response.body?.string().orEmpty()
+        }
+    }
+
+    internal fun parseHistory(body: String, limitYears: Int): List<ComparisonPoint> {
         if (body.isBlank()) return emptyList()
         val lines = body.lineSequence().drop(1)
         val points = lines.mapNotNull { line ->
@@ -26,12 +47,5 @@ class MarketDataService(private val client: OkHttpClient) {
         val maxYear = points.maxOfOrNull { it.year } ?: return points
         val threshold = maxYear - limitYears
         return points.filter { it.year >= threshold }
-    }
-
-    private suspend fun getBody(url: String): String = withContext(Dispatchers.IO) {
-        val request = Request.Builder().url(url).build()
-        client.newCall(request).execute().use { response ->
-            response.body?.string().orEmpty()
-        }
     }
 }

@@ -6,11 +6,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.vibecode.crisis.NotificationAuthorizationState
 import de.vibecode.crisis.R
+import de.vibecode.crisis.core.model.CrisisThresholdProfile
+import de.vibecode.crisis.core.model.CrisisWatchlists
 import de.vibecode.crisis.core.model.DisplayCurrency
 import de.vibecode.crisis.ui.components.GlassCard
 import de.vibecode.crisis.ui.theme.CrisisColors
@@ -27,8 +30,14 @@ import de.vibecode.crisis.ui.theme.CrisisColors
 fun SettingsSheet(
     selectedCurrency: DisplayCurrency,
     notificationStatus: NotificationAuthorizationState,
+    thresholdProfile: CrisisThresholdProfile,
+    geopoliticalWatchlist: Set<String>,
+    financialWatchlist: Set<String>,
     onCurrencySelected: (DisplayCurrency) -> Unit,
     onNotificationAction: (NotificationAuthorizationState) -> Unit,
+    onThresholdProfileSelected: (CrisisThresholdProfile) -> Unit,
+    onGeopoliticalWatchlistChanged: (Set<String>) -> Unit,
+    onFinancialWatchlistChanged: (Set<String>) -> Unit,
     onOpenPrivacyPolicy: () -> Unit,
     onClose: () -> Unit
 ) {
@@ -65,6 +74,65 @@ fun SettingsSheet(
 
         GlassCard {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(text = stringResource(R.string.settings_watchlist_section), style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(R.string.settings_watchlist_geopolitical), style = MaterialTheme.typography.labelLarge)
+                CrisisWatchlists.geopolitical.forEach { country ->
+                    val enabled = geopoliticalWatchlist.contains(country.code)
+                    Row {
+                        Text(text = country.name, style = MaterialTheme.typography.bodyMedium)
+                        Spacer(modifier = Modifier.weight(1f))
+                        Switch(
+                            checked = enabled,
+                            onCheckedChange = { checked ->
+                                val updated = if (checked) geopoliticalWatchlist + country.code else geopoliticalWatchlist - country.code
+                                onGeopoliticalWatchlistChanged(updated)
+                            }
+                        )
+                    }
+                }
+                Text(text = stringResource(R.string.settings_watchlist_financial), style = MaterialTheme.typography.labelLarge)
+                CrisisWatchlists.financial.forEach { country ->
+                    val enabled = financialWatchlist.contains(country.code)
+                    Row {
+                        Text(text = country.name, style = MaterialTheme.typography.bodyMedium)
+                        Spacer(modifier = Modifier.weight(1f))
+                        Switch(
+                            checked = enabled,
+                            onCheckedChange = { checked ->
+                                val updated = if (checked) financialWatchlist + country.code else financialWatchlist - country.code
+                                onFinancialWatchlistChanged(updated)
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
+        GlassCard {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(text = stringResource(R.string.settings_thresholds_section), style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(R.string.settings_thresholds_label), style = MaterialTheme.typography.labelLarge)
+                SingleChoiceSegmentedButtonRow {
+                    CrisisThresholdProfile.entries.forEach { profile ->
+                        SegmentedButton(
+                            selected = thresholdProfile == profile,
+                            onClick = { onThresholdProfileSelected(profile) },
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(50)
+                        ) {
+                            Text(text = thresholdLabel(profile))
+                        }
+                    }
+                }
+                Text(
+                    text = stringResource(R.string.settings_thresholds_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = CrisisColors.textSecondary
+                )
+            }
+        }
+
+        GlassCard {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(text = stringResource(R.string.settings_notifications_section), style = MaterialTheme.typography.titleMedium)
                 Row {
                     Text(text = stringResource(R.string.settings_notifications_label), style = MaterialTheme.typography.labelLarge)
@@ -93,6 +161,15 @@ fun SettingsSheet(
         Button(onClick = onClose, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(R.string.settings_done))
         }
+    }
+}
+
+@Composable
+private fun thresholdLabel(profile: CrisisThresholdProfile): String {
+    return when (profile) {
+        CrisisThresholdProfile.STANDARD -> stringResource(R.string.settings_thresholds_standard)
+        CrisisThresholdProfile.SENSITIVE -> stringResource(R.string.settings_thresholds_sensitive)
+        CrisisThresholdProfile.CONSERVATIVE -> stringResource(R.string.settings_thresholds_conservative)
     }
 }
 

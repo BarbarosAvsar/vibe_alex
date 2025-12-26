@@ -1,16 +1,16 @@
 :root {
   color-scheme: only light;
-  --bg: #f9f3f7;
-  --surface: rgba(247, 245, 248, 0.72);
-  --surface-strong: rgba(247, 245, 248, 0.9);
-  --border: rgba(46, 42, 46, 0.12);
-  --text: #2e2a2e;
-  --text-secondary: rgba(46, 42, 46, 0.8);
-  --text-muted: rgba(46, 42, 46, 0.6);
-  --accent: #e3b66a;
-  --accent-strong: #c6903a;
-  --accent-info: #86b7c6;
-  --shadow: 0 18px 44px rgba(46, 42, 46, 0.15);
+  --bg: #0f1c3d;
+  --surface: rgba(127, 179, 213, 0.12);
+  --surface-strong: rgba(127, 179, 213, 0.2);
+  --border: rgba(127, 179, 213, 0.3);
+  --text: #e6a3b0;
+  --text-secondary: rgba(230, 163, 176, 0.85);
+  --text-muted: rgba(127, 179, 213, 0.75);
+  --accent: #e6a3b0;
+  --accent-strong: rgba(230, 163, 176, 0.92);
+  --accent-info: #7fb3d5;
+  --shadow: 0 18px 44px rgba(15, 28, 61, 0.6);
   --radius-lg: 24px;
   --radius-md: 16px;
   --radius-pill: 999px;
@@ -119,10 +119,10 @@ a:focus-visible {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(circle at top right, rgba(134, 183, 198, 0.16), transparent 55%),
-    radial-gradient(circle at bottom left, rgba(198, 144, 58, 0.2), transparent 60%),
-    radial-gradient(circle at center, rgba(227, 182, 106, 0.16), transparent 70%),
-    linear-gradient(140deg, rgba(249, 243, 247, 0.98), rgba(249, 243, 247, 0.92));
+    radial-gradient(circle at top right, rgba(127, 179, 213, 0.25), transparent 55%),
+    radial-gradient(circle at bottom left, rgba(230, 163, 176, 0.25), transparent 60%),
+    radial-gradient(circle at center, rgba(127, 179, 213, 0.18), transparent 70%),
+    linear-gradient(140deg, rgba(15, 28, 61, 0.96), rgba(15, 28, 61, 0.9));
 }
 
 .app-shell {
@@ -168,7 +168,7 @@ body.is-ready .app-shell {
   align-items: center;
   padding: 18px 20px;
   backdrop-filter: blur(16px);
-  background: rgba(249, 243, 247, 0.75);
+  background: rgba(15, 28, 61, 0.85);
   border-bottom: 1px solid var(--border);
 }
 
@@ -212,7 +212,7 @@ body.is-ready .app-shell {
   margin: 0 20px;
   padding: 10px 14px;
   border-radius: var(--radius-pill);
-  background: rgba(134, 183, 198, 0.2);
+  background: rgba(127, 179, 213, 0.2);
   font-size: 0.9rem;
   display: none;
 }
@@ -259,7 +259,7 @@ main {
   padding: 20px;
   border: 1px solid var(--border);
   backdrop-filter: blur(16px);
-  box-shadow: 0 20px 42px rgba(46, 42, 46, 0.12);
+  box-shadow: var(--shadow);
 }
 
 .card-header {
@@ -348,7 +348,7 @@ main {
 }
 
 .ghost-button {
-  background: rgba(46, 42, 46, 0.08);
+  background: var(--surface);
   color: var(--text);
 }
 
@@ -361,19 +361,19 @@ main {
 .segmented-button {
   border-radius: var(--radius-pill);
   border: 1px solid var(--border);
-  background: rgba(247, 245, 248, 0.6);
+  background: var(--surface);
   padding: 10px 14px;
   cursor: pointer;
   font-weight: 600;
 }
 
 .segmented-button.is-active {
-  background: rgba(227, 182, 106, 0.2);
-  border-color: rgba(227, 182, 106, 0.5);
+  background: rgba(230, 163, 176, 0.2);
+  border-color: rgba(230, 163, 176, 0.5);
 }
 
 .pill {
-  background: rgba(134, 183, 198, 0.25);
+  background: rgba(127, 179, 213, 0.25);
   border-radius: var(--radius-pill);
   padding: 4px 12px;
   font-size: 0.85rem;
@@ -401,7 +401,7 @@ main {
   border-radius: 14px;
   border: 1px solid var(--border);
   padding: 8px 12px;
-  background: rgba(247, 245, 248, 0.65);
+  background: var(--surface);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -410,8 +410,8 @@ main {
 }
 
 .chip.is-active {
-  background: rgba(227, 182, 106, 0.2);
-  border-color: rgba(227, 182, 106, 0.5);
+  background: rgba(230, 163, 176, 0.2);
+  border-color: rgba(230, 163, 176, 0.5);
 }
 
 .hint {
@@ -424,7 +424,7 @@ main {
   gap: 6px;
   padding: 12px;
   border-radius: var(--radius-md);
-  background: rgba(247, 245, 248, 0.65);
+  background: var(--surface);
   border: 1px solid var(--border);
 }
 
@@ -441,7 +441,7 @@ main {
   border-radius: 999px;
   appearance: none;
   -webkit-appearance: none;
-  background: rgba(46, 42, 46, 0.12);
+  background: rgba(15, 28, 61, 0.35);
   overflow: hidden;
 }
 
@@ -458,7 +458,7 @@ main {
 }
 
 .progress::-webkit-progress-bar {
-  background: rgba(46, 42, 46, 0.12);
+  background: rgba(15, 28, 61, 0.35);
 }
 
 .progress::-webkit-progress-value {
@@ -477,15 +477,15 @@ main {
 }
 
 .badge.high {
-  background: rgba(227, 182, 106, 0.4);
+  background: rgba(230, 163, 176, 0.4);
 }
 
 .badge.medium {
-  background: rgba(227, 182, 106, 0.2);
+  background: rgba(230, 163, 176, 0.2);
 }
 
 .badge.low {
-  background: rgba(134, 183, 198, 0.2);
+  background: rgba(127, 179, 213, 0.2);
 }
 
 .chart {
@@ -551,7 +551,7 @@ textarea {
   border: 1px solid var(--border);
   padding: 10px 12px;
   font: inherit;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--surface-strong);
 }
 
 input[type="range"] {
@@ -580,7 +580,7 @@ textarea {
   bottom: 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background: rgba(249, 243, 247, 0.95);
+  background: rgba(15, 28, 61, 0.95);
   border-top: 1px solid var(--border);
   padding: 10px 12px 16px;
   gap: 6px;
@@ -611,7 +611,7 @@ textarea {
 .sheet-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(46, 42, 46, 0.4);
+  background: rgba(15, 28, 61, 0.7);
   display: grid;
   place-items: end center;
   z-index: 20;
@@ -658,7 +658,7 @@ textarea {
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--surface);
 }
 
 .toggle input {

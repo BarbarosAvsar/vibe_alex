@@ -72,8 +72,8 @@ struct LiquidGlassCard: ViewModifier {
                     .overlay {
                         LinearGradient(
                             colors: [
-                                Color.white.opacity(0.14),
-                                Color.white.opacity(0.05)
+                                Theme.accentInfo.opacity(0.18),
+                                Theme.accentInfo.opacity(0.05)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing

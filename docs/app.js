@@ -61,11 +61,11 @@
   const MACRO_KIND_MAP = new Map(MACRO_KINDS.map((kind) => [kind.id, kind]));
 
   const COLORS = {
-    accent: "#e3b66a",
-    strong: "#c6903a",
-    info: "#86b7c6",
-    muted: "#7a6f78",
-    subtle: "#a59aa5"
+    accent: "#e6a3b0",
+    strong: "rgba(230, 163, 176, 0.72)",
+    info: "#7fb3d5",
+    muted: "rgba(127, 179, 213, 0.7)",
+    subtle: "rgba(127, 179, 213, 0.5)"
   };
 
   const MACRO_COMPARISON_REGIONS = [

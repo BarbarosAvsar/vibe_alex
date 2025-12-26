@@ -13,5 +13,5 @@ struct LogoMark: View {
 #Preview {
     LogoMark()
         .padding()
-        .background(Color.black)
+        .background(Theme.background)
 }

@@ -48,10 +48,10 @@ struct BrilliantDiamondIcon: View {
                     )
                     .overlay(
                         outline
-                            .stroke(Color.white.opacity(0.35), lineWidth: 1.2)
+                            .stroke(Theme.accentInfo.opacity(0.45), lineWidth: 1.2)
                     )
                 facets
-                    .stroke(Color.white.opacity(0.55), lineWidth: 1)
+                    .stroke(Theme.accentInfo.opacity(0.6), lineWidth: 1)
             }
             .shadow(color: Theme.accent.opacity(0.25), radius: 4, x: 0, y: 2)
         }

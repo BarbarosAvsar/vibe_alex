@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="CRISIS 2050">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#e3b66a" />
-      <stop offset="100%" stop-color="#c6903a" />
+      <stop offset="0%" stop-color="#7fb3d5" />
+      <stop offset="100%" stop-color="#e6a3b0" />
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="18" fill="#f9f3f7" />
+  <rect width="64" height="64" rx="18" fill="#0f1c3d" />
   <circle cx="32" cy="32" r="22" fill="url(#g)" />
   <path
     d="M40 24c-2.6-2-6.1-3.2-10-3.2-7.1 0-12.8 3.8-12.8 11.2 0 7.3 5.7 11.2 12.8 11.2 3.8 0 7.2-1.1 9.9-3.2l-2.3-3.2c-1.9 1.3-4.4 2.2-7.4 2.2-4.6 0-7.8-2.4-7.8-7 0-4.7 3.2-7 7.8-7 3 0 5.5.9 7.4 2.2z"
-    fill="#2e2a2e"
+    fill="#e6a3b0"
   />
 </svg>

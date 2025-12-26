@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.vibecode.crisis.R
@@ -40,7 +39,7 @@ fun MetalCard(
     val priceFormatter = NumberFormat.getCurrencyInstance(Locale.getDefault()).apply {
         currency = java.util.Currency.getInstance(displayCurrency.code)
     }
-    val changeColor = if (asset.dailyChangePercentage >= 0) Color(0xFF1B8F3A) else Color(0xFFB3261E)
+    val changeColor = if (asset.dailyChangePercentage >= 0) CrisisColors.accentInfo else CrisisColors.accent
     val changeLabel = stringResource(R.string.metal_insight_24h)
 
     GlassCard {

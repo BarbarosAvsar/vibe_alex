@@ -12,12 +12,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import de.vibecode.crisis.R
 
-private val Warm = Color(0xFFE3B66A)
-private val WarmStrong = Color(0xFFC6903A)
-private val Cool = Color(0xFF86B7C6)
-private val BaseBackground = Color(0xFFF9F3F7)
-private val SurfaceBase = Color(0xFFF7F5F8)
-private val TextBase = Color(0xFF2E2A2E)
+private val Warm = Color(0xFFE6A3B0)
+private val WarmStrong = Warm
+private val Cool = Color(0xFF7FB3D5)
+private val BaseBackground = Color(0xFF0F1C3D)
+private val SurfaceBase = Cool.copy(alpha = 0.12f)
+private val TextBase = Warm
 
 private val DisplayFont = FontFamily(
     Font(R.font.playfair_display_variable, FontWeight.Normal),
@@ -44,29 +44,29 @@ private val CrisisTypography = Typography(
 
 object CrisisColors {
     val background = BaseBackground
-    val surface = SurfaceBase.copy(alpha = 0.72f)
-    val border = TextBase.copy(alpha = 0.12f)
+    val surface = SurfaceBase
+    val border = Cool.copy(alpha = 0.35f)
 
     val accent = Warm
-    val accentStrong = WarmStrong
+    val accentStrong = WarmStrong.copy(alpha = 0.9f)
     val accentInfo = Cool
 
     val textPrimary = TextBase
     val textSecondary = TextBase.copy(alpha = 0.8f)
-    val textMuted = TextBase.copy(alpha = 0.6f)
-    val textOnAccent = TextBase
+    val textMuted = Cool.copy(alpha = 0.7f)
+    val textOnAccent = BaseBackground
 }
 
 @Composable
 fun CrisisTheme(content: @Composable () -> Unit) {
     val colors = lightColorScheme(
         primary = WarmStrong,
-        secondary = Warm,
-        tertiary = Cool,
+        secondary = Cool,
+        tertiary = Warm,
         background = BaseBackground,
         surface = SurfaceBase,
-        onPrimary = TextBase,
-        onSecondary = TextBase,
+        onPrimary = BaseBackground,
+        onSecondary = BaseBackground,
         onBackground = TextBase,
         onSurface = TextBase
     )

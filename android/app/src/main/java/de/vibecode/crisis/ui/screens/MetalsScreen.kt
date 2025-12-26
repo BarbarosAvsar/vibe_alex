@@ -219,7 +219,7 @@ private fun BennerProjection(entries: List<BennerCycleEntry>, metal: MetalAsset)
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         LinearProgressIndicator(
-                            progress = entry.progress.toFloat(),
+                            progress = { entry.progress.toFloat() },
                             color = CrisisColors.accent
                         )
                     }
@@ -320,7 +320,7 @@ private fun CrisisResilience(metal: MetalAsset, snapshot: DashboardSnapshot) {
                             )
                         }
                         Text(text = scenario.description, style = MaterialTheme.typography.bodySmall, color = CrisisColors.textMuted)
-                        LinearProgressIndicator(progress = scenario.score.toFloat(), color = CrisisColors.accent)
+                        LinearProgressIndicator(progress = { scenario.score.toFloat() }, color = CrisisColors.accent)
                     }
                 }
             }

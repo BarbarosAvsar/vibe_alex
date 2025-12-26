@@ -29,28 +29,30 @@ struct PrimaryCTAButton: View {
                     Text(resolvedTitle)
                         .font(.headline)
                         .foregroundStyle(Theme.textOnAccent)
-                Text(resolvedSubtitle)
-                    .font(.subheadline)
+                    Text(resolvedSubtitle)
+                        .font(.subheadline)
+                        .foregroundStyle(Theme.textOnAccent.opacity(0.8))
+                }
+                Spacer()
+                Image(systemName: "arrow.right")
+                    .font(.headline)
                     .foregroundStyle(Theme.textOnAccent.opacity(0.8))
             }
-            Spacer()
-            Image(systemName: "arrow.right")
-                .font(.headline)
-                .foregroundStyle(Theme.textOnAccent.opacity(0.8))
+            .padding()
+            .background(
+                LinearGradient(
+                    colors: [
+                        Theme.accentStrong,
+                        Theme.accentStrong.opacity(0.92)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                ),
+                in: RoundedRectangle(cornerRadius: 20, style: .continuous)
+            )
+            .accessibilityHint(Localization.text("cta_subtitle", language: languageSettings.selectedLanguage))
         }
-        .padding()
-        .background(
-            LinearGradient(colors: [
-                Theme.accentStrong,
-                Theme.accentStrong.opacity(0.92)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing),
-            in: RoundedRectangle(cornerRadius: 20, style: .continuous)
-        )
-        .accessibilityHint(Localization.text("cta_subtitle", language: languageSettings.selectedLanguage))
-    }
-    .buttonStyle(.plain)
+        .buttonStyle(.plain)
     }
 
     private var resolvedTitle: String {

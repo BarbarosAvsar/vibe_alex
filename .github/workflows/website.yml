@@ -25,6 +25,8 @@ permissions:
 jobs:
   lint-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
@@ -92,6 +94,7 @@ jobs:
           path: docs
       - name: Deploy to Pages
         if: ${{ steps.pages-check.outputs.result == 'enabled' || env.PAGES_TOKEN_EXISTS == 'true' }}
+        id: deployment
         uses: actions/deploy-pages@v4
       - name: Pages not enabled
         if: ${{ steps.pages-check.outputs.result != 'enabled' && env.PAGES_TOKEN_EXISTS != 'true' }}

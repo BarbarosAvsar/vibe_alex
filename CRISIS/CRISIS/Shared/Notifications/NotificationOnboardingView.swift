@@ -16,24 +16,24 @@ struct NotificationOnboardingView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                let language = languageSettings.selectedLanguage
-                VStack(spacing: 12) {
-                    Image(systemName: "bell.badge.fill")
-                        .font(.largeTitle)
-                        .symbolRenderingMode(.multicolor)
-                    Text(Localization.text("notification_onboarding_headline", language: language))
-                        .font(.title2.bold())
-                    Text(Localization.text("notification_onboarding_body", language: language))
-                        .multilineTextAlignment(.center)
-                        .font(.callout)
-                        .foregroundStyle(Theme.textSecondary)
-                    if let statusHint = statusHintText {
-                        Text(statusHint)
-                            .font(.footnote)
+                    let language = languageSettings.selectedLanguage
+                    VStack(spacing: 12) {
+                        Image(systemName: "bell.badge.fill")
+                            .font(.largeTitle)
+                            .symbolRenderingMode(.multicolor)
+                        Text(Localization.text("notification_onboarding_headline", language: language))
+                            .font(.title2.bold())
+                        Text(Localization.text("notification_onboarding_body", language: language))
                             .multilineTextAlignment(.center)
+                            .font(.callout)
                             .foregroundStyle(Theme.textSecondary)
+                        if let statusHint = statusHintText {
+                            Text(statusHint)
+                                .font(.footnote)
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(Theme.textSecondary)
+                        }
                     }
-                }
                     .padding(.top, 8)
 
                     Toggle(isOn: $wantsAlerts) {

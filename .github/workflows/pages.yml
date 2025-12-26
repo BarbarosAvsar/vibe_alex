@@ -25,11 +25,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
+      - name: Check Pages enablement
+        id: pages-check
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            try {
+              await github.rest.repos.getPages({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              return "enabled";
+            } catch (error) {
+              if (error.status === 404 || error.status === 403) {
+                return "disabled";
+              }
+              throw error;
+            }
+      - name: Configure Pages
+        id: configure-pages
+        uses: actions/configure-pages@v5
+        if: ${{ steps.pages-check.outputs.result == 'enabled' || secrets.PAGES_TOKEN != '' }}
         with:
           enablement: true
-      - uses: actions/upload-pages-artifact@v3
+          token: ${{ secrets.PAGES_TOKEN || github.token }}
+      - name: Upload Pages artifact
+        if: ${{ steps.pages-check.outputs.result == 'enabled' || secrets.PAGES_TOKEN != '' }}
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs
       - id: deployment
+        if: ${{ steps.pages-check.outputs.result == 'enabled' || secrets.PAGES_TOKEN != '' }}
         uses: actions/deploy-pages@v4
+      - name: Pages not enabled
+        if: ${{ steps.pages-check.outputs.result != 'enabled' && secrets.PAGES_TOKEN == '' }}
+        run: echo "GitHub Pages is not enabled or token lacks permission. Enable Pages in repo settings or set PAGES_TOKEN."

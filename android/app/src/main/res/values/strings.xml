@@ -47,7 +47,7 @@
     <string name="comparison_scenario_subtitle">Inflation, Wachstum und Verteidigung justieren</string>
     <string name="comparison_scenario_inflation">Inflation (%)</string>
     <string name="comparison_scenario_growth">Wachstum (%)</string>
-    <string name="comparison_scenario_defense">Verteidigung (% BIP)</string>
+    <string name="comparison_scenario_defense">Verteidigung (%% BIP)</string>
     <string name="comparison_scenario_equities">Aktien</string>
     <string name="comparison_scenario_real_estate">Immobilien</string>
     <string name="comparison_scenario_metals">Edelmetalle</string>

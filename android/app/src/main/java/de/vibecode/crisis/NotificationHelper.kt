@@ -59,6 +59,12 @@ class NotificationHelper(
     }
 
     private fun sendNotification(event: CrisisEvent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permission = ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+            if (permission != android.content.pm.PackageManager.PERMISSION_GRANTED) return
+        }
+        val manager = NotificationManagerCompat.from(context)
+        if (!manager.areNotificationsEnabled()) return
         val category = when (event.category) {
             de.vibecode.crisis.core.model.CrisisCategory.FINANCIAL -> context.getString(R.string.crisis_category_financial)
             de.vibecode.crisis.core.model.CrisisCategory.GEOPOLITICAL -> context.getString(R.string.crisis_category_geopolitical)
@@ -71,7 +77,11 @@ class NotificationHelper(
             .setAutoCancel(true)
             .build()
 
-        NotificationManagerCompat.from(context).notify(event.id.hashCode(), notification)
+        try {
+            manager.notify(event.id.hashCode(), notification)
+        } catch (_: SecurityException) {
+            // Permission revoked after check; skip notification.
+        }
     }
 }
 

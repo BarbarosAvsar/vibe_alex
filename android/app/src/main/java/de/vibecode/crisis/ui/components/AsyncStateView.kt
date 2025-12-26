@@ -14,7 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import de.vibecode.crisis.R
 import de.vibecode.crisis.core.model.AsyncState
 import de.vibecode.crisis.ui.theme.CrisisColors
 
@@ -32,7 +34,7 @@ fun <T> AsyncStateView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CircularProgressIndicator(color = CrisisColors.accent)
-                Text(text = "Aktualisiere Daten.", style = MaterialTheme.typography.bodyMedium)
+                Text(text = stringResource(R.string.async_loading), style = MaterialTheme.typography.bodyMedium)
             }
         }
         is AsyncState.Failed -> {
@@ -44,7 +46,7 @@ fun <T> AsyncStateView(
                 Icon(imageVector = Icons.Default.WifiOff, contentDescription = null, tint = CrisisColors.accentStrong)
                 Text(text = state.message, style = MaterialTheme.typography.bodyMedium)
                 Button(onClick = onRetry) {
-                    Text(text = "Erneut versuchen")
+                    Text(text = stringResource(R.string.async_retry))
                 }
             }
         }

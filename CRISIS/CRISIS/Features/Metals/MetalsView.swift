@@ -5,6 +5,7 @@ import Charts
 struct MetalsView: View {
     @Environment(AppState.self) private var appState
     @Environment(CurrencySettings.self) private var currencySettings
+    @Environment(LanguageSettings.self) private var languageSettings
     @Binding var showSettings: Bool
     let onRequestConsultation: () -> Void
     @State private var selectedMetalID: String?
@@ -47,7 +48,7 @@ struct MetalsView: View {
                     }
                 }
             }
-            .navigationTitle("Edelmetalle")
+            .navigationTitle(Localization.text("metals_title", language: languageSettings.selectedLanguage))
             .toolbar {
                 ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
@@ -78,9 +79,10 @@ struct MetalsView: View {
         if metals.isEmpty {
             EmptyView()
         } else {
+            let language = languageSettings.selectedLanguage
             let activeID = selectedMetalID ?? metals.first?.id
             VStack(alignment: .leading, spacing: 10) {
-                Text("Edelmetall auswählen")
+                Text(Localization.text("metals_selector_title", language: language))
                     .font(.headline)
                 HStack(spacing: 10) {
                     ForEach(metals) { metal in
@@ -90,7 +92,7 @@ struct MetalsView: View {
                         } label: {
                             HStack(spacing: 8) {
                                 BrilliantDiamondIcon(size: 14)
-                                Text(metal.name)
+                                Text(metal.localizedName(language: language))
                             }
                             .font(.subheadline.weight(.semibold))
                             .padding(.horizontal, 14)
@@ -113,15 +115,19 @@ struct MetalsView: View {
 
     @ViewBuilder
     private func bennerProjection(for metal: MetalAsset) -> some View {
+        let language = languageSettings.selectedLanguage
         let projections = projectionEntries().prefix(3)
-        DashboardSection("Prognose für 3 Jahre", subtitle: "\(metal.name) Ausblick") {
+        DashboardSection(
+            Localization.text("metals_projection_title", language: language),
+            subtitle: Localization.format("metals_projection_subtitle", language: language, metal.localizedName(language: language))
+        ) {
             VStack(spacing: 12) {
                 ForEach(projections) { entry in
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("\(entry.year)")
                                 .font(.headline)
-                            Text(entry.phase.subtitle)
+                            Text(entry.phase.localizedSubtitle(language: language))
                                 .font(.caption)
                                 .foregroundStyle(Theme.textSecondary)
                         }
@@ -143,25 +149,29 @@ struct MetalsView: View {
 
     @ViewBuilder
     private func trendChart(for metal: MetalAsset) -> some View {
+        let language = languageSettings.selectedLanguage
         let history = metalHistories[metal.id]
         let points = metalTrendPoints(for: metal)
-        DashboardSection("Historisch & Prognose bis 2050", subtitle: "Indexentwicklung \(metal.name)") {
+        DashboardSection(
+            Localization.text("metals_trend_title", language: language),
+            subtitle: Localization.format("metals_trend_subtitle", language: language, metal.localizedName(language: language))
+        ) {
             if isLoadingHistory && history == nil {
-                ProgressView("Lade Marktdaten...")
+                ProgressView(Localization.text("metals_trend_loading", language: language))
                     .frame(height: 240)
             } else {
                 Chart(points) { point in
                     LineMark(
-                        x: .value("Jahr", point.year),
-                        y: .value("Wert", point.value)
+                        x: .value(Localization.text("comparison_chart_x_label", language: language), point.year),
+                        y: .value(Localization.format("comparison_chart_y_label", language: language, currencySettings.selectedCurrency.code), point.value)
                     )
                     .interpolationMethod(.catmullRom)
                     .foregroundStyle(point.isProjection ? Theme.accentStrong.opacity(0.8) : Theme.accentStrong)
 
                     if point.isProjection {
                         AreaMark(
-                            x: .value("Jahr", point.year),
-                            y: .value("Wert", point.value)
+                            x: .value(Localization.text("comparison_chart_x_label", language: language), point.year),
+                            y: .value(Localization.format("comparison_chart_y_label", language: language, currencySettings.selectedCurrency.code), point.value)
                         )
                         .interpolationMethod(.catmullRom)
                         .foregroundStyle(Theme.accentStrong.opacity(0.15))
@@ -170,7 +180,11 @@ struct MetalsView: View {
                 .frame(height: 260)
                 .chartXScale(domain: xDomain(points))
                 .chartYScale(domain: yDomain(points))
-                .chartYAxisLabel("Wert in \(currencySettings.selectedCurrency.code)")
+                .chartYAxisLabel(Localization.format(
+                    "comparison_chart_y_label",
+                    language: language,
+                    currencySettings.selectedCurrency.code
+                ))
                 .cardStyle()
             }
         }
@@ -181,7 +195,11 @@ struct MetalsView: View {
 
     @ViewBuilder
     private func crisisResilience(for metal: MetalAsset, snapshot: DashboardSnapshot) -> some View {
-        DashboardSection("Resilienz in Krisen", subtitle: "\(metal.name) in unterschiedlichen Szenarien") {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("metals_resilience_title", language: language),
+            subtitle: Localization.format("metals_resilience_subtitle", language: language, metal.localizedName(language: language))
+        ) {
             VStack(spacing: 16) {
                 ForEach(scenarios(for: metal, snapshot: snapshot)) { scenario in
                     VStack(alignment: .leading, spacing: 8) {
@@ -273,31 +291,40 @@ struct MetalsView: View {
     }
 
     private func scenarios(for metal: MetalAsset, snapshot: DashboardSnapshot) -> [CrisisScenario] {
+        let language = languageSettings.selectedLanguage
         let inflation = snapshot.macroOverview.indicators.first(where: { $0.id == .inflation })?.latestValue ?? 0
         let growth = snapshot.macroOverview.indicators.first(where: { $0.id == .growth })?.latestValue ?? 0
         let defense = snapshot.macroOverview.indicators.first(where: { $0.id == .defense })?.latestValue ?? 0
 
         return [
             CrisisScenario(
-                title: "Inflation",
+                title: Localization.text("metals_scenario_inflation", language: language),
                 icon: "flame.fill",
-                description: "\(metal.name) reagiert historisch positiv auf steigende Verbraucherpreise.",
+                description: Localization.format(
+                    "metals_scenario_inflation_detail",
+                    language: language,
+                    metal.localizedName(language: language)
+                ),
                 score: normalizedScore(from: inflation + metal.dailyChangePercentage),
-                badgeText: inflation >= 0 ? "Schutz" : "Neutral"
+                badgeText: Localization.text("metals_badge_protection", language: language)
             ),
             CrisisScenario(
-                title: "Kriege",
+                title: Localization.text("metals_scenario_wars", language: language),
                 icon: "shield.lefthalf.filled",
-                description: "Geopolitische Spannungen erhöhen die Nachfrage nach sicheren Häfen.",
+                description: Localization.text("metals_scenario_wars_detail", language: language),
                 score: normalizedScore(from: defense + 5),
-                badgeText: "Absicherung"
+                badgeText: Localization.text("metals_badge_shield", language: language)
             ),
             CrisisScenario(
-                title: "Wirtschaftskrisen",
+                title: Localization.text("metals_scenario_recession", language: language),
                 icon: "chart.line.downtrend.xyaxis",
-                description: "In Rezessionen dient \(metal.name) als Liquiditätsreserve.",
+                description: Localization.format(
+                    "metals_scenario_recession_detail",
+                    language: language,
+                    metal.localizedName(language: language)
+                ),
                 score: normalizedScore(from: -growth + 8),
-                badgeText: "Diversifikation"
+                badgeText: Localization.text("metals_badge_diversification", language: language)
             )
         ]
     }

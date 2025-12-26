@@ -8,6 +8,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     private let center = UNUserNotificationCenter.current()
     private let defaults = UserDefaults.standard
     private let lastNotificationKey = "lastNotifiedCrisisID"
+    private let languageKey = "preferredLanguage"
 
     private override init() {
         super.init()
@@ -49,9 +50,14 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         if defaults.string(forKey: lastNotificationKey) == event.id { return }
         defaults.set(event.id, forKey: lastNotificationKey)
 
+        let language = selectedLanguage
+        let eventTitle = localizedCrisisEventTitle(event, language: language)
+        let regionLabel = localizedWatchlistCountry(event.region, language: language)
+        let categoryLabel = event.category.localizedLabel(language: language)
+
         let content = UNMutableNotificationContent()
-        content.title = "Krisenlage: \(event.title)"
-        content.body = "Region: \(event.region). Kategorie: \(event.category.rawValue.capitalized)."
+        content.title = Localization.format("crisis_notification_title", language: language, eventTitle)
+        content.body = Localization.format("crisis_notification_body", language: language, regionLabel, categoryLabel)
         content.sound = .default
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         do {
@@ -65,5 +71,13 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound])
+    }
+
+    private var selectedLanguage: AppLanguage {
+        if let stored = defaults.string(forKey: languageKey),
+           let language = AppLanguage(rawValue: stored) {
+            return language
+        }
+        return .german
     }
 }

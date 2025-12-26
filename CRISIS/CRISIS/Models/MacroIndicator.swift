@@ -91,3 +91,41 @@ struct MacroSeries: Identifiable, Hashable, Codable {
 struct MacroOverview: Codable {
     let indicators: [MacroIndicator]
 }
+
+extension MacroIndicator {
+    func localizedTitle(language: AppLanguage) -> String {
+        id.localizedTitle(language: language)
+    }
+
+    func localizedUnit(language: AppLanguage) -> String {
+        id.localizedUnit(language: language)
+    }
+
+    func localizedDescription(language: AppLanguage) -> String {
+        id.localizedDescription(language: language)
+    }
+
+    func localizedFormattedValue(language: AppLanguage) -> String {
+        guard let latestValue else {
+            return Localization.text("not_available_short", language: language)
+        }
+        let formatter = FloatingPointFormatStyle<Double>.number
+            .precision(.fractionLength(1))
+            .locale(language.locale)
+        return latestValue.formatted(formatter) + localizedUnit(language: language)
+    }
+
+    func localizedDeltaDescription(language: AppLanguage) -> String {
+        guard let latest = latestValue, let previous = previousValue else {
+            return Localization.text("macro_delta_no_trend", language: language)
+        }
+        let delta = latest - previous
+        let formatter = FloatingPointFormatStyle<Double>.number
+            .precision(.fractionLength(1))
+            .locale(language.locale)
+        let sign = delta >= 0 ? "+" : ""
+        let deltaText = delta.formatted(formatter)
+        let unit = localizedUnit(language: language)
+        return Localization.format("macro_delta_vs_previous", language: language, sign, deltaText, unit)
+    }
+}

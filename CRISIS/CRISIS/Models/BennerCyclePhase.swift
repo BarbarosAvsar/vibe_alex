@@ -10,9 +10,9 @@ enum BennerPhase: String, Codable, CaseIterable {
         case .panic:
             return "Panikjahr"
         case .goodTimes:
-            return "Good Times"
+            return "Gute Zeiten"
         case .hardTimes:
-            return "Hard Times"
+            return "Schwere Zeiten"
         }
     }
 

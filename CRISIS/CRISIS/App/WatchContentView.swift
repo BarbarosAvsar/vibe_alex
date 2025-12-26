@@ -2,6 +2,7 @@ import SwiftUI
 
 struct WatchContentView: View {
     @Environment(AppState.self) private var appState
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         NavigationStack {
@@ -9,23 +10,24 @@ struct WatchContentView: View {
                 Task { await appState.refreshDashboard(force: true) }
             } content: { snapshot in
                 List {
+                    let language = languageSettings.selectedLanguage
                     if let entry = nextBennerEntry(from: appState.bennerCycleEntries) {
-                        Section("Benner") {
-                            Text("\(entry.year) \(entry.phase.title)")
+                        Section(Localization.text("overview_forecast_label", language: language)) {
+                            Text("\(entry.year) \(entry.phase.localizedTitle(language: language))")
                                 .font(.caption)
-                            Text(entry.summary)
+                            Text(Localization.format("benner_entry_summary", language: language, entry.year, entry.phase.localizedSubtitle(language: language)))
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }
                     }
 
-                    Section("Metalle") {
+                    Section(Localization.text("metals_title", language: language)) {
                         if snapshot.metals.isEmpty {
-                            Text("Keine Daten.")
+                            Text(Localization.text("comparison_no_data", language: language))
                         } else {
                             ForEach(snapshot.metals.prefix(2)) { metal in
                                 HStack {
-                                    Text(metal.name)
+                                    Text(metal.localizedName(language: language))
                                     Spacer()
                                     Text(metal.price, format: .currency(code: metal.currency))
                                 }
@@ -33,30 +35,30 @@ struct WatchContentView: View {
                         }
                     }
 
-                    Section("Makro") {
+                    Section(Localization.text("overview_macro_title", language: language)) {
                         if snapshot.macroOverview.indicators.isEmpty {
-                            Text("Keine Daten.")
+                            Text(Localization.text("comparison_macro_no_data", language: language))
                         } else {
                             ForEach(snapshot.macroOverview.indicators.prefix(2)) { indicator in
                                 HStack {
-                                    Text(indicator.title)
+                                    Text(indicator.localizedTitle(language: language))
                                     Spacer()
-                                    Text(indicator.formattedValue)
+                                    Text(indicator.localizedFormattedValue(language: language))
                                 }
                                 .font(.caption)
                             }
                         }
                     }
 
-                    Section("Krisen") {
+                    Section(Localization.text("crisis_title", language: language)) {
                         if snapshot.crises.isEmpty {
-                            Text("Keine Meldungen.")
+                            Text(Localization.text("crisis_feed_empty", language: language))
                         } else {
                             ForEach(snapshot.crises.prefix(2)) { event in
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(event.title)
+                                    Text(localizedCrisisEventTitle(event, language: language))
                                         .font(.caption)
-                                    Text(event.severityBadge)
+                                    Text(event.localizedSeverityBadge(language: language))
                                         .font(.caption2)
                                         .foregroundStyle(.secondary)
                                 }
@@ -65,7 +67,7 @@ struct WatchContentView: View {
                     }
                 }
             }
-            .navigationTitle("CRISIS")
+            .navigationTitle(Localization.text("app_name", language: languageSettings.selectedLanguage))
         }
         .task {
             guard appState.hasLoadedOnce == false else { return }

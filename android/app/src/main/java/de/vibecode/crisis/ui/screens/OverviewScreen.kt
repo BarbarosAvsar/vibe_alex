@@ -39,6 +39,9 @@ import de.vibecode.crisis.core.model.DashboardSnapshot
 import de.vibecode.crisis.core.model.CurrencyConverter
 import de.vibecode.crisis.core.model.DisplayCurrency
 import de.vibecode.crisis.core.model.ExchangeRates
+import de.vibecode.crisis.ui.bennerPhaseSubtitle
+import de.vibecode.crisis.ui.macroIndicatorTitle
+import de.vibecode.crisis.ui.macroIndicatorUnit
 import de.vibecode.crisis.ui.components.AdaptiveColumns
 import de.vibecode.crisis.ui.components.AsyncStateView
 import de.vibecode.crisis.ui.components.DashboardSection
@@ -135,12 +138,15 @@ private fun WarningHero(entries: List<BennerCycleEntry>) {
                             .padding(horizontal = 12.dp, vertical = 6.dp)
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    Text(text = "${entry.year}", style = MaterialTheme.typography.titleMedium)
-                }
-                Text(text = entry.summary, style = MaterialTheme.typography.titleMedium)
-                Text(
-                    text = stringResource(R.string.overview_forecast_hint),
-                    style = MaterialTheme.typography.bodySmall,
+                Text(text = "${entry.year}", style = MaterialTheme.typography.titleMedium)
+            }
+            Text(
+                text = stringResource(R.string.benner_entry_summary, entry.year, bennerPhaseSubtitle(entry.phase)),
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = stringResource(R.string.overview_forecast_hint),
+                style = MaterialTheme.typography.bodySmall,
                     color = CrisisColors.textMuted
                 )
             }
@@ -181,7 +187,7 @@ private fun MacroSection(snapshot: DashboardSnapshot) {
             MacroRegion.entries.forEach { region ->
                 val isActive = region == selectedRegion
                 Text(
-                    text = region.label,
+                    text = stringResource(region.labelRes),
                     style = MaterialTheme.typography.labelLarge,
                     color = if (isActive) CrisisColors.accentStrong else CrisisColors.textSecondary,
                     modifier = Modifier
@@ -216,7 +222,7 @@ private fun MacroKpi(indicator: de.vibecode.crisis.core.model.MacroIndicator, re
     GlassCard {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = indicator.title, style = MaterialTheme.typography.titleMedium)
+                Text(text = macroIndicatorTitle(indicator.id), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = region.short,
@@ -228,13 +234,14 @@ private fun MacroKpi(indicator: de.vibecode.crisis.core.model.MacroIndicator, re
             }
             val latest = indicator.latestValue
             val previous = indicator.previousValue
-            val formatted = latest?.let { "%.1f${indicator.unit}".format(it) } ?: "-"
+            val unit = macroIndicatorUnit(indicator.id)
+            val formatted = latest?.let { "%.1f%s".format(it, unit) } ?: "-"
             val delta = if (latest != null && previous != null) {
                 val diff = latest - previous
                 val sign = if (diff >= 0) "+" else ""
-                "$sign${"%.1f".format(diff)}${indicator.unit} vs. Vorjahr"
+                stringResource(R.string.macro_delta_vs_previous, sign, "%.1f".format(diff), unit)
             } else {
-                "Kein Verlauf"
+                stringResource(R.string.macro_delta_no_trend)
             }
             Text(text = formatted, style = MaterialTheme.typography.titleLarge)
             Text(text = delta, style = MaterialTheme.typography.bodySmall, color = CrisisColors.textMuted)
@@ -242,12 +249,10 @@ private fun MacroKpi(indicator: de.vibecode.crisis.core.model.MacroIndicator, re
     }
 }
 
-private enum class MacroRegion(val label: String) {
-    GERMANY("DE"),
-    USA("USA"),
-    SPAIN("ES"),
-    UK("UK");
+private enum class MacroRegion(val labelRes: Int, val short: String) {
+    GERMANY(R.string.macro_region_de, "DE"),
+    USA(R.string.macro_region_us, "US"),
+    SPAIN(R.string.macro_region_es, "ES"),
+    UK(R.string.macro_region_uk, "UK");
 
-    val short: String
-        get() = label
 }

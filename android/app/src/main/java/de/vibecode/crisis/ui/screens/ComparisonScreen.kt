@@ -35,8 +35,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -61,6 +61,9 @@ import de.vibecode.crisis.ui.components.LineSeries
 import de.vibecode.crisis.ui.components.ChartPoint
 import de.vibecode.crisis.ui.components.LogoMark
 import de.vibecode.crisis.ui.components.SettingsButton
+import de.vibecode.crisis.ui.assetGroupLabel
+import de.vibecode.crisis.ui.comparisonAssetLabel
+import de.vibecode.crisis.ui.macroIndicatorTitle
 import de.vibecode.crisis.ui.theme.CrisisColors
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -185,7 +188,7 @@ private fun AssetSelection(
         Spacer(modifier = Modifier.height(12.dp))
 
         AssetGroup.entries.forEach { group ->
-            Text(text = group.label, style = MaterialTheme.typography.labelLarge)
+            Text(text = assetGroupLabel(group), style = MaterialTheme.typography.labelLarge)
             Row(
                 modifier = Modifier
                     .horizontalScroll(rememberScrollState())
@@ -196,7 +199,7 @@ private fun AssetSelection(
                     FilterChip(
                         selected = activeAssets.contains(item.asset),
                         onClick = { onToggleAsset(item.asset) },
-                        label = { Text(text = item.asset.displayName) }
+                        label = { Text(text = comparisonAssetLabel(item.asset)) }
                     )
                 }
             }
@@ -251,6 +254,7 @@ private fun PerformanceSection(
     activeAssets: Set<ComparisonAsset>,
     isLoading: Boolean
 ) {
+    val context = LocalContext.current
     DashboardSection(
         title = stringResource(R.string.comparison_performance_title),
         subtitle = stringResource(R.string.comparison_performance_subtitle)
@@ -269,10 +273,14 @@ private fun PerformanceSection(
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     selected.forEach { item ->
                         Row {
-                            Text(text = item.asset.displayName, style = MaterialTheme.typography.labelLarge)
+                            Text(text = comparisonAssetLabel(item.asset), style = MaterialTheme.typography.labelLarge)
                             Spacer(modifier = Modifier.weight(1f))
                             Text(
-                                text = "Historisch ${cagr(item.history)} / Prognose ${projectionDelta(item.history, item.projection)}",
+                                text = stringResource(
+                                    R.string.comparison_performance_format,
+                                    cagr(item.history, context),
+                                    projectionDelta(item.history, item.projection, context)
+                                ),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = CrisisColors.textSecondary
                             )
@@ -324,7 +332,7 @@ private fun MacroComparisonSection(
                     onClick = { selectedKind = kind },
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(50)
                 ) {
-                    Text(text = kind.title)
+                    Text(text = macroIndicatorTitle(kind))
                 }
             }
         }
@@ -361,7 +369,7 @@ private fun MacroComparisonSection(
                                         .background(colors[region.iso] ?: CrisisColors.accent, shape = androidx.compose.foundation.shape.RoundedCornerShape(50))
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text(text = region.label, style = MaterialTheme.typography.bodySmall, color = CrisisColors.textMuted)
+                                Text(text = stringResource(region.labelRes), style = MaterialTheme.typography.bodySmall, color = CrisisColors.textMuted)
                             }
                         }
                     }
@@ -506,13 +514,13 @@ private fun portfolioResilience(impacts: Map<AssetGroup, Double>): Double {
     return score.coerceIn(0.0, 1.0)
 }
 
-private data class MacroRegionOption(val iso: String, val label: String)
+private data class MacroRegionOption(val iso: String, val labelRes: Int)
 
 private fun macroRegions(): List<MacroRegionOption> = listOf(
-    MacroRegionOption("DEU", "DE"),
-    MacroRegionOption("USA", "US"),
-    MacroRegionOption("GBR", "UK"),
-    MacroRegionOption("ESP", "ES")
+    MacroRegionOption("DEU", R.string.macro_region_de),
+    MacroRegionOption("USA", R.string.macro_region_us),
+    MacroRegionOption("GBR", R.string.macro_region_uk),
+    MacroRegionOption("ESP", R.string.macro_region_es)
 )
 
 private fun macroRegionColors(): Map<String, Color> = mapOf(
@@ -522,19 +530,25 @@ private fun macroRegionColors(): Map<String, Color> = mapOf(
     "ESP" to CrisisColors.textSecondary
 )
 
-private fun cagr(history: List<ComparisonPoint>): String {
-    val first = history.firstOrNull() ?: return "n/v"
-    val last = history.lastOrNull() ?: return "n/v"
-    if (first.year == last.year) return "n/v"
+private fun cagr(history: List<ComparisonPoint>, context: android.content.Context): String {
+    val unavailable = context.getString(R.string.not_available_short)
+    val first = history.firstOrNull() ?: return unavailable
+    val last = history.lastOrNull() ?: return unavailable
+    if (first.year == last.year) return unavailable
     val years = (last.year - first.year).toDouble()
     val base = kotlin.math.max(last.value, 0.1) / kotlin.math.max(first.value, 0.1)
     val growth = base.pow(1 / years) - 1
     return String.format("%.1f%%", growth * 100)
 }
 
-private fun projectionDelta(history: List<ComparisonPoint>, projection: List<ComparisonPoint>): String {
-    val lastHistory = history.lastOrNull() ?: return "n/v"
-    val lastProjection = projection.lastOrNull() ?: return "n/v"
+private fun projectionDelta(
+    history: List<ComparisonPoint>,
+    projection: List<ComparisonPoint>,
+    context: android.content.Context
+): String {
+    val unavailable = context.getString(R.string.not_available_short)
+    val lastHistory = history.lastOrNull() ?: return unavailable
+    val lastProjection = projection.lastOrNull() ?: return unavailable
     val delta = (lastProjection.value - lastHistory.value) / kotlin.math.max(lastHistory.value, 0.1)
     return String.format("%.1f%%", delta * 100)
 }

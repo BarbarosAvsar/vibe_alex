@@ -7,6 +7,7 @@ import UIKit
 struct CRISISApp: App {
     @State private var appState = AppState()
     @State private var currencySettings = CurrencySettings()
+    @State private var languageSettings = LanguageSettings()
 
     init() {
         Appearance.configure()
@@ -17,6 +18,8 @@ struct CRISISApp: App {
             ContentView()
                 .environment(appState)
                 .environment(currencySettings)
+                .environment(languageSettings)
+                .environment(\.locale, languageSettings.locale)
                 .preferredColorScheme(.light)
                 .task {
                     BackgroundRefreshManager.shared.schedule()

@@ -7,12 +7,12 @@ enum class BennerPhase(val title: String, val subtitle: String, val guidance: St
         "Historisch folgten auf diese Jahre heftige Markteinbrüche. Liquidität sichern und Risiko begrenzen."
     ),
     GOOD_TIMES(
-        "Good Times",
+        "Gute Zeiten",
         "Hohe Preise - Phase B (Verkäufe bevorzugt)",
         "Überdurchschnittliche Bewertungen. Gewinne sichern und Exposure reduzieren."
     ),
     HARD_TIMES(
-        "Hard Times",
+        "Schwere Zeiten",
         "Niedrige Preise - Phase C (Akkumulation)",
         "Marktpreise gelten als günstig. Positionsaufbau und Sparpläne bieten sich an."
     );

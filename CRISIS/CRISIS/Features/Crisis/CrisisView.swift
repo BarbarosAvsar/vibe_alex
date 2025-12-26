@@ -3,6 +3,7 @@ import SwiftUI
 
 struct CrisisView: View {
     @Environment(AppState.self) private var appState
+    @Environment(LanguageSettings.self) private var languageSettings
     @Binding var showSettings: Bool
     private let summaryGenerator = CrisisSummaryGenerator()
 
@@ -29,7 +30,7 @@ struct CrisisView: View {
                     }
                 }
             }
-            .navigationTitle("Krisen")
+            .navigationTitle(Localization.text("crisis_title", language: languageSettings.selectedLanguage))
             .toolbar {
                 ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
@@ -49,8 +50,12 @@ struct CrisisView: View {
 
     @ViewBuilder
     private func overviewSection(_ events: [CrisisEvent]) -> some View {
-        DashboardSection("Krisenlage", subtitle: "Aktuelle Hinweise aus externen Quellen") {
-            if let summary = summaryGenerator.summarize(events: events) {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("crisis_overview_title", language: language),
+            subtitle: Localization.text("crisis_overview_subtitle", language: language)
+        ) {
+            if let summary = summaryGenerator.summarize(events: events, language: language) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(summary.headline)
                         .font(.headline)
@@ -67,7 +72,7 @@ struct CrisisView: View {
                     in: RoundedRectangle(cornerRadius: 18, style: .continuous)
                 )
             } else {
-                Text("Keine aktuellen Hinweise.")
+                Text(Localization.text("crisis_overview_empty", language: language))
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
                     .padding()
@@ -82,9 +87,13 @@ struct CrisisView: View {
 
     @ViewBuilder
     private func crisisFeedSection(_ events: [CrisisEvent]) -> some View {
-        DashboardSection("Krisen-Feed", subtitle: "Meldungen aus NewsAPI und World Bank") {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("crisis_feed_title", language: language),
+            subtitle: Localization.text("crisis_feed_subtitle", language: language)
+        ) {
             if events.isEmpty {
-                Text("Keine aktuellen Krisenmeldungen.")
+                Text(Localization.text("crisis_feed_empty", language: language))
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -101,21 +110,16 @@ struct CrisisView: View {
 
 private struct CrisisEventCard: View {
     let event: CrisisEvent
-
-    private static let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter
-    }()
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
+        let language = languageSettings.selectedLanguage
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .top) {
-                Text(event.title)
+                Text(localizedCrisisEventTitle(event, language: language))
                     .font(.headline)
                 Spacer()
-                Text(event.severityBadge)
+                Text(event.localizedSeverityBadge(language: language))
                     .font(.caption2.weight(.semibold))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
@@ -129,11 +133,11 @@ private struct CrisisEventCard: View {
             }
 
             HStack {
-                Label(event.region, systemImage: "globe.europe.africa")
+                Label(localizedWatchlistCountry(event.region, language: language), systemImage: "globe.europe.africa")
                     .font(.caption)
                     .foregroundStyle(Theme.textMuted)
                 Spacer()
-                Text(Self.formatter.string(from: event.occurredAt))
+                Text(event.occurredAt, format: .dateTime.year().month().day().hour().minute())
                     .font(.caption)
                     .foregroundStyle(Theme.textMuted)
             }
@@ -161,12 +165,7 @@ private struct CrisisEventCard: View {
     }
 
     private var categoryLabel: String {
-        switch event.category {
-        case .financial:
-            return "Finanzen"
-        case .geopolitical:
-            return "Geopolitik"
-        }
+        event.category.localizedLabel(language: languageSettings.selectedLanguage)
     }
 
     private var categoryTint: Color {

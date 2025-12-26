@@ -10,6 +10,7 @@ import de.vibecode.crisis.core.model.DisplayCurrency
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -50,6 +51,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val crisisThresholdProfile = container.userPreferences.crisisThresholdProfileFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), CrisisThresholdProfile.STANDARD)
 
+    val appLanguage = container.userPreferences.appLanguageTagFlow
+        .map { AppLanguage.fromTag(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AppLanguage.GERMAN)
+
     private val lastSuccessfulSync = container.userPreferences.lastSuccessfulSyncFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
@@ -70,7 +75,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _syncNotice.value = null
             } catch (error: Exception) {
                 val cached = container.dashboardCache.load()
-                val message = error.message ?: "Fehler beim Laden"
+                val message = error.message ?: getApplication<Application>().getString(R.string.error_loading)
                 container.userPreferences.setLastSyncError(message)
                 if (cached != null) {
                     _dashboardState.value = AsyncState.Loaded(cached)
@@ -119,6 +124,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun setCrisisThresholdProfile(profile: CrisisThresholdProfile) {
         viewModelScope.launch {
             container.userPreferences.setCrisisThresholdProfile(profile)
+        }
+    }
+
+    fun setAppLanguage(language: AppLanguage) {
+        viewModelScope.launch {
+            container.userPreferences.setAppLanguageTag(language.tag)
         }
     }
 }

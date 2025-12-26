@@ -61,6 +61,7 @@ import de.vibecode.crisis.ui.components.MetalCard
 import de.vibecode.crisis.ui.components.PrimaryCTAButton
 import de.vibecode.crisis.ui.components.SettingsButton
 import de.vibecode.crisis.ui.components.WhyMetalsSection
+import de.vibecode.crisis.ui.bennerPhaseSubtitle
 import de.vibecode.crisis.ui.theme.CrisisColors
 import kotlin.math.max
 import java.util.Calendar
@@ -215,7 +216,7 @@ private fun BennerProjection(entries: List<BennerCycleEntry>, metal: MetalAsset)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column {
                             Text(text = "${entry.year}", style = MaterialTheme.typography.titleMedium)
-                            Text(text = entry.phase.subtitle, style = MaterialTheme.typography.bodySmall, color = CrisisColors.textSecondary)
+                            Text(text = bennerPhaseSubtitle(entry.phase), style = MaterialTheme.typography.bodySmall, color = CrisisColors.textSecondary)
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         LinearProgressIndicator(
@@ -286,7 +287,7 @@ private fun CrisisResilience(metal: MetalAsset, snapshot: DashboardSnapshot) {
         val scenarios = listOf(
             CrisisScenario(
                 title = stringResource(R.string.metals_scenario_inflation),
-                description = "${metal.name} reagiert historisch positiv auf steigende Verbraucherpreise.",
+                description = stringResource(R.string.metals_scenario_inflation_detail, metal.name),
                 score = normalizedScore(inflation + metal.dailyChangePercentage),
                 badge = stringResource(R.string.metals_badge_protection)
             ),

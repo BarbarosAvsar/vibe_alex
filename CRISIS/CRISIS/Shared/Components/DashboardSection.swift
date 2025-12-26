@@ -29,16 +29,18 @@ struct DashboardSection<Content: View>: View {
 }
 
 struct WhyEdelmetalleSection: View {
+    @Environment(LanguageSettings.self) private var languageSettings
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Warum Edelmetalle und Struktur")
+            Text(Localization.text("why_metals_title", language: languageSettings.selectedLanguage))
                 .font(.headline)
             VStack(alignment: .leading, spacing: 10) {
-                bullet(text: "Physischer Wert, unabhängig von Währungen")
-                bullet(text: "Schutz vor Inflation und Kaufkraftverlust")
-                bullet(text: "Stabilität in Kriegen und Wirtschaftskrisen")
-                bullet(text: "Strukturierter Vermögensschutz durch planbare Allokation")
-                bullet(text: "Sichere Lagerung im Zollfreilager außerhalb des Bankensystems")
+                bullet(text: Localization.text("why_metals_bullet_1", language: languageSettings.selectedLanguage))
+                bullet(text: Localization.text("why_metals_bullet_2", language: languageSettings.selectedLanguage))
+                bullet(text: Localization.text("why_metals_bullet_3", language: languageSettings.selectedLanguage))
+                bullet(text: Localization.text("why_metals_bullet_4", language: languageSettings.selectedLanguage))
+                bullet(text: Localization.text("why_metals_bullet_5", language: languageSettings.selectedLanguage))
             }
         }
         .padding()

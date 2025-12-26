@@ -3,14 +3,15 @@ import SwiftUI
 struct MacContentView: View {
     @State private var selection: MacSection? = .dashboard
     @State private var showConsultationSheet = false
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         NavigationSplitView {
             List(MacSection.allCases, selection: $selection) { section in
-                Label(section.title, systemImage: section.systemImage)
+                Label(section.title(language: languageSettings.selectedLanguage), systemImage: section.systemImage)
                     .tag(section)
             }
-            .navigationTitle("CRISIS")
+            .navigationTitle(Localization.text("app_name", language: languageSettings.selectedLanguage))
         } detail: {
             switch selection ?? .dashboard {
             case .dashboard:
@@ -34,10 +35,12 @@ private enum MacSection: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .dashboard: return "Uebersicht"
-        case .consultation: return "Beratung"
+        case .dashboard:
+            return Localization.text("tab_overview", language: language)
+        case .consultation:
+            return Localization.text("tab_consultation", language: language)
         }
     }
 

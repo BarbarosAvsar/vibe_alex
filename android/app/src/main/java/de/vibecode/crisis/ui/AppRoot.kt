@@ -39,6 +39,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import de.vibecode.crisis.MainViewModel
 import de.vibecode.crisis.NotificationAuthorizationState
 import de.vibecode.crisis.R
@@ -73,6 +75,7 @@ fun AppRoot(
     val geopoliticalWatchlist by viewModel.geopoliticalWatchlist.collectAsStateWithLifecycle()
     val financialWatchlist by viewModel.financialWatchlist.collectAsStateWithLifecycle()
     val thresholdProfile by viewModel.crisisThresholdProfile.collectAsStateWithLifecycle()
+    val appLanguage by viewModel.appLanguage.collectAsStateWithLifecycle()
 
     var showSettings by remember { mutableStateOf(false) }
     var showOnboarding by remember { mutableStateOf(false) }
@@ -110,6 +113,10 @@ fun AppRoot(
         if (dashboardState is de.vibecode.crisis.core.model.AsyncState.Idle) {
             viewModel.refreshDashboard(force = true)
         }
+    }
+
+    LaunchedEffect(appLanguage) {
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(appLanguage.tag))
     }
 
     LaunchedEffect(notificationStatus, onboardingCompleted) {
@@ -253,11 +260,13 @@ fun AppRoot(
                 ModalBottomSheet(onDismissRequest = { showSettings = false }) {
                     SettingsSheet(
                         selectedCurrency = selectedCurrency,
+                        selectedLanguage = appLanguage,
                         notificationStatus = notificationStatus,
                         thresholdProfile = thresholdProfile,
                         geopoliticalWatchlist = geopoliticalWatchlist,
                         financialWatchlist = financialWatchlist,
                         onCurrencySelected = { viewModel.setSelectedCurrency(it) },
+                        onLanguageSelected = { viewModel.setAppLanguage(it) },
                         onNotificationAction = { status ->
                             when (status) {
                                 NotificationAuthorizationState.DENIED,

@@ -3,6 +3,7 @@ import SwiftUI
 struct PlatformDashboardView: View {
     @Environment(AppState.self) private var appState
     @Environment(CurrencySettings.self) private var currencySettings
+    @Environment(LanguageSettings.self) private var languageSettings
     let onRequestConsultation: () -> Void
 
     var body: some View {
@@ -51,10 +52,14 @@ struct PlatformDashboardView: View {
     @ViewBuilder
     private func bennerSection(entries: [BennerCycleEntry]) -> some View {
         if let entry = nextBennerEntry(from: entries) {
-            DashboardSection("Benner-Zyklus", subtitle: "Lokales Prognosemodell") {
+            let language = languageSettings.selectedLanguage
+            DashboardSection(
+                Localization.text("overview_hero_title", language: language),
+                subtitle: Localization.text("overview_hero_subtitle", language: language)
+            ) {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Text("Prognose")
+                        Text(Localization.text("overview_forecast_label", language: language))
                             .font(.headline)
                             .foregroundStyle(Theme.textOnAccent)
                             .padding(.horizontal, 12)
@@ -64,9 +69,9 @@ struct PlatformDashboardView: View {
                         Text("\(entry.year)")
                             .font(.title3.weight(.semibold))
                     }
-                    Text(entry.summary)
+                    Text(Localization.format("benner_entry_summary", language: language, entry.year, entry.phase.localizedSubtitle(language: language)))
                         .font(.headline)
-                    Text("Vorsicht empfohlen, Absicherung priorisieren.")
+                    Text(Localization.text("overview_forecast_hint", language: language))
                         .font(.caption)
                         .foregroundStyle(Theme.textMuted)
                 }
@@ -85,9 +90,13 @@ struct PlatformDashboardView: View {
 
     @ViewBuilder
     private func metalsSection(_ metals: [MetalAsset]) -> some View {
-        DashboardSection("Edelmetalle", subtitle: "Aktuelle Preise") {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("metals_title", language: language),
+            subtitle: Localization.text("overview_metals_focus_subtitle", language: language)
+        ) {
             if metals.isEmpty {
-                Text("Keine Daten verfuegbar.")
+                Text(Localization.text("comparison_no_data", language: language))
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
             } else {
@@ -102,9 +111,13 @@ struct PlatformDashboardView: View {
 
     @ViewBuilder
     private func macroSection(_ indicators: [MacroIndicator]) -> some View {
-        DashboardSection("Makro", subtitle: "Aktuelle Kennzahlen") {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("overview_macro_title", language: language),
+            subtitle: Localization.text("overview_macro_subtitle", language: language)
+        ) {
             if indicators.isEmpty {
-                Text("Keine Daten verfuegbar.")
+                Text(Localization.text("comparison_macro_no_data", language: language))
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
             } else {
@@ -119,9 +132,13 @@ struct PlatformDashboardView: View {
 
     @ViewBuilder
     private func crisisSection(_ events: [CrisisEvent]) -> some View {
-        DashboardSection("Krisenfeed", subtitle: "Aktuelle Hinweise") {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("crisis_feed_title", language: language),
+            subtitle: Localization.text("crisis_feed_subtitle", language: language)
+        ) {
             if events.isEmpty {
-                Text("Keine Meldungen.")
+                Text(Localization.text("crisis_feed_empty", language: language))
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
             } else {
@@ -142,18 +159,19 @@ struct PlatformDashboardView: View {
 
 private struct MacroRow: View {
     let indicator: MacroIndicator
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(indicator.title)
+                Text(indicator.localizedTitle(language: languageSettings.selectedLanguage))
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                Text(indicator.formattedValue)
+                Text(indicator.localizedFormattedValue(language: languageSettings.selectedLanguage))
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
             }
-            Text(indicator.deltaDescription)
+            Text(indicator.localizedDeltaDescription(language: languageSettings.selectedLanguage))
                 .font(.caption)
                 .foregroundStyle(Theme.textMuted)
         }
@@ -167,20 +185,22 @@ private struct MacroRow: View {
 
 private struct CrisisRow: View {
     let event: CrisisEvent
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
+        let language = languageSettings.selectedLanguage
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .top) {
-                Text(event.title)
+                Text(localizedCrisisEventTitle(event, language: language))
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                Text(event.severityBadge)
+                Text(event.localizedSeverityBadge(language: language))
                     .font(.caption2.weight(.semibold))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(Theme.surface, in: Capsule())
             }
-            Text(event.region)
+            Text(localizedWatchlistCountry(event.region, language: language))
                 .font(.caption)
                 .foregroundStyle(Theme.textMuted)
         }

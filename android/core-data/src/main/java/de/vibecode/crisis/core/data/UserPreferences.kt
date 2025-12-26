@@ -30,6 +30,7 @@ class UserPreferences(context: Context) {
     private val geoWatchlistKey = stringSetPreferencesKey("watchlist_geopolitical")
     private val financialWatchlistKey = stringSetPreferencesKey("watchlist_financial")
     private val thresholdProfileKey = stringPreferencesKey("crisis_threshold_profile")
+    private val languageKey = stringPreferencesKey("preferred_language")
 
     val selectedCurrencyFlow: Flow<DisplayCurrency> = dataStore.data.map { prefs ->
         val code = prefs[currencyKey] ?: DisplayCurrency.EUR.code
@@ -62,6 +63,10 @@ class UserPreferences(context: Context) {
 
     val crisisThresholdProfileFlow: Flow<CrisisThresholdProfile> = dataStore.data.map { prefs ->
         CrisisThresholdProfile.fromId(prefs[thresholdProfileKey])
+    }
+
+    val appLanguageTagFlow: Flow<String> = dataStore.data.map { prefs ->
+        prefs[languageKey] ?: "de"
     }
 
     suspend fun setSelectedCurrency(currency: DisplayCurrency) {
@@ -117,6 +122,12 @@ class UserPreferences(context: Context) {
     suspend fun setCrisisThresholdProfile(profile: CrisisThresholdProfile) {
         dataStore.edit { prefs ->
             prefs[thresholdProfileKey] = profile.id
+        }
+    }
+
+    suspend fun setAppLanguageTag(tag: String) {
+        dataStore.edit { prefs ->
+            prefs[languageKey] = tag
         }
     }
 

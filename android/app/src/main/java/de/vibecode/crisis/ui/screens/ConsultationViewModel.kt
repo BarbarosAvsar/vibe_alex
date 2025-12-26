@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import de.vibecode.crisis.CrisisApp
+import de.vibecode.crisis.R
 import de.vibecode.crisis.core.data.ConsultationRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,10 +36,12 @@ class ConsultationViewModel(application: Application) : AndroidViewModel(applica
 
     val validationError: String?
         get() {
-            if (name.trim().length < 2) return "Bitte geben Sie Ihren Namen an."
-            if (email.trim().isEmpty() || !emailPattern.matches(email.trim())) return "Bitte geben Sie eine gültige E-Mail-Adresse an."
-            if (phone.trim().length < 5) return "Bitte geben Sie Ihre Telefonnummer an."
-            if (message.trim().length < 10) return "Ihre Nachricht sollte mindestens 10 Zeichen enthalten."
+            if (name.trim().length < 2) return string(R.string.consultation_error_name)
+            if (email.trim().isEmpty() || !emailPattern.matches(email.trim())) {
+                return string(R.string.consultation_error_email)
+            }
+            if (phone.trim().length < 5) return string(R.string.consultation_error_phone)
+            if (message.trim().length < 10) return string(R.string.consultation_error_message)
             return null
         }
 
@@ -65,12 +68,18 @@ class ConsultationViewModel(application: Application) : AndroidViewModel(applica
             SubmissionResult.Success
         } catch (e: Exception) {
             isSubmitting = false
-            errorMessage = e.message
-            SubmissionResult.Failure(e.message ?: "Fehler beim Senden")
+            val fallback = string(R.string.consultation_submit_failure_message)
+            val message = e.message?.takeIf { it.isNotBlank() } ?: fallback
+            errorMessage = message
+            SubmissionResult.Failure(message)
         }
     }
 
     private val emailPattern = Regex("^([A-Z0-9._%+-]+)@([A-Z0-9.-]+)\\.([A-Z]{2,})$", RegexOption.IGNORE_CASE)
+
+    private fun string(resId: Int): String {
+        return getApplication<Application>().getString(resId)
+    }
 }
 
 sealed class SubmissionResult {

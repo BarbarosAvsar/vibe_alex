@@ -133,7 +133,7 @@ fun ConsultationScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !viewModel.isSubmitting
             ) {
-                Text(text = if (viewModel.isSubmitting) "..." else stringResource(R.string.consultation_submit))
+                Text(text = if (viewModel.isSubmitting) stringResource(R.string.consultation_submit_loading) else stringResource(R.string.consultation_submit))
             }
 
             Text(
@@ -164,7 +164,7 @@ fun ConsultationScreen(
                 onDismissRequest = { alert = null },
                 confirmButton = {
                     TextButton(onClick = { alert = null }) {
-                        Text(text = "Okay")
+                        Text(text = stringResource(R.string.generic_ok))
                     }
                 },
                 title = { Text(stringResource(R.string.consultation_submit_success_title)) },
@@ -176,7 +176,7 @@ fun ConsultationScreen(
                 onDismissRequest = { alert = null },
                 confirmButton = {
                     TextButton(onClick = { alert = null }) {
-                        Text(text = "Okay")
+                        Text(text = stringResource(R.string.generic_ok))
                     }
                 },
                 title = { Text(stringResource(R.string.consultation_submit_failure_title)) },

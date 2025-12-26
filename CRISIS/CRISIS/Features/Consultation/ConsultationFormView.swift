@@ -4,43 +4,45 @@ struct ConsultationFormView: View {
     @StateObject private var viewModel = ConsultationFormViewModel()
     @FocusState private var focusedField: Field?
     @Environment(\.dismiss) private var dismiss
+    @Environment(LanguageSettings.self) private var languageSettings
     @State private var alertContent: AlertContent?
     @State private var didAttemptSubmission = false
 
     var body: some View {
         Form {
-            Section("Was Sie erwartet") {
-                Label("Kostenlose Erstberatung durch Edelmetall-Experten", systemImage: "checkmark.circle.fill")
-                Label("Individuelle Vermögensstrukturierung", systemImage: "checkmark.circle.fill")
-                Label("Informationen zur Zollfreilager-Lagerung", systemImage: "checkmark.circle.fill")
-                Label("Steuerliche Aspekte und rechtliche Absicherung", systemImage: "checkmark.circle.fill")
+            let language = languageSettings.selectedLanguage
+            Section(Localization.text("consultation_section_expectations", language: language)) {
+                Label(Localization.text("consultation_expectation_1", language: language), systemImage: "checkmark.circle.fill")
+                Label(Localization.text("consultation_expectation_2", language: language), systemImage: "checkmark.circle.fill")
+                Label(Localization.text("consultation_expectation_3", language: language), systemImage: "checkmark.circle.fill")
+                Label(Localization.text("consultation_expectation_4", language: language), systemImage: "checkmark.circle.fill")
             }
 
-            Section("Ihre Kontaktdaten") {
-                TextField("Name*", text: $viewModel.name)
+            Section(Localization.text("consultation_section_contact", language: language)) {
+                TextField(Localization.text("consultation_name", language: language), text: $viewModel.name)
                     .textContentType(.name)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .name)
 
-                TextField("E-Mail*", text: $viewModel.email)
+                TextField(Localization.text("consultation_email", language: language), text: $viewModel.email)
                     .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)
                     .focused($focusedField, equals: .email)
 
-                TextField("Telefon*", text: $viewModel.phone)
+                TextField(Localization.text("consultation_phone", language: language), text: $viewModel.phone)
                     .textContentType(.telephoneNumber)
                     .keyboardType(.phonePad)
                     .focused($focusedField, equals: .phone)
             }
 
-            Section("Nachricht") {
+            Section(Localization.text("consultation_section_message", language: language)) {
                 TextEditor(text: $viewModel.message)
                     .frame(minHeight: 140)
                     .focused($focusedField, equals: .message)
                     .overlay(alignment: .topLeading) {
                         if viewModel.message.isEmpty {
-                            Text("Wie können wir Ihnen helfen?*")
+                            Text(Localization.text("consultation_message_hint", language: language))
                                 .foregroundStyle(Theme.textMuted)
                                 .padding(.top, 8)
                                 .padding(.leading, 5)
@@ -62,7 +64,7 @@ struct ConsultationFormView: View {
                         ProgressView()
                             .frame(maxWidth: .infinity)
                     } else {
-                        Text("Anfrage senden")
+                        Text(Localization.text("consultation_submit", language: language))
                             .frame(maxWidth: .infinity)
                     }
                 }
@@ -70,28 +72,28 @@ struct ConsultationFormView: View {
             }
 
             Section {
-                Text("Mit dem Absenden stimmen Sie zu, dass wir Ihre Anfrage gemäß Datenschutzerklärung beantworten. Wir speichern keine Daten dauerhaft auf diesem Gerät.")
+                Text(Localization.text("consultation_privacy_note", language: language))
                     .font(.footnote)
                     .foregroundStyle(Theme.textSecondary)
             }
 
-            Section("Weitere Informationen") {
+            Section(Localization.text("consultation_section_more_info", language: language)) {
                 infoCard(
-                    title: "Zollfreilager-Lagerung",
-                    text: "Physische Trennung vom Bankensystem, Versicherung und 24/7 Überwachung für maximale Sicherheit und Flexibilität."
+                    title: Localization.text("consultation_info_1_title", language: language),
+                    text: Localization.text("consultation_info_1_text", language: language)
                 )
                 infoCard(
-                    title: "Wert – Struktur gewinnt",
-                    text: "Klare Allokation in Edelmetalle schafft Stabilität in Inflation, Währungsreformen und Krisen."
+                    title: Localization.text("consultation_info_2_title", language: language),
+                    text: Localization.text("consultation_info_2_text", language: language)
                 )
             }
         }
-        .navigationTitle("Beratung anfragen")
+        .navigationTitle(Localization.text("consultation_title", language: languageSettings.selectedLanguage))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                Button("Fertig") {
+                Button(Localization.text("settings_done", language: languageSettings.selectedLanguage)) {
                     focusedField = nil
                 }
             }
@@ -100,7 +102,7 @@ struct ConsultationFormView: View {
             Alert(
                 title: Text(content.title),
                 message: Text(content.message),
-                dismissButton: .default(Text("Okay")) {
+                dismissButton: .default(Text(Localization.text("generic_ok", language: languageSettings.selectedLanguage))) {
                     if content.shouldDismiss {
                         dismiss()
                     }
@@ -120,13 +122,13 @@ struct ConsultationFormView: View {
             switch result {
             case .success:
                 alertContent = AlertContent(
-                    title: "Vielen Dank",
-                    message: "Ihre Anfrage wurde gesendet. Wir melden uns zeitnah.",
+                    title: Localization.text("consultation_submit_success_title", language: languageSettings.selectedLanguage),
+                    message: Localization.text("consultation_submit_success_message", language: languageSettings.selectedLanguage),
                     shouldDismiss: true
                 )
             case .failure(let message):
                 alertContent = AlertContent(
-                    title: "Senden fehlgeschlagen",
+                    title: Localization.text("consultation_submit_failure_title", language: languageSettings.selectedLanguage),
                     message: message,
                     shouldDismiss: false
                 )

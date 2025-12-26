@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SyncStatusBanner: View {
     let notice: SyncNotice
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -15,14 +16,18 @@ struct SyncStatusBanner: View {
                 )
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("Offline-Daten")
+                Text(Localization.text("offline_banner_title", language: languageSettings.selectedLanguage))
                     .font(.headline)
                 if let lastSync = notice.lastSuccessfulSync {
-                    Text("Letzte Synchronisierung: \(lastSync.formatted(date: .abbreviated, time: .shortened))")
+                    Text(Localization.format(
+                        "sync_last_successful",
+                        language: languageSettings.selectedLanguage,
+                        formattedDate(lastSync)
+                    ))
                         .font(.caption)
                         .foregroundStyle(Theme.textSecondary)
                 } else {
-                    Text("Noch keine erfolgreiche Synchronisierung")
+                    Text(Localization.text("sync_never_successful", language: languageSettings.selectedLanguage))
                         .font(.caption)
                         .foregroundStyle(Theme.textSecondary)
                 }
@@ -41,5 +46,13 @@ struct SyncStatusBanner: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .strokeBorder(Theme.border.opacity(0.6), lineWidth: 1)
         )
+    }
+
+    private func formattedDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = languageSettings.selectedLanguage.locale
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
     }
 }

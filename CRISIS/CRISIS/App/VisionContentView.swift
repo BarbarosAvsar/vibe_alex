@@ -2,16 +2,17 @@ import SwiftUI
 
 struct VisionContentView: View {
     @State private var showConsultationSheet = false
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         NavigationStack {
             PlatformDashboardView {
                 showConsultationSheet = true
             }
-            .navigationTitle("CRISIS")
+            .navigationTitle(Localization.text("app_name", language: languageSettings.selectedLanguage))
             .toolbar {
                 ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
-                    Button("Beratung") {
+                    Button(Localization.text("tab_consultation", language: languageSettings.selectedLanguage)) {
                         showConsultationSheet = true
                     }
                 }

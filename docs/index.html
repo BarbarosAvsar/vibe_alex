@@ -17,20 +17,20 @@
     <script defer src="app.js"></script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <a class="skip-link" href="#main" data-i18n="skipLink">Zum Inhalt springen</a>
     <div class="glass-background" aria-hidden="true"></div>
     <div class="app-shell">
       <header class="top-bar">
-        <div class="logo-mark" aria-label="CRISIS 2050">CRISIS 2050</div>
+        <div class="logo-mark" aria-label="CRISIS 2050" data-i18n="appName" data-i18n-aria="appName">CRISIS 2050</div>
         <div class="top-actions">
-          <button class="icon-button" id="refresh-button" aria-label="Daten aktualisieren">
+          <button class="icon-button" id="refresh-button" aria-label="Daten aktualisieren" data-i18n-aria="refreshAriaLabel">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path
                 d="M12 6a6 6 0 0 1 5.65 4H15v2h6V6h-2v2.35A8 8 0 1 0 20 14h-2a6 6 0 1 1-6-8z"
               />
             </svg>
           </button>
-          <button class="icon-button" id="settings-button" aria-label="Einstellungen oeffnen">
+          <button class="icon-button" id="settings-button" aria-label="Einstellungen öffnen" data-i18n-aria="settingsAriaLabel">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path
                 d="M12 8.9a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2zm9 3.1-1.7-.3a7.8 7.8 0 0 0-.8-2l1-1.4-2.2-2.2-1.4 1a7.8 7.8 0 0 0-2-.8L12 3h-3l-.3 1.7a7.8 7.8 0 0 0-2 .8l-1.4-1L3 6.7l1 1.4a7.8 7.8 0 0 0-.8 2L1 12v3l1.7.3a7.8 7.8 0 0 0 .8 2l-1 1.4L4.7 21l1.4-1a7.8 7.8 0 0 0 2 .8L9 23h3l.3-1.7a7.8 7.8 0 0 0 2-.8l1.4 1 2.2-2.2-1-1.4a7.8 7.8 0 0 0 .8-2L21 15v-3z"
@@ -46,8 +46,8 @@
         <section class="screen" data-route="overview">
           <header class="screen-header">
             <div>
-              <h1>Uebersicht</h1>
-              <p>Vermoegenssicherung, Edelmetalle und Makro-Lage auf einen Blick.</p>
+              <h1 data-i18n="overviewHeaderTitle">Übersicht</h1>
+              <p data-i18n="overviewHeaderSubtitle">Vermögenssicherung, Edelmetalle und Makro-Lage auf einen Blick.</p>
             </div>
           </header>
 
@@ -64,8 +64,8 @@
 
           <div class="cta-row">
             <button class="cta-button" data-route-target="consultation">
-              <span>Beratung anfragen</span>
-              <small>Persoenliche Einschaetzung sichern</small>
+              <span data-i18n="overviewCtaTitle">Beratung anfragen</span>
+              <small data-i18n="overviewCtaSubtitle">Persönliche Einschätzung sichern</small>
             </button>
           </div>
         </section>
@@ -73,8 +73,8 @@
         <section class="screen" data-route="comparison" hidden>
           <header class="screen-header">
             <div>
-              <h1>Vergleich</h1>
-              <p>Asset-Klassen im historischen Vergleich und in der Prognose.</p>
+              <h1 data-i18n="comparisonHeaderTitle">Vergleich</h1>
+              <p data-i18n="comparisonHeaderSubtitle">Asset-Klassen im historischen Vergleich und in der Prognose.</p>
             </div>
           </header>
 
@@ -94,8 +94,8 @@
         <section class="screen" data-route="metals" hidden>
           <header class="screen-header">
             <div>
-              <h1>Edelmetalle</h1>
-              <p>Preisfokus, Resilienz und langfristige Projektion bis 2050.</p>
+              <h1 data-i18n="metalsHeaderTitle">Edelmetalle</h1>
+              <p data-i18n="metalsHeaderSubtitle">Preisfokus, Resilienz und langfristige Projektion bis 2050.</p>
             </div>
           </header>
 
@@ -111,8 +111,8 @@
               <section class="card stack" id="metals-why-metals"></section>
               <div class="cta-row">
                 <button class="cta-button" data-route-target="consultation">
-                  <span>Strategie besprechen</span>
-                  <small>Metallquote optimieren</small>
+                  <span data-i18n="metalsCtaTitle">Strategie besprechen</span>
+                  <small data-i18n="metalsCtaSubtitle">Metallquote optimieren</small>
                 </button>
               </div>
             </div>
@@ -122,8 +122,8 @@
         <section class="screen" data-route="crisis" hidden>
           <header class="screen-header">
             <div>
-              <h1>Krisen</h1>
-              <p>Geopolitische und finanzielle Warnsignale in Echtzeit.</p>
+              <h1 data-i18n="crisisHeaderTitle">Krisen</h1>
+              <p data-i18n="crisisHeaderSubtitle">Geopolitische und finanzielle Warnsignale in Echtzeit.</p>
             </div>
           </header>
 
@@ -140,10 +140,10 @@
         <section class="screen" data-route="crisis-detail" hidden>
           <header class="screen-header">
             <div>
-              <h1>Krisen-Details</h1>
-              <p>Kontext und Zeitlinie zum ausgewaehlten Ereignis.</p>
+              <h1 data-i18n="crisisDetailHeaderTitle">Krisen-Details</h1>
+              <p data-i18n="crisisDetailHeaderSubtitle">Kontext und Zeitlinie zum ausgewählten Ereignis.</p>
             </div>
-            <button class="ghost-button" id="crisis-back">Zurueck</button>
+            <button class="ghost-button" id="crisis-back" data-i18n="crisisDetailBack">Zurück</button>
           </header>
           <section class="card stack" id="crisis-detail-card"></section>
         </section>
@@ -151,35 +151,35 @@
         <section class="screen" data-route="consultation" hidden>
           <header class="screen-header">
             <div>
-              <h1>Beratung</h1>
-              <p>Individuelle Einschaetzung zur Vermoegenssicherung anfordern.</p>
+              <h1 data-i18n="consultationHeaderTitle">Beratung</h1>
+              <p data-i18n="consultationHeaderSubtitle">Individuelle Einschätzung zur Vermögenssicherung anfordern.</p>
             </div>
           </header>
 
           <div class="adaptive-grid">
             <div class="column">
               <section class="card stack">
-                <h2>Kontakt</h2>
+                <h2 data-i18n="consultationFormTitle">Kontakt</h2>
                 <form id="consultation-form" novalidate>
                   <label>
-                    Name*
+                    <span data-i18n="consultationNameLabel">Name*</span>
                     <input type="text" name="name" autocomplete="name" required />
                   </label>
                   <label>
-                    E-Mail*
+                    <span data-i18n="consultationEmailLabel">E-Mail*</span>
                     <input type="email" name="email" autocomplete="email" required />
                   </label>
                   <label>
-                    Telefon*
+                    <span data-i18n="consultationPhoneLabel">Telefon*</span>
                     <input type="tel" name="phone" autocomplete="tel" required />
                   </label>
                   <label>
-                    Nachricht*
+                    <span data-i18n="consultationMessageLabel">Nachricht*</span>
                     <textarea name="message" rows="4" required></textarea>
                   </label>
-                  <button class="primary-button" type="submit">Anfrage senden</button>
-                  <p class="form-hint">
-                    Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben gemaess der Datenschutzerklaerung zu.
+                  <button class="primary-button" type="submit" data-i18n="consultationSubmitLabel">Anfrage senden</button>
+                  <p class="form-hint" data-i18n="consultationFormHint">
+                    Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben gemäß der Datenschutzerklärung zu.
                   </p>
                 </form>
               </section>
@@ -192,26 +192,26 @@
         </section>
       </main>
 
-      <nav class="bottom-nav" aria-label="Hauptnavigation">
+      <nav class="bottom-nav" aria-label="Hauptnavigation" data-i18n-aria="navLabel">
         <button class="nav-item" data-route="overview" aria-current="page">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5v8.5h-6v-5H9v5H3z" /></svg>
-          <span>Uebersicht</span>
+          <span data-i18n="overviewHeaderTitle">Übersicht</span>
         </button>
         <button class="nav-item" data-route="comparison">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16v-2H4zm2-4 4-4 3 3 5-6 2 2-7 8-3-3-3 3z" /></svg>
-          <span>Vergleich</span>
+          <span data-i18n="comparisonHeaderTitle">Vergleich</span>
         </button>
         <button class="nav-item" data-route="metals">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 8l8 13 8-13-8-5zm0 3.2 4.8 2.8H7.2z" /></svg>
-          <span>Edelmetalle</span>
+          <span data-i18n="metalsHeaderTitle">Edelmetalle</span>
         </button>
         <button class="nav-item" data-route="crisis">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z" /></svg>
-          <span>Krisen</span>
+          <span data-i18n="crisisHeaderTitle">Krisen</span>
         </button>
         <button class="nav-item" data-route="consultation">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-3 0-9 1.5-9 4.5V21h18v-2.5c0-3-6-4.5-9-4.5z" /></svg>
-          <span>Beratung</span>
+          <span data-i18n="consultationHeaderTitle">Beratung</span>
         </button>
       </nav>
     </div>
@@ -219,62 +219,72 @@
     <div class="sheet-backdrop" id="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
       <div class="sheet">
         <header class="sheet-header">
-          <h2 id="settings-title">Einstellungen</h2>
-          <button class="icon-button" data-close-sheet aria-label="Einstellungen schliessen">
+          <h2 id="settings-title" data-i18n="settingsTitle">Einstellungen</h2>
+          <button class="icon-button" data-close-sheet aria-label="Einstellungen schließen" data-i18n-aria="settingsCloseAriaLabel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12m0-12L6 18" /></svg>
           </button>
         </header>
 
         <section class="sheet-section">
-          <h3>Allgemein</h3>
-          <div class="segmented" role="group" aria-label="Waehrung">
+          <h3 data-i18n="settingsSectionGeneral">Allgemein</h3>
+          <p class="label" data-i18n="settingsCurrencyLabel">Währung</p>
+          <div class="segmented" role="group" aria-label="Währung" data-i18n-aria="settingsCurrencyLabel">
             <button type="button" data-currency="EUR" class="segmented-button">EUR</button>
             <button type="button" data-currency="USD" class="segmented-button">USD</button>
           </div>
-          <p class="hint">Wechselkurs aus der EZB, Updates alle 12 Stunden.</p>
+          <p class="hint" data-i18n="settingsCurrencyHint">Wechselkurs aus der EZB, Updates alle 12 Stunden.</p>
+
+          <p class="label" data-i18n="settingsLanguageLabel">App-Sprache</p>
+          <div class="segmented" role="group" aria-label="App-Sprache" data-i18n-aria="settingsLanguageLabel">
+            <button type="button" data-language="de" class="segmented-button">Deutsch</button>
+            <button type="button" data-language="en" class="segmented-button">English</button>
+            <button type="button" data-language="fr" class="segmented-button">Français</button>
+            <button type="button" data-language="es" class="segmented-button">Español</button>
+          </div>
+          <p class="hint" data-i18n="settingsLanguageHint">Ändert die Sprache der Benutzeroberfläche.</p>
         </section>
 
         <section class="sheet-section">
-          <h3>Krisen-Filter</h3>
-          <p class="label">Geopolitische Watchlist</p>
+          <h3 data-i18n="settingsSectionWatchlist">Krisen-Filter</h3>
+          <p class="label" data-i18n="settingsWatchlistGeopolitical">Geopolitische Watchlist</p>
           <div class="toggle-grid" id="watchlist-geo"></div>
-          <p class="label">Finanzielle Watchlist</p>
+          <p class="label" data-i18n="settingsWatchlistFinancial">Finanzielle Watchlist</p>
           <div class="toggle-grid" id="watchlist-financial"></div>
         </section>
 
         <section class="sheet-section">
-          <h3>Schwellwerte</h3>
-          <div class="segmented" role="group" aria-label="Schwellwerte">
-            <button type="button" data-threshold="standard" class="segmented-button">Standard</button>
-            <button type="button" data-threshold="sensitive" class="segmented-button">Sensibel</button>
-            <button type="button" data-threshold="conservative" class="segmented-button">Konservativ</button>
+          <h3 data-i18n="settingsSectionThresholds">Schwellenwerte</h3>
+          <div class="segmented" role="group" aria-label="Schwellenwerte" data-i18n-aria="settingsThresholdLabel">
+            <button type="button" data-threshold="standard" class="segmented-button" data-i18n="settingsThresholdStandard">Standard</button>
+            <button type="button" data-threshold="sensitive" class="segmented-button" data-i18n="settingsThresholdSensitive">Sensibel</button>
+            <button type="button" data-threshold="conservative" class="segmented-button" data-i18n="settingsThresholdConservative">Konservativ</button>
           </div>
-          <p class="hint">Steuert, ab wann ein Ereignis als Hochrisiko markiert wird.</p>
+          <p class="hint" data-i18n="settingsThresholdHint">Steuert, ab wann ein Ereignis als Hochrisiko markiert wird.</p>
         </section>
 
         <section class="sheet-section">
-          <h3>Benachrichtigungen</h3>
+          <h3 data-i18n="settingsSectionNotifications">Benachrichtigungen</h3>
           <div class="row">
-            <span>Status</span>
-            <span id="notification-status" class="pill">Unbekannt</span>
+            <span data-i18n="settingsNotificationsStatusLabel">Status</span>
+            <span id="notification-status" class="pill" data-i18n="notificationsUnknown">Unbekannt</span>
           </div>
-          <p class="hint" id="notification-description">Benachrichtigungen werden lokal verarbeitet.</p>
+          <p class="hint" id="notification-description" data-i18n="settingsNotificationsHint">Benachrichtigungen werden lokal verarbeitet.</p>
           <button class="primary-button" id="notification-action">Benachrichtigungen aktivieren</button>
         </section>
 
         <section class="sheet-section">
-          <h3>Privacy</h3>
-          <button class="ghost-button" id="privacy-button">Datenschutzerklaerung</button>
-          <p class="hint">Kein Tracking, keine versteckten SDKs. Nur lokale Verarbeitung.</p>
+          <h3 data-i18n="settingsSectionPrivacy">Datenschutz</h3>
+          <button class="ghost-button" id="privacy-button" data-i18n="settingsPrivacyButton">Datenschutzerklärung</button>
+          <p class="hint" data-i18n="settingsPrivacyHint">Kein Tracking, keine versteckten SDKs. Nur lokale Verarbeitung.</p>
         </section>
 
         <section class="sheet-section">
-          <h3>NewsAPI (optional)</h3>
+          <h3 data-i18n="settingsNewsApiTitle">NewsAPI (optional)</h3>
           <label>
-            API Key
-            <input type="password" id="news-api-key" autocomplete="off" placeholder="X-Api-Key" />
+            <span data-i18n="settingsNewsApiLabel">API-Schlüssel</span>
+            <input type="password" id="news-api-key" autocomplete="off" placeholder="X-Api-Key" data-i18n-placeholder="settingsNewsApiPlaceholder" />
           </label>
-          <p class="hint">Wird nur lokal gespeichert und nie hochgeladen.</p>
+          <p class="hint" data-i18n="settingsNewsApiHint">Wird nur lokal gespeichert und nie hochgeladen.</p>
         </section>
       </div>
     </div>
@@ -282,8 +292,8 @@
     <div class="sheet-backdrop" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title" hidden>
       <div class="sheet">
         <header class="sheet-header">
-          <h2 id="privacy-title">Datenschutzerklaerung</h2>
-          <button class="icon-button" data-close-privacy aria-label="Datenschutzerklaerung schliessen">
+          <h2 id="privacy-title" data-i18n="privacyTitle">Datenschutzerklärung</h2>
+          <button class="icon-button" data-close-privacy aria-label="Datenschutzerklärung schließen" data-i18n-aria="privacyCloseAriaLabel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12m0-12L6 18" /></svg>
           </button>
         </header>
@@ -296,7 +306,7 @@
     </div>
 
     <noscript>
-      <div class="noscript">
+      <div class="noscript" data-i18n="noscriptMessage">
         Bitte aktivieren Sie JavaScript, um die CRISIS 2050 Web-App zu verwenden.
       </div>
     </noscript>

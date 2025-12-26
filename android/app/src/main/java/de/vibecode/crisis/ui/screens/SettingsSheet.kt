@@ -17,11 +17,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import de.vibecode.crisis.AppLanguage
 import de.vibecode.crisis.NotificationAuthorizationState
 import de.vibecode.crisis.R
 import de.vibecode.crisis.core.model.CrisisThresholdProfile
 import de.vibecode.crisis.core.model.CrisisWatchlists
 import de.vibecode.crisis.core.model.DisplayCurrency
+import de.vibecode.crisis.ui.appLanguageLabel
+import de.vibecode.crisis.ui.displayCurrencyLabel
+import de.vibecode.crisis.ui.watchlistCountryLabel
 import de.vibecode.crisis.ui.components.GlassCard
 import de.vibecode.crisis.ui.theme.CrisisColors
 
@@ -29,11 +33,13 @@ import de.vibecode.crisis.ui.theme.CrisisColors
 @OptIn(ExperimentalMaterial3Api::class)
 fun SettingsSheet(
     selectedCurrency: DisplayCurrency,
+    selectedLanguage: AppLanguage,
     notificationStatus: NotificationAuthorizationState,
     thresholdProfile: CrisisThresholdProfile,
     geopoliticalWatchlist: Set<String>,
     financialWatchlist: Set<String>,
     onCurrencySelected: (DisplayCurrency) -> Unit,
+    onLanguageSelected: (AppLanguage) -> Unit,
     onNotificationAction: (NotificationAuthorizationState) -> Unit,
     onThresholdProfileSelected: (CrisisThresholdProfile) -> Unit,
     onGeopoliticalWatchlistChanged: (Set<String>) -> Unit,
@@ -60,12 +66,29 @@ fun SettingsSheet(
                             onClick = { onCurrencySelected(currency) },
                             shape = androidx.compose.foundation.shape.RoundedCornerShape(50)
                         ) {
-                            Text(text = currency.title)
+                            Text(text = displayCurrencyLabel(currency))
                         }
                     }
                 }
                 Text(
                     text = stringResource(R.string.settings_currency_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = CrisisColors.textSecondary
+                )
+                Text(text = stringResource(R.string.settings_language_label), style = MaterialTheme.typography.labelLarge)
+                SingleChoiceSegmentedButtonRow {
+                    AppLanguage.entries.forEach { language ->
+                        SegmentedButton(
+                            selected = selectedLanguage == language,
+                            onClick = { onLanguageSelected(language) },
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(50)
+                        ) {
+                            Text(text = appLanguageLabel(language))
+                        }
+                    }
+                }
+                Text(
+                    text = stringResource(R.string.settings_language_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = CrisisColors.textSecondary
                 )
@@ -79,7 +102,7 @@ fun SettingsSheet(
                 CrisisWatchlists.geopolitical.forEach { country ->
                     val enabled = geopoliticalWatchlist.contains(country.code)
                     Row {
-                        Text(text = country.name, style = MaterialTheme.typography.bodyMedium)
+                        Text(text = watchlistCountryLabel(country.code), style = MaterialTheme.typography.bodyMedium)
                         Spacer(modifier = Modifier.weight(1f))
                         Switch(
                             checked = enabled,
@@ -94,7 +117,7 @@ fun SettingsSheet(
                 CrisisWatchlists.financial.forEach { country ->
                     val enabled = financialWatchlist.contains(country.code)
                     Row {
-                        Text(text = country.name, style = MaterialTheme.typography.bodyMedium)
+                        Text(text = watchlistCountryLabel(country.code), style = MaterialTheme.typography.bodyMedium)
                         Spacer(modifier = Modifier.weight(1f))
                         Switch(
                             checked = enabled,

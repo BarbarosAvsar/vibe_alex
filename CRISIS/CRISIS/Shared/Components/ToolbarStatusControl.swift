@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ToolbarStatusControl: View {
     let openSettings: () -> Void
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         Button(action: openSettings) {
@@ -28,6 +29,6 @@ struct ToolbarStatusControl: View {
                 )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Einstellungen öffnen")
+        .accessibilityLabel(Localization.text("notification_banner_action_settings", language: languageSettings.selectedLanguage))
     }
 }

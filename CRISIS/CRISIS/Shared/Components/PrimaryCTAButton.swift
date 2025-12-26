@@ -1,12 +1,13 @@
 import SwiftUI
 
 struct PrimaryCTAButton: View {
-    let title: String
-    let subtitle: String
+    @Environment(LanguageSettings.self) private var languageSettings
+    let title: String?
+    let subtitle: String?
     let icon: String
     let action: () -> Void
 
-    init(title: String = "Beratung anfragen", subtitle: String = "Sichern Sie Ihr Vermögen mit Edelmetallen", icon: String = "paperplane.fill", action: @escaping () -> Void) {
+    init(title: String? = nil, subtitle: String? = nil, icon: String = "paperplane.fill", action: @escaping () -> Void) {
         self.title = title
         self.subtitle = subtitle
         self.icon = icon
@@ -25,10 +26,10 @@ struct PrimaryCTAButton: View {
                     )
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
+                    Text(resolvedTitle)
                         .font(.headline)
                         .foregroundStyle(Theme.textOnAccent)
-                Text(subtitle)
+                Text(resolvedSubtitle)
                     .font(.subheadline)
                     .foregroundStyle(Theme.textOnAccent.opacity(0.8))
             }
@@ -47,8 +48,16 @@ struct PrimaryCTAButton: View {
             endPoint: .bottomTrailing),
             in: RoundedRectangle(cornerRadius: 20, style: .continuous)
         )
-        .accessibilityHint("Öffnet das Beratungsformular")
+        .accessibilityHint(Localization.text("cta_subtitle", language: languageSettings.selectedLanguage))
     }
     .buttonStyle(.plain)
+    }
+
+    private var resolvedTitle: String {
+        title ?? Localization.text("cta_title", language: languageSettings.selectedLanguage)
+    }
+
+    private var resolvedSubtitle: String {
+        subtitle ?? Localization.text("cta_subtitle", language: languageSettings.selectedLanguage)
     }
 }

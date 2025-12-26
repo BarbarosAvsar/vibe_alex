@@ -11,34 +11,32 @@
     lastNotified: "crisis-last-notified"
   };
 
+  const SUPPORTED_LANGUAGES = ["de", "en", "fr", "es"];
+  const DEFAULT_LANGUAGE = "de";
+  const LOCALE_BY_LANGUAGE = {
+    de: "de-DE",
+    en: "en-US",
+    fr: "fr-FR",
+    es: "es-ES"
+  };
+
   const THRESHOLD_PROFILES = {
-    standard: { id: "standard", label: "Standard", highRisk: 5.0, governanceCutoff: -0.5, recessionCutoff: 0.0 },
-    sensitive: { id: "sensitive", label: "Sensitiv", highRisk: 4.5, governanceCutoff: -0.3, recessionCutoff: 0.5 },
-    conservative: { id: "conservative", label: "Konservativ", highRisk: 5.5, governanceCutoff: -0.7, recessionCutoff: -0.5 }
+    standard: { id: "standard", highRisk: 5.0, governanceCutoff: -0.5, recessionCutoff: 0.0 },
+    sensitive: { id: "sensitive", highRisk: 4.5, governanceCutoff: -0.3, recessionCutoff: 0.5 },
+    conservative: { id: "conservative", highRisk: 5.5, governanceCutoff: -0.7, recessionCutoff: -0.5 }
   };
 
   const WATCHLISTS = {
-    geopolitical: [
-      { code: "UKR", name: "Ukraine" },
-      { code: "ISR", name: "Israel" },
-      { code: "TWN", name: "Taiwan" },
-      { code: "ZAF", name: "South Africa" },
-      { code: "DEU", name: "Germany" }
-    ],
-    financial: [
-      { code: "DEU", name: "Germany" },
-      { code: "USA", name: "United States" },
-      { code: "GBR", name: "United Kingdom" },
-      { code: "JPN", name: "Japan" },
-      { code: "CHN", name: "China" }
-    ]
+    geopolitical: ["UKR", "ISR", "TWN", "ZAF", "DEU"],
+    financial: ["DEU", "USA", "GBR", "JPN", "CHN"]
   };
 
   const DEFAULT_SETTINGS = {
     currency: "EUR",
+    language: DEFAULT_LANGUAGE,
     thresholdProfile: "standard",
-    watchlistGeo: WATCHLISTS.geopolitical.map((item) => item.code),
-    watchlistFinancial: WATCHLISTS.financial.map((item) => item.code),
+    watchlistGeo: WATCHLISTS.geopolitical.slice(),
+    watchlistFinancial: WATCHLISTS.financial.slice(),
     newsApiKey: ""
   };
 
@@ -46,23 +44,17 @@
     {
       id: "INFLATION",
       indicatorCode: "FP.CPI.TOTL.ZG",
-      unit: "%",
-      title: "Inflation",
-      explanation: "Jaehrliche Verbraucherpreisinflation laut Weltbank"
+      unit: "%"
     },
     {
       id: "GROWTH",
       indicatorCode: "NY.GDP.MKTP.KD.ZG",
-      unit: "%",
-      title: "Wachstum",
-      explanation: "Reales BIP-Wachstum"
+      unit: "%"
     },
     {
       id: "DEFENSE",
       indicatorCode: "MS.MIL.XPND.GD.ZS",
-      unit: "% BIP",
-      title: "Verteidigung",
-      explanation: "Militaerausgaben im Verhaeltnis zum BIP"
+      unit: "% BIP"
     }
   ];
 
@@ -83,22 +75,18 @@
     { iso: "ESP", label: "ES", color: COLORS.muted, colorClass: "color-muted" }
   ];
 
-  const ASSET_GROUPS = [
-    { id: "equities", label: "Aktienmaerkte" },
-    { id: "real_estate", label: "Immobilienpreise" },
-    { id: "metals", label: "Edelmetalle" }
-  ];
+  const ASSET_GROUPS = ["equities", "real_estate", "metals"];
 
   const COMPARISON_ASSETS = [
-    { id: "EQUITY_DE", label: "Deutschland Aktien", group: "equities", instrument: "^dax", color: COLORS.accent },
-    { id: "EQUITY_USA", label: "USA Aktien", group: "equities", instrument: "^spx", color: COLORS.strong },
-    { id: "EQUITY_LON", label: "London Aktien", group: "equities", instrument: "^ftse", color: COLORS.info },
-    { id: "REAL_ESTATE_DE", label: "Deutschland Immobilien", group: "real_estate", instrument: "iqq7.de", color: COLORS.accent },
-    { id: "REAL_ESTATE_ES", label: "Spanien Immobilien", group: "real_estate", instrument: "iqq7.de", color: COLORS.strong },
-    { id: "REAL_ESTATE_FR", label: "Frankreich Immobilien", group: "real_estate", instrument: "iqq7.de", color: COLORS.info },
-    { id: "REAL_ESTATE_LON", label: "London Immobilien", group: "real_estate", instrument: "vnq.us", color: COLORS.muted },
-    { id: "GOLD", label: "Gold", group: "metals", instrument: "xauusd", color: COLORS.strong },
-    { id: "SILVER", label: "Silber", group: "metals", instrument: "xagusd", color: COLORS.info }
+    { id: "EQUITY_DE", group: "equities", instrument: "^dax", color: COLORS.accent },
+    { id: "EQUITY_USA", group: "equities", instrument: "^spx", color: COLORS.strong },
+    { id: "EQUITY_LON", group: "equities", instrument: "^ftse", color: COLORS.info },
+    { id: "REAL_ESTATE_DE", group: "real_estate", instrument: "iqq7.de", color: COLORS.accent },
+    { id: "REAL_ESTATE_ES", group: "real_estate", instrument: "iqq7.de", color: COLORS.strong },
+    { id: "REAL_ESTATE_FR", group: "real_estate", instrument: "iqq7.de", color: COLORS.info },
+    { id: "REAL_ESTATE_LON", group: "real_estate", instrument: "vnq.us", color: COLORS.muted },
+    { id: "GOLD", group: "metals", instrument: "xauusd", color: COLORS.strong },
+    { id: "SILVER", group: "metals", instrument: "xagusd", color: COLORS.info }
   ];
 
   const COMPARISON_ASSET_MAP = new Map(COMPARISON_ASSETS.map((asset) => [asset.id, asset]));
@@ -115,29 +103,145 @@
   const BENNER_PHASES = {
     panic: {
       id: "panic",
-      title: "Panikjahr",
-      subtitle: "Extremer Verkaufsdruck - Phase A",
-      guidance: "Historisch folgten auf diese Jahre heftige Markteinbrueche. Liquiditaet sichern und Risiko begrenzen.",
       metalTrendMultiplier: 0.08
     },
     good: {
       id: "good",
-      title: "Good Times",
-      subtitle: "Hohe Preise - Phase B (Verkaeufe bevorzugt)",
-      guidance: "Ueberdurchschnittliche Bewertungen. Gewinne sichern und Exposure reduzieren.",
       metalTrendMultiplier: 0.02
     },
     hard: {
       id: "hard",
-      title: "Hard Times",
-      subtitle: "Niedrige Preise - Phase C (Akkumulation)",
-      guidance: "Marktpreise gelten als guenstig. Positionsaufbau und Sparplaene bieten sich an.",
       metalTrendMultiplier: 0.03
     }
   };
 
-  const TEXT = {
-    heroTitle: "Vermoegenssicherung",
+  const STRINGS_DE = {
+    appName: "CRISIS 2050",
+    skipLink: "Zum Inhalt springen",
+    navLabel: "Hauptnavigation",
+    refreshAriaLabel: "Daten aktualisieren",
+    settingsAriaLabel: "Einstellungen öffnen",
+    settingsCloseAriaLabel: "Einstellungen schließen",
+    privacyCloseAriaLabel: "Datenschutzerklärung schließen",
+    overviewHeaderTitle: "Übersicht",
+    overviewHeaderSubtitle: "Vermögenssicherung, Edelmetalle und Makro-Lage auf einen Blick.",
+    overviewCtaTitle: "Beratung anfragen",
+    overviewCtaSubtitle: "Persönliche Einschätzung sichern",
+    comparisonHeaderTitle: "Vergleich",
+    comparisonHeaderSubtitle: "Asset-Klassen im historischen Vergleich und in der Prognose.",
+    metalsHeaderTitle: "Edelmetalle",
+    metalsHeaderSubtitle: "Preisfokus, Resilienz und langfristige Projektion bis 2050.",
+    metalsCtaTitle: "Strategie besprechen",
+    metalsCtaSubtitle: "Metallquote optimieren",
+    crisisHeaderTitle: "Krisen",
+    crisisHeaderSubtitle: "Geopolitische und finanzielle Warnsignale in Echtzeit.",
+    crisisDetailHeaderTitle: "Krisen-Details",
+    crisisDetailHeaderSubtitle: "Kontext und Zeitlinie zum ausgewählten Ereignis.",
+    crisisDetailBack: "Zurück",
+    consultationHeaderTitle: "Beratung",
+    consultationHeaderSubtitle: "Individuelle Einschätzung zur Vermögenssicherung anfordern.",
+    consultationFormTitle: "Kontakt",
+    consultationNameLabel: "Name*",
+    consultationEmailLabel: "E-Mail*",
+    consultationPhoneLabel: "Telefon*",
+    consultationMessageLabel: "Nachricht*",
+    consultationSubmitLabel: "Anfrage senden",
+    consultationFormHint: "Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben gemäß der Datenschutzerklärung zu.",
+    settingsTitle: "Einstellungen",
+    settingsSectionGeneral: "Allgemein",
+    settingsCurrencyLabel: "Währung",
+    settingsCurrencyHint: "Wechselkurs aus der EZB, Updates alle 12 Stunden.",
+    settingsLanguageLabel: "App-Sprache",
+    settingsLanguageHint: "Ändert die Sprache der Benutzeroberfläche.",
+    settingsSectionWatchlist: "Krisen-Filter",
+    settingsWatchlistGeopolitical: "Geopolitische Watchlist",
+    settingsWatchlistFinancial: "Finanzielle Watchlist",
+    settingsSectionThresholds: "Schwellenwerte",
+    settingsThresholdLabel: "Schwellenwerte",
+    settingsThresholdStandard: "Standard",
+    settingsThresholdSensitive: "Sensibel",
+    settingsThresholdConservative: "Konservativ",
+    settingsThresholdHint: "Steuert, ab wann ein Ereignis als Hochrisiko markiert wird.",
+    settingsSectionNotifications: "Benachrichtigungen",
+    settingsNotificationsStatusLabel: "Status",
+    settingsNotificationsHint: "Benachrichtigungen werden lokal verarbeitet.",
+    settingsSectionPrivacy: "Datenschutz",
+    settingsPrivacyButton: "Datenschutzerklärung",
+    settingsPrivacyHint: "Kein Tracking, keine versteckten SDKs. Nur lokale Verarbeitung.",
+    settingsNewsApiTitle: "NewsAPI (optional)",
+    settingsNewsApiLabel: "API-Schlüssel",
+    settingsNewsApiPlaceholder: "X-Api-Key",
+    settingsNewsApiHint: "Wird nur lokal gespeichert und nie hochgeladen.",
+    privacyTitle: "Datenschutzerklärung",
+    noscriptMessage: "Bitte aktivieren Sie JavaScript, um die CRISIS 2050 Web-App zu verwenden.",
+    languageLabels: {
+      de: "Deutsch",
+      en: "Englisch",
+      fr: "Französisch",
+      es: "Spanisch"
+    },
+    watchlistCountries: {
+      UKR: "Ukraine",
+      ISR: "Israel",
+      TWN: "Taiwan",
+      ZAF: "Südafrika",
+      DEU: "Deutschland",
+      USA: "USA",
+      GBR: "Vereinigtes Königreich",
+      JPN: "Japan",
+      CHN: "China"
+    },
+    assetGroups: {
+      equities: "Aktienmärkte",
+      real_estate: "Immobilienpreise",
+      metals: "Edelmetalle"
+    },
+    assetLabels: {
+      EQUITY_DE: "Deutschland Aktien",
+      EQUITY_USA: "USA Aktien",
+      EQUITY_LON: "London Aktien",
+      REAL_ESTATE_DE: "Deutschland Immobilien",
+      REAL_ESTATE_ES: "Spanien Immobilien",
+      REAL_ESTATE_FR: "Frankreich Immobilien",
+      REAL_ESTATE_LON: "London Immobilien",
+      GOLD: "Gold",
+      SILVER: "Silber"
+    },
+    macroKinds: {
+      INFLATION: {
+        title: "Inflation",
+        description: "Jährliche Verbraucherpreisinflation laut Weltbank",
+        unit: "%"
+      },
+      GROWTH: {
+        title: "Wachstum",
+        description: "Reales BIP-Wachstum",
+        unit: "%"
+      },
+      DEFENSE: {
+        title: "Verteidigung",
+        description: "Militärausgaben im Verhältnis zum BIP",
+        unit: "% BIP"
+      }
+    },
+    bennerPhases: {
+      panic: {
+        title: "Panikjahr",
+        subtitle: "Extremer Verkaufsdruck - Phase A",
+        guidance: "Historisch folgten auf diese Jahre heftige Markteinbrüche. Liquidität sichern und Risiko begrenzen."
+      },
+      good: {
+        title: "Gute Zeiten",
+        subtitle: "Hohe Preise - Phase B (Verkäufe bevorzugt)",
+        guidance: "Überdurchschnittliche Bewertungen. Gewinne sichern und Exposure reduzieren."
+      },
+      hard: {
+        title: "Schwere Zeiten",
+        subtitle: "Niedrige Preise - Phase C (Akkumulation)",
+        guidance: "Marktpreise gelten als günstig. Positionsaufbau und Sparpläne bieten sich an."
+      }
+    },
+    heroTitle: "Vermögenssicherung",
     heroSubtitle: "Aktuelle Prognose",
     heroLabel: "Prognose",
     heroHint: "Vorsicht empfohlen - Absicherung priorisieren.",
@@ -147,24 +251,27 @@
     macroSubtitle: "Inflation, Wechsel & Wachstum je Region",
     whyMetalsTitle: "Warum Edelmetalle und Struktur",
     whyMetalsBullets: [
-      "Physischer Wert, unabhaengig von Waehrungen",
+      "Physischer Wert, unabhängig von Währungen",
       "Schutz vor Inflation und Kaufkraftverlust",
-      "Stabilitaet in Kriegen und Wirtschaftskrisen",
-      "Strukturierter Vermoegensschutz durch planbare Allokation",
-      "Sichere Lagerung im Zollfreilager ausserhalb des Bankensystems"
+      "Stabilität in Kriegen und Wirtschaftskrisen",
+      "Strukturierter Vermögensschutz durch planbare Allokation",
+      "Sichere Lagerung im Zollfreilager außerhalb des Bankensystems"
     ],
-    comparisonSectionTitle: "Asset-Klassen Vergleich",
-    comparisonSectionSubtitle: "Historisch & Prognose 2025-2050",
+    comparisonSectionTitle: "Asset-Klassen-Vergleich",
+    comparisonSectionSubtitle: "Historisch & Prognose 2025–2050",
+    comparisonModeHistory: "Historisch",
+    comparisonModeForecast: "Prognose",
     comparisonChartTitle: "Wertentwicklung",
-    comparisonChartSubtitle: "Tippen Sie auf den Chart um Details zu sehen",
-    comparisonPerformanceTitle: "Performance Uebersicht",
+    comparisonChartSubtitle: "Tippen Sie auf den Chart, um Details zu sehen.",
+    comparisonPerformanceTitle: "Performance-Übersicht",
     comparisonPerformanceSubtitle: "Historisch und Prognose",
-    comparisonNoData: "Keine Marktdaten verfuegbar.",
-    comparisonLoading: "Lade Marktdaten...",
+    comparisonPerformanceFormat: "Historisch %s / Prognose %s",
+    comparisonNoData: "Keine Marktdaten verfügbar.",
+    comparisonLoading: "Lade Marktdaten…",
     comparisonMacroTitle: "Makro-Vergleich",
     comparisonMacroSubtitle: "Regionale Trends nebeneinander",
     comparisonMacroLoading: "Lade Makro-Daten.",
-    comparisonMacroNoData: "Keine Makro-Daten verfuegbar.",
+    comparisonMacroNoData: "Keine Makro-Daten verfügbar.",
     comparisonScenarioTitle: "Szenario-Labor",
     comparisonScenarioSubtitle: "Inflation, Wachstum und Verteidigung justieren",
     scenarioInflation: "Inflation (%)",
@@ -175,18 +282,25 @@
     scenarioMetals: "Edelmetalle",
     portfolioTitle: "Portfolio-Resilienz",
     portfolioSubtitle: "Mix aus Aktien, Immobilien und Edelmetallen",
-    metalsSelectorTitle: "Edelmetall auswaehlen",
-    metalsProjectionTitle: "Prognose fuer 3 Jahre",
+    metalsSelectorTitle: "Edelmetall auswählen",
+    metalInsight24h: "24h",
+    metalInsightChange: "Veränderung",
+    metalsUpdatedLabel: "Stand: %s",
+    metalsProjectionTitle: "Prognose für 3 Jahre",
+    metalsProjectionSubtitle: "%s Ausblick",
     metalsTrendTitle: "Historisch & Prognose bis 2050",
     metalsTrendSubtitle: "Indexentwicklung %s",
-    metalsTrendLoading: "Lade Marktdaten...",
+    metalsTrendHistoryLabel: "%s Historie",
+    metalsTrendForecastLabel: "%s Prognose",
+    metalsTrendLoading: "Lade Marktdaten…",
     metalsResilienceTitle: "Resilienz in Krisen",
     metalsResilienceSubtitle: "%s in unterschiedlichen Szenarien",
     metalsScenarioInflation: "Inflation",
+    metalsScenarioInflationDetail: "%s reagiert historisch positiv auf steigende Verbraucherpreise.",
     metalsScenarioWars: "Kriege",
-    metalsScenarioWarsDetail: "Geopolitische Spannungen erhoehen die Nachfrage nach sicheren Haefen.",
+    metalsScenarioWarsDetail: "Geopolitische Spannungen erhöhen die Nachfrage nach sicheren Häfen.",
     metalsScenarioRecession: "Wirtschaftskrisen",
-    metalsScenarioRecessionDetail: "In Rezessionen dient %s als Liquiditaetsreserve.",
+    metalsScenarioRecessionDetail: "In Rezessionen dient %s als Liquiditätsreserve.",
     metalsBadgeProtection: "Schutz",
     metalsBadgeShield: "Absicherung",
     metalsBadgeDiversification: "Diversifikation",
@@ -194,7 +308,7 @@
     crisisOverviewSubtitle: "Aktuelle Hinweise aus externen Quellen",
     crisisOverviewEmpty: "Keine aktuellen Hinweise.",
     crisisFeedTitle: "Krisen-Feed",
-    crisisFeedSubtitle: "Meldungen aus NewsAPI und World Bank",
+    crisisFeedSubtitle: "Meldungen aus NewsAPI und der World Bank",
     crisisFeedEmpty: "Keine aktuellen Krisenmeldungen.",
     crisisCategoryFinancial: "Finanzen",
     crisisCategoryGeopolitical: "Geopolitik",
@@ -204,68 +318,1032 @@
     crisisDetailTitle: "Krisen-Details",
     crisisDetailMissing: "Ereignis nicht gefunden.",
     crisisDetailTimeline: "Zeitachse",
-    crisisDetailOpenSource: "Quelle oeffnen",
+    crisisDetailOpenSource: "Quelle öffnen",
+    crisisDetailTimeLabel: "Zeitpunkt: %s",
+    crisisDetailSourceLabel: "Quelle: %s",
+    crisisEventTitleGovernance: "Politische Instabilität in %s",
+    crisisEventTitleRecession: "Rezession in %s",
+    crisisGovernanceSummary: "Governance-Index %s",
+    crisisRecessionSummary: "Reales BIP-Wachstum %s%",
+    regionGlobal: "Weltweit",
+    regionEurope: "Europa",
+    sampleNewsTitle: "Bankenstress in Europa nimmt zu",
+    sampleNewsSummary: "Finanzielle Spannungen in mehreren EU-Ländern.",
     consultationExpectationsTitle: "Was Sie erwartet",
     consultationExpectations: [
       "Kostenlose Erstberatung durch Edelmetall-Experten",
-      "Individuelle Vermoegensstrukturierung",
+      "Individuelle Vermögensstrukturierung",
       "Informationen zur Zollfreilager-Lagerung",
       "Steuerliche Aspekte und rechtliche Absicherung"
     ],
     consultationMoreInfoTitle: "Weitere Informationen",
     consultationInfo1Title: "Zollfreilager-Lagerung",
-    consultationInfo1Text: "Physische Trennung vom Bankensystem, Versicherung und 24/7 Ueberwachung fuer maximale Sicherheit und Flexibilitaet.",
+    consultationInfo1Text: "Physische Trennung vom Bankensystem, Versicherung und 24/7 Überwachung für maximale Sicherheit und Flexibilität.",
     consultationInfo2Title: "Wert - Struktur gewinnt",
-    consultationInfo2Text: "Klare Allokation in Edelmetalle schafft Stabilitaet in Inflation, Waehrungsreformen und Krisen.",
+    consultationInfo2Text: "Klare Allokation in Edelmetalle schafft Stabilität in Inflation, Währungsreformen und Krisen.",
     consultationPrivacyNote:
-      "Mit dem Absenden stimmen Sie zu, dass wir Ihre Anfrage gemaess Datenschutzerklaerung beantworten. Wir speichern keine Daten dauerhaft auf diesem Geraet.",
+      "Mit dem Absenden stimmen Sie zu, dass wir Ihre Anfrage gemäß Datenschutzerklärung beantworten. Wir speichern keine Daten dauerhaft auf diesem Gerät.",
     consultationSuccessTitle: "Vielen Dank",
     consultationSuccessMessage: "Ihre Anfrage wurde gesendet. Wir melden uns zeitnah.",
     consultationFailureTitle: "Senden fehlgeschlagen",
+    consultationFailureMessage: "Fehler beim Senden der Anfrage.",
+    consultationErrorName: "Bitte geben Sie Ihren Namen an.",
+    consultationErrorEmail: "Bitte geben Sie eine gültige E-Mail-Adresse an.",
+    consultationErrorPhone: "Bitte geben Sie Ihre Telefonnummer an.",
+    consultationErrorMessage: "Ihre Nachricht sollte mindestens 10 Zeichen enthalten.",
     notificationsActive: "Aktiv",
     notificationsDenied: "Deaktiviert",
     notificationsUnknown: "Unbekannt",
-    notificationsActiveDesc: "Sie erhalten Warnhinweise bei Prognose-Wechseln oder groesseren Krisen.",
+    notificationsActiveDesc: "Sie erhalten Warnhinweise bei Prognose-Wechseln oder größeren Krisen.",
     notificationsDeniedDesc: "Benachrichtigungen sind ausgeschaltet. Aktivieren Sie sie in den Browser-Einstellungen.",
     notificationsUnknownDesc: "Noch keine Berechtigung angefragt.",
     notificationsActionEnable: "Benachrichtigungen aktivieren",
-    notificationsActionOpenSettings: "Browser-Einstellungen oeffnen",
+    notificationsActionOpenSettings: "Browser-Einstellungen öffnen",
+    notificationsCrisisTitle: "Krisenlage: %s",
+    notificationsCrisisBody: "Region: %s. Kategorie: %s.",
+    notificationsUnsupportedStatus: "Nicht verfügbar",
+    notificationsUnsupportedDescription: "Dieser Browser unterstützt keine Benachrichtigungen.",
+    notificationsUnsupportedToast: "Benachrichtigungen sind in diesem Browser nicht verfügbar.",
+    notificationsEnabledToast: "Benachrichtigungen aktiviert.",
+    notificationsSettingsToast: "Bitte aktivieren Sie Benachrichtigungen in den Browser-Einstellungen.",
     privacyIntro:
-      "Wir verarbeiten Ihre Daten ausschliesslich auf dem Geraet oder ueber den Versand Ihrer Anfrage. Es gibt keine versteckten Tracker oder Cloud-Profile.",
+      "Wir verarbeiten Ihre Daten ausschließlich auf dem Gerät oder über den Versand Ihrer Anfrage. Es gibt keine versteckten Tracker oder Cloud-Profile.",
     privacySections: [
       {
         title: "Verantwortliche Stelle",
-        body: "VermoegensKompass (Vibecode GmbH) verarbeitet ausschliesslich die Daten, die Sie aktiv teilen."
+        body: "VermögensKompass (Vibecode GmbH) verarbeitet ausschließlich die Daten, die Sie aktiv teilen."
       },
       {
-        title: "Datenerhebung im Ueberblick",
+        title: "Datenerhebung im Überblick",
         body: [
-          "Markt- und Krisendaten stammen aus offen zugaenglichen APIs (World Bank, USGS, NOAA, GoldPrice.org) und werden nur lokal ausgewertet.",
+          "Markt- und Krisendaten stammen aus offen zugänglichen APIs (World Bank, USGS, NOAA, GoldPrice.org) und werden nur lokal ausgewertet.",
           "Wir speichern keine personenbezogenen Daten auf unseren Servern."
         ]
       },
       {
         title: "Kontaktaufnahme",
         body:
-          "Wenn Sie auf \"Beratung anfragen\" tippen, senden wir Ihre Nachricht an unser Beratungsteam. Der Versand erfolgt ueber eine gesicherte Verbindung; wir speichern dabei keine Kopie."
+          "Wenn Sie auf \"Beratung anfragen\" tippen, senden wir Ihre Nachricht an unser Beratungsteam. Der Versand erfolgt über eine gesicherte Verbindung; wir speichern dabei keine Kopie."
       },
       {
         title: "Benachrichtigungen",
         body:
-          "Krisen-Benachrichtigungen werden ausschliesslich auf Ihrem Geraet verarbeitet. Sie koennen die Berechtigung jederzeit in den Browser-Einstellungen widerrufen."
+          "Krisen-Benachrichtigungen werden ausschließlich auf Ihrem Gerät verarbeitet. Sie können die Berechtigung jederzeit in den Browser-Einstellungen widerrufen."
       },
       {
         title: "Analytics & Tracking",
         body:
-          "Kein Tracking, keine Drittanbieter-SDKs. Die App funktioniert vollstaendig offline mit den zuletzt synchronisierten Daten."
+          "Kein Tracking, keine Drittanbieter-SDKs. Die App funktioniert vollständig offline mit den zuletzt synchronisierten Daten."
       },
       {
         title: "Ihre Rechte",
         body:
-          "Sie koennen Auskunft, Berichtigung oder Loeschung Ihrer Kontaktaufnahme verlangen, indem Sie uns unter datenschutz@vermoegenskompass.de kontaktieren."
+          "Sie können Auskunft, Berichtigung oder Löschung Ihrer Kontaktaufnahme verlangen, indem Sie uns unter datenschutz@vermoegenskompass.de kontaktieren."
       }
-    ]
+    ],
+    crisisSummaryHeadlineNone: "Keine Hochrisiko-Ereignisse erkennbar",
+    crisisSummaryHeadlineCountOne: "%s Hochrisiko-Ereignis aktiv",
+    crisisSummaryHeadlineCountOther: "%s Hochrisiko-Ereignisse aktiv",
+    crisisSummaryHighlightRegion: "%sx Ereignisse in %s",
+    crisisSummaryHighlightCategory: "%sx Kategorie %s",
+    crisisSummaryHighlightLatest: "Zuletzt %s um %s",
+    syncBannerWithTime: "Offline: letzte Synchronisierung %s.",
+    syncBannerWithoutTime: "Offline: letzte Synchronisierung.",
+    syncPartialOffline: "Teilweise offline (%s)",
+    syncFailed: "Synchronisierung fehlgeschlagen",
+    offlineToastPrefix: "Offline: %s",
+    syncFailureMetals: "Metalle",
+    syncFailureMacro: "Makro",
+    syncFailureCrisis: "Krisen",
+    notAvailableShort: "k. A.",
+    macroDeltaNoTrend: "Kein Verlauf",
+    macroDeltaVsPrevious: "%s%s%s vs. Vorjahr",
+    chartAriaLabel: "Datenchart"
   };
+
+  const STRINGS = { de: STRINGS_DE };
+
+  STRINGS.en = {
+    appName: "CRISIS 2050",
+    skipLink: "Skip to content",
+    navLabel: "Main navigation",
+    refreshAriaLabel: "Refresh data",
+    settingsAriaLabel: "Open settings",
+    settingsCloseAriaLabel: "Close settings",
+    privacyCloseAriaLabel: "Close privacy policy",
+    overviewHeaderTitle: "Overview",
+    overviewHeaderSubtitle: "Wealth protection, precious metals, and macro outlook at a glance.",
+    overviewCtaTitle: "Request consultation",
+    overviewCtaSubtitle: "Secure a personal assessment",
+    comparisonHeaderTitle: "Comparison",
+    comparisonHeaderSubtitle: "Asset classes in historical comparison and forecast.",
+    metalsHeaderTitle: "Metals",
+    metalsHeaderSubtitle: "Price focus, resilience, and long-term projection to 2050.",
+    metalsCtaTitle: "Discuss strategy",
+    metalsCtaSubtitle: "Optimize metal allocation",
+    crisisHeaderTitle: "Crises",
+    crisisHeaderSubtitle: "Geopolitical and financial warning signals in real time.",
+    crisisDetailHeaderTitle: "Crisis details",
+    crisisDetailHeaderSubtitle: "Context and timeline for the selected event.",
+    crisisDetailBack: "Back",
+    consultationHeaderTitle: "Consultation",
+    consultationHeaderSubtitle: "Request a personalized assessment for wealth protection.",
+    consultationFormTitle: "Contact",
+    consultationNameLabel: "Name*",
+    consultationEmailLabel: "Email*",
+    consultationPhoneLabel: "Phone*",
+    consultationMessageLabel: "Message*",
+    consultationSubmitLabel: "Send request",
+    consultationFormHint: "By submitting, you agree to the processing of your details in accordance with the privacy policy.",
+    settingsTitle: "Settings",
+    settingsSectionGeneral: "General",
+    settingsCurrencyLabel: "Currency",
+    settingsCurrencyHint: "ECB exchange rate, updates every 12 hours.",
+    settingsLanguageLabel: "App language",
+    settingsLanguageHint: "Changes the interface language.",
+    settingsSectionWatchlist: "Crisis filters",
+    settingsWatchlistGeopolitical: "Geopolitical watchlist",
+    settingsWatchlistFinancial: "Financial watchlist",
+    settingsSectionThresholds: "Thresholds",
+    settingsThresholdLabel: "Thresholds",
+    settingsThresholdStandard: "Standard",
+    settingsThresholdSensitive: "Sensitive",
+    settingsThresholdConservative: "Conservative",
+    settingsThresholdHint: "Controls when an event is flagged as high risk.",
+    settingsSectionNotifications: "Notifications",
+    settingsNotificationsStatusLabel: "Status",
+    settingsNotificationsHint: "Notifications are processed locally.",
+    settingsSectionPrivacy: "Privacy",
+    settingsPrivacyButton: "Privacy policy",
+    settingsPrivacyHint: "No tracking, no hidden SDKs. Local processing only.",
+    settingsNewsApiTitle: "NewsAPI (optional)",
+    settingsNewsApiLabel: "API key",
+    settingsNewsApiPlaceholder: "X-Api-Key",
+    settingsNewsApiHint: "Stored locally only and never uploaded.",
+    privacyTitle: "Privacy policy",
+    noscriptMessage: "Please enable JavaScript to use the CRISIS 2050 web app.",
+    languageLabels: {
+      de: "German",
+      en: "English",
+      fr: "French",
+      es: "Spanish"
+    },
+    watchlistCountries: {
+      UKR: "Ukraine",
+      ISR: "Israel",
+      TWN: "Taiwan",
+      ZAF: "South Africa",
+      DEU: "Germany",
+      USA: "United States",
+      GBR: "United Kingdom",
+      JPN: "Japan",
+      CHN: "China"
+    },
+    assetGroups: {
+      equities: "Equity markets",
+      real_estate: "Real estate prices",
+      metals: "Metals"
+    },
+    assetLabels: {
+      EQUITY_DE: "Germany equities",
+      EQUITY_USA: "US equities",
+      EQUITY_LON: "London equities",
+      REAL_ESTATE_DE: "Germany real estate",
+      REAL_ESTATE_ES: "Spain real estate",
+      REAL_ESTATE_FR: "France real estate",
+      REAL_ESTATE_LON: "London real estate",
+      GOLD: "Gold",
+      SILVER: "Silver"
+    },
+    macroKinds: {
+      INFLATION: {
+        title: "Inflation",
+        description: "Annual consumer price inflation (World Bank)",
+        unit: "%"
+      },
+      GROWTH: {
+        title: "Growth",
+        description: "Real GDP growth",
+        unit: "%"
+      },
+      DEFENSE: {
+        title: "Defense",
+        description: "Military spending as a share of GDP",
+        unit: "% of GDP"
+      }
+    },
+    bennerPhases: {
+      panic: {
+        title: "Panic year",
+        subtitle: "Extreme selling pressure - Phase A",
+        guidance: "Historically, these years were followed by sharp market drops. Secure liquidity and limit risk."
+      },
+      good: {
+        title: "Good times",
+        subtitle: "High prices - Phase B (prefer selling)",
+        guidance: "Above-average valuations. Lock in gains and reduce exposure."
+      },
+      hard: {
+        title: "Hard times",
+        subtitle: "Low prices - Phase C (accumulation)",
+        guidance: "Prices look favorable. Building positions and savings plans make sense."
+      }
+    },
+    heroTitle: "Wealth protection",
+    heroSubtitle: "Current outlook",
+    heroLabel: "Outlook",
+    heroHint: "Caution advised - prioritize protection.",
+    metalsFocusTitle: "Metals in focus",
+    metalsFocusSubtitle: "Gold & silver in the current market context",
+    macroTitle: "Macro outlook",
+    macroSubtitle: "Inflation, FX & growth by region",
+    whyMetalsTitle: "Why metals and structure",
+    whyMetalsBullets: [
+      "Physical value independent of currencies",
+      "Protection against inflation and loss of purchasing power",
+      "Stability in wars and economic crises",
+      "Structured wealth protection through planned allocation",
+      "Secure storage in bonded warehouses outside the banking system"
+    ],
+    comparisonSectionTitle: "Asset class comparison",
+    comparisonSectionSubtitle: "Historical & forecast 2025–2050",
+    comparisonModeHistory: "History",
+    comparisonModeForecast: "Forecast",
+    comparisonChartTitle: "Value development",
+    comparisonChartSubtitle: "Tap the chart to see details.",
+    comparisonPerformanceTitle: "Performance overview",
+    comparisonPerformanceSubtitle: "Historical and forecast",
+    comparisonPerformanceFormat: "History %s / Forecast %s",
+    comparisonNoData: "No market data available.",
+    comparisonLoading: "Loading market data…",
+    comparisonMacroTitle: "Macro comparison",
+    comparisonMacroSubtitle: "Regional trends side by side",
+    comparisonMacroLoading: "Loading macro data.",
+    comparisonMacroNoData: "No macro data available.",
+    comparisonScenarioTitle: "Scenario lab",
+    comparisonScenarioSubtitle: "Adjust inflation, growth, and defense",
+    scenarioInflation: "Inflation (%)",
+    scenarioGrowth: "Growth (%)",
+    scenarioDefense: "Defense (% of GDP)",
+    scenarioEquities: "Equities",
+    scenarioRealEstate: "Real estate",
+    scenarioMetals: "Metals",
+    portfolioTitle: "Portfolio resilience",
+    portfolioSubtitle: "Mix of equities, real estate, and metals",
+    metalsSelectorTitle: "Select metal",
+    metalInsight24h: "24h",
+    metalInsightChange: "Change",
+    metalsUpdatedLabel: "Updated: %s",
+    metalsProjectionTitle: "3-year projection",
+    metalsProjectionSubtitle: "%s outlook",
+    metalsTrendTitle: "History & forecast through 2050",
+    metalsTrendSubtitle: "Index performance %s",
+    metalsTrendHistoryLabel: "%s history",
+    metalsTrendForecastLabel: "%s forecast",
+    metalsTrendLoading: "Loading market data…",
+    metalsResilienceTitle: "Resilience in crises",
+    metalsResilienceSubtitle: "%s across scenarios",
+    metalsScenarioInflation: "Inflation",
+    metalsScenarioInflationDetail: "%s historically responds positively to rising consumer prices.",
+    metalsScenarioWars: "Wars",
+    metalsScenarioWarsDetail: "Geopolitical tensions increase demand for safe havens.",
+    metalsScenarioRecession: "Recessions",
+    metalsScenarioRecessionDetail: "In recessions, %s serves as a liquidity reserve.",
+    metalsBadgeProtection: "Protection",
+    metalsBadgeShield: "Hedge",
+    metalsBadgeDiversification: "Diversification",
+    crisisOverviewTitle: "Crisis situation",
+    crisisOverviewSubtitle: "Current signals from external sources",
+    crisisOverviewEmpty: "No current signals.",
+    crisisFeedTitle: "Crisis feed",
+    crisisFeedSubtitle: "Stories from NewsAPI and the World Bank",
+    crisisFeedEmpty: "No current crisis headlines.",
+    crisisCategoryFinancial: "Financial",
+    crisisCategoryGeopolitical: "Geopolitical",
+    crisisBadgeInfo: "Info",
+    crisisBadgeModerate: "Moderate",
+    crisisBadgeHigh: "High",
+    crisisDetailTitle: "Crisis details",
+    crisisDetailMissing: "Event not found.",
+    crisisDetailTimeline: "Timeline",
+    crisisDetailOpenSource: "Open source",
+    crisisDetailTimeLabel: "Time: %s",
+    crisisDetailSourceLabel: "Source: %s",
+    crisisEventTitleGovernance: "Political instability in %s",
+    crisisEventTitleRecession: "Recession in %s",
+    crisisGovernanceSummary: "Governance index %s",
+    crisisRecessionSummary: "Real GDP growth %s%",
+    regionGlobal: "Global",
+    regionEurope: "Europe",
+    sampleNewsTitle: "Banking stress in Europe intensifies",
+    sampleNewsSummary: "Financial tensions rise across several EU countries.",
+    consultationExpectationsTitle: "What to expect",
+    consultationExpectations: [
+      "Free initial consultation with precious metal experts",
+      "Individual wealth structuring",
+      "Information on bonded warehouse storage",
+      "Tax considerations and legal safeguards"
+    ],
+    consultationMoreInfoTitle: "More information",
+    consultationInfo1Title: "Bonded warehouse storage",
+    consultationInfo1Text:
+      "Physical separation from the banking system, insurance, and 24/7 monitoring for maximum security and flexibility.",
+    consultationInfo2Title: "Value - structure wins",
+    consultationInfo2Text: "Clear allocation to precious metals creates stability in inflation, currency reforms, and crises.",
+    consultationPrivacyNote:
+      "By submitting, you agree that we respond to your request in accordance with the privacy policy. We do not store any data permanently on this device.",
+    consultationSuccessTitle: "Thank you",
+    consultationSuccessMessage: "Your request was sent. We will get back to you soon.",
+    consultationFailureTitle: "Send failed",
+    consultationFailureMessage: "Failed to send the request.",
+    consultationErrorName: "Please enter your name.",
+    consultationErrorEmail: "Please enter a valid email address.",
+    consultationErrorPhone: "Please enter your phone number.",
+    consultationErrorMessage: "Your message should be at least 10 characters.",
+    notificationsActive: "Active",
+    notificationsDenied: "Disabled",
+    notificationsUnknown: "Unknown",
+    notificationsActiveDesc: "You will receive alerts when forecasts change or when major crises emerge.",
+    notificationsDeniedDesc: "Notifications are turned off. Enable them in your browser settings.",
+    notificationsUnknownDesc: "Permission has not been requested yet.",
+    notificationsActionEnable: "Enable notifications",
+    notificationsActionOpenSettings: "Open browser settings",
+    notificationsCrisisTitle: "Crisis alert: %s",
+    notificationsCrisisBody: "Region: %s. Category: %s.",
+    notificationsUnsupportedStatus: "Unavailable",
+    notificationsUnsupportedDescription: "This browser does not support notifications.",
+    notificationsUnsupportedToast: "Notifications are not available in this browser.",
+    notificationsEnabledToast: "Notifications enabled.",
+    notificationsSettingsToast: "Please enable notifications in the browser settings.",
+    privacyIntro:
+      "We process your data exclusively on your device or when sending your request. There are no hidden trackers or cloud profiles.",
+    privacySections: [
+      {
+        title: "Responsible entity",
+        body: "VermögensKompass (Vibecode GmbH) processes only the data you actively share."
+      },
+      {
+        title: "Data collection overview",
+        body: [
+          "Market and crisis data come from publicly accessible APIs (World Bank, USGS, NOAA, GoldPrice.org) and are evaluated locally.",
+          "We do not store personal data on our servers."
+        ]
+      },
+      {
+        title: "Contact",
+        body:
+          "When you tap \"Request consultation\", we send your message to our advisory team. The transfer is secured; we do not store a copy."
+      },
+      {
+        title: "Notifications",
+        body: "Crisis notifications are processed exclusively on your device. You can revoke permission anytime in your browser settings."
+      },
+      {
+        title: "Analytics & tracking",
+        body: "No tracking, no third-party SDKs. The app works fully offline with the latest synced data."
+      },
+      {
+        title: "Your rights",
+        body:
+          "You can request access, correction, or deletion of your contact data by writing to datenschutz@vermoegenskompass.de."
+      }
+    ],
+    crisisSummaryHeadlineNone: "No high-risk events detected",
+    crisisSummaryHeadlineCountOne: "%s high-risk event active",
+    crisisSummaryHeadlineCountOther: "%s high-risk events active",
+    crisisSummaryHighlightRegion: "%sx events in %s",
+    crisisSummaryHighlightCategory: "%sx category %s",
+    crisisSummaryHighlightLatest: "Latest %s at %s",
+    syncBannerWithTime: "Offline: last sync %s.",
+    syncBannerWithoutTime: "Offline: last sync.",
+    syncPartialOffline: "Partially offline (%s)",
+    syncFailed: "Sync failed",
+    offlineToastPrefix: "Offline: %s",
+    syncFailureMetals: "Metals",
+    syncFailureMacro: "Macro",
+    syncFailureCrisis: "Crises",
+    notAvailableShort: "n/a",
+    macroDeltaNoTrend: "No trend",
+    macroDeltaVsPrevious: "%s%s%s vs. previous year",
+    chartAriaLabel: "Data chart"
+  };
+
+  STRINGS.fr = {
+    appName: "CRISIS 2050",
+    skipLink: "Aller au contenu",
+    navLabel: "Navigation principale",
+    refreshAriaLabel: "Actualiser les données",
+    settingsAriaLabel: "Ouvrir les paramètres",
+    settingsCloseAriaLabel: "Fermer les paramètres",
+    privacyCloseAriaLabel: "Fermer la politique de confidentialité",
+    overviewHeaderTitle: "Aperçu",
+    overviewHeaderSubtitle: "Protection du patrimoine, métaux précieux et contexte macro en un coup d’œil.",
+    overviewCtaTitle: "Demander une consultation",
+    overviewCtaSubtitle: "Obtenir une évaluation personnalisée",
+    comparisonHeaderTitle: "Comparaison",
+    comparisonHeaderSubtitle: "Classes d’actifs en comparaison historique et en prévision.",
+    metalsHeaderTitle: "Métaux",
+    metalsHeaderSubtitle: "Focus prix, résilience et projection à long terme jusqu’en 2050.",
+    metalsCtaTitle: "Discuter de la stratégie",
+    metalsCtaSubtitle: "Optimiser la part de métaux",
+    crisisHeaderTitle: "Crises",
+    crisisHeaderSubtitle: "Signaux d’alerte géopolitiques et financiers en temps réel.",
+    crisisDetailHeaderTitle: "Détails de crise",
+    crisisDetailHeaderSubtitle: "Contexte et chronologie de l’événement sélectionné.",
+    crisisDetailBack: "Retour",
+    consultationHeaderTitle: "Conseil",
+    consultationHeaderSubtitle: "Demander une évaluation personnalisée de la protection patrimoniale.",
+    consultationFormTitle: "Contact",
+    consultationNameLabel: "Nom*",
+    consultationEmailLabel: "E-mail*",
+    consultationPhoneLabel: "Téléphone*",
+    consultationMessageLabel: "Message*",
+    consultationSubmitLabel: "Envoyer la demande",
+    consultationFormHint: "En envoyant, vous acceptez le traitement de vos informations conformément à la politique de confidentialité.",
+    settingsTitle: "Paramètres",
+    settingsSectionGeneral: "Général",
+    settingsCurrencyLabel: "Devise",
+    settingsCurrencyHint: "Taux de change de la BCE, mise à jour toutes les 12 heures.",
+    settingsLanguageLabel: "Langue de l’application",
+    settingsLanguageHint: "Modifie la langue de l’interface.",
+    settingsSectionWatchlist: "Filtres de crise",
+    settingsWatchlistGeopolitical: "Watchlist géopolitique",
+    settingsWatchlistFinancial: "Watchlist financière",
+    settingsSectionThresholds: "Seuils",
+    settingsThresholdLabel: "Seuils",
+    settingsThresholdStandard: "Standard",
+    settingsThresholdSensitive: "Sensible",
+    settingsThresholdConservative: "Conservateur",
+    settingsThresholdHint: "Définit quand un événement est marqué comme à haut risque.",
+    settingsSectionNotifications: "Notifications",
+    settingsNotificationsStatusLabel: "Statut",
+    settingsNotificationsHint: "Les notifications sont traitées localement.",
+    settingsSectionPrivacy: "Confidentialité",
+    settingsPrivacyButton: "Politique de confidentialité",
+    settingsPrivacyHint: "Pas de suivi, pas de SDK cachés. Traitement local uniquement.",
+    settingsNewsApiTitle: "NewsAPI (optionnel)",
+    settingsNewsApiLabel: "Clé API",
+    settingsNewsApiPlaceholder: "X-Api-Key",
+    settingsNewsApiHint: "Enregistrée localement uniquement et jamais téléchargée.",
+    privacyTitle: "Politique de confidentialité",
+    noscriptMessage: "Veuillez activer JavaScript pour utiliser l’application web CRISIS 2050.",
+    languageLabels: {
+      de: "Allemand",
+      en: "Anglais",
+      fr: "Français",
+      es: "Espagnol"
+    },
+    watchlistCountries: {
+      UKR: "Ukraine",
+      ISR: "Israël",
+      TWN: "Taïwan",
+      ZAF: "Afrique du Sud",
+      DEU: "Allemagne",
+      USA: "États-Unis",
+      GBR: "Royaume-Uni",
+      JPN: "Japon",
+      CHN: "Chine"
+    },
+    assetGroups: {
+      equities: "Marchés actions",
+      real_estate: "Prix immobiliers",
+      metals: "Métaux"
+    },
+    assetLabels: {
+      EQUITY_DE: "Actions Allemagne",
+      EQUITY_USA: "Actions États-Unis",
+      EQUITY_LON: "Actions Londres",
+      REAL_ESTATE_DE: "Immobilier Allemagne",
+      REAL_ESTATE_ES: "Immobilier Espagne",
+      REAL_ESTATE_FR: "Immobilier France",
+      REAL_ESTATE_LON: "Immobilier Londres",
+      GOLD: "Or",
+      SILVER: "Argent"
+    },
+    macroKinds: {
+      INFLATION: {
+        title: "Inflation",
+        description: "Inflation annuelle des prix à la consommation (Banque mondiale)",
+        unit: "%"
+      },
+      GROWTH: {
+        title: "Croissance",
+        description: "Croissance réelle du PIB",
+        unit: "%"
+      },
+      DEFENSE: {
+        title: "Défense",
+        description: "Dépenses militaires en pourcentage du PIB",
+        unit: "% du PIB"
+      }
+    },
+    bennerPhases: {
+      panic: {
+        title: "Année de panique",
+        subtitle: "Pression de vente extrême - Phase A",
+        guidance:
+          "Historiquement, ces années ont été suivies de fortes baisses de marché. Sécurisez la liquidité et limitez le risque."
+      },
+      good: {
+        title: "Bonnes périodes",
+        subtitle: "Prix élevés - Phase B (ventes privilégiées)",
+        guidance: "Valorisations au-dessus de la moyenne. Sécurisez les gains et réduisez l’exposition."
+      },
+      hard: {
+        title: "Périodes difficiles",
+        subtitle: "Prix bas - Phase C (accumulation)",
+        guidance: "Les prix semblent favorables. Accumuler des positions et plans d’épargne est pertinent."
+      }
+    },
+    heroTitle: "Protection du patrimoine",
+    heroSubtitle: "Prévision actuelle",
+    heroLabel: "Prévision",
+    heroHint: "Prudence recommandée - prioriser la protection.",
+    metalsFocusTitle: "Métaux en focus",
+    metalsFocusSubtitle: "Or & argent dans le contexte de marché actuel",
+    macroTitle: "Panorama macro",
+    macroSubtitle: "Inflation, change & croissance par région",
+    whyMetalsTitle: "Pourquoi métaux et structure",
+    whyMetalsBullets: [
+      "Valeur physique indépendante des devises",
+      "Protection contre l’inflation et la perte de pouvoir d’achat",
+      "Stabilité en guerres et crises économiques",
+      "Protection patrimoniale structurée via une allocation planifiée",
+      "Stockage sécurisé en entrepôt sous douane hors système bancaire"
+    ],
+    comparisonSectionTitle: "Comparaison des classes d’actifs",
+    comparisonSectionSubtitle: "Historique & prévision 2025–2050",
+    comparisonModeHistory: "Historique",
+    comparisonModeForecast: "Prévision",
+    comparisonChartTitle: "Évolution de la valeur",
+    comparisonChartSubtitle: "Touchez le graphique pour voir les détails.",
+    comparisonPerformanceTitle: "Aperçu de la performance",
+    comparisonPerformanceSubtitle: "Historique et prévision",
+    comparisonPerformanceFormat: "Historique %s / Prévision %s",
+    comparisonNoData: "Aucune donnée de marché disponible.",
+    comparisonLoading: "Chargement des données de marché…",
+    comparisonMacroTitle: "Comparaison macro",
+    comparisonMacroSubtitle: "Tendances régionales côte à côte",
+    comparisonMacroLoading: "Chargement des données macro.",
+    comparisonMacroNoData: "Aucune donnée macro disponible.",
+    comparisonScenarioTitle: "Laboratoire de scénarios",
+    comparisonScenarioSubtitle: "Ajuster inflation, croissance et défense",
+    scenarioInflation: "Inflation (%)",
+    scenarioGrowth: "Croissance (%)",
+    scenarioDefense: "Défense (% du PIB)",
+    scenarioEquities: "Actions",
+    scenarioRealEstate: "Immobilier",
+    scenarioMetals: "Métaux",
+    portfolioTitle: "Résilience du portefeuille",
+    portfolioSubtitle: "Mix d’actions, immobilier et métaux",
+    metalsSelectorTitle: "Sélectionner un métal",
+    metalInsight24h: "24h",
+    metalInsightChange: "Variation",
+    metalsUpdatedLabel: "Mise à jour : %s",
+    metalsProjectionTitle: "Projection sur 3 ans",
+    metalsProjectionSubtitle: "Perspectives %s",
+    metalsTrendTitle: "Historique & prévision jusqu’en 2050",
+    metalsTrendSubtitle: "Évolution de l’indice %s",
+    metalsTrendHistoryLabel: "%s historique",
+    metalsTrendForecastLabel: "%s prévision",
+    metalsTrendLoading: "Chargement des données de marché…",
+    metalsResilienceTitle: "Résilience en crise",
+    metalsResilienceSubtitle: "%s dans différents scénarios",
+    metalsScenarioInflation: "Inflation",
+    metalsScenarioInflationDetail: "%s réagit historiquement positivement à la hausse des prix à la consommation.",
+    metalsScenarioWars: "Conflits",
+    metalsScenarioWarsDetail: "Les tensions géopolitiques augmentent la demande d’actifs refuges.",
+    metalsScenarioRecession: "Récessions",
+    metalsScenarioRecessionDetail: "En récession, %s sert de réserve de liquidité.",
+    metalsBadgeProtection: "Protection",
+    metalsBadgeShield: "Couverture",
+    metalsBadgeDiversification: "Diversification",
+    crisisOverviewTitle: "Situation de crise",
+    crisisOverviewSubtitle: "Signaux actuels issus de sources externes",
+    crisisOverviewEmpty: "Aucun signal actuel.",
+    crisisFeedTitle: "Flux de crise",
+    crisisFeedSubtitle: "Actualités de NewsAPI et de la Banque mondiale",
+    crisisFeedEmpty: "Aucun titre de crise pour le moment.",
+    crisisCategoryFinancial: "Finances",
+    crisisCategoryGeopolitical: "Géopolitique",
+    crisisBadgeInfo: "Info",
+    crisisBadgeModerate: "Modéré",
+    crisisBadgeHigh: "Élevé",
+    crisisDetailTitle: "Détails de crise",
+    crisisDetailMissing: "Événement introuvable.",
+    crisisDetailTimeline: "Chronologie",
+    crisisDetailOpenSource: "Ouvrir la source",
+    crisisDetailTimeLabel: "Moment : %s",
+    crisisDetailSourceLabel: "Source : %s",
+    crisisEventTitleGovernance: "Instabilité politique en %s",
+    crisisEventTitleRecession: "Récession en %s",
+    crisisGovernanceSummary: "Indice de gouvernance %s",
+    crisisRecessionSummary: "Croissance réelle du PIB %s%",
+    regionGlobal: "Monde",
+    regionEurope: "Europe",
+    sampleNewsTitle: "Le stress bancaire en Europe s’intensifie",
+    sampleNewsSummary: "Les tensions financières augmentent dans plusieurs pays de l’UE.",
+    consultationExpectationsTitle: "Ce qui vous attend",
+    consultationExpectations: [
+      "Première consultation gratuite avec des experts en métaux précieux",
+      "Structuration patrimoniale individuelle",
+      "Informations sur le stockage en entrepôt sous douane",
+      "Aspects fiscaux et protection juridique"
+    ],
+    consultationMoreInfoTitle: "Plus d’informations",
+    consultationInfo1Title: "Stockage en entrepôt sous douane",
+    consultationInfo1Text:
+      "Séparation physique du système bancaire, assurance et surveillance 24/7 pour une sécurité et une flexibilité maximales.",
+    consultationInfo2Title: "La valeur - la structure gagne",
+    consultationInfo2Text:
+      "Une allocation claire en métaux précieux crée de la stabilité en période d’inflation, de réformes monétaires et de crises.",
+    consultationPrivacyNote:
+      "En envoyant, vous acceptez que nous répondions à votre demande conformément à la politique de confidentialité. Nous ne stockons aucune donnée sur cet appareil.",
+    consultationSuccessTitle: "Merci",
+    consultationSuccessMessage: "Votre demande a été envoyée. Nous revenons vers vous rapidement.",
+    consultationFailureTitle: "Échec de l’envoi",
+    consultationFailureMessage: "Échec de l’envoi de la demande.",
+    consultationErrorName: "Veuillez indiquer votre nom.",
+    consultationErrorEmail: "Veuillez saisir une adresse e-mail valide.",
+    consultationErrorPhone: "Veuillez indiquer votre numéro de téléphone.",
+    consultationErrorMessage: "Votre message doit comporter au moins 10 caractères.",
+    notificationsActive: "Actives",
+    notificationsDenied: "Désactivées",
+    notificationsUnknown: "Inconnu",
+    notificationsActiveDesc: "Vous recevrez des alertes en cas de changement de prévision ou de crises majeures.",
+    notificationsDeniedDesc: "Les notifications sont désactivées. Activez-les dans les paramètres du navigateur.",
+    notificationsUnknownDesc: "Aucune autorisation demandée pour le moment.",
+    notificationsActionEnable: "Activer les notifications",
+    notificationsActionOpenSettings: "Ouvrir les paramètres du navigateur",
+    notificationsCrisisTitle: "Alerte de crise : %s",
+    notificationsCrisisBody: "Région : %s. Catégorie : %s.",
+    notificationsUnsupportedStatus: "Indisponible",
+    notificationsUnsupportedDescription: "Ce navigateur ne prend pas en charge les notifications.",
+    notificationsUnsupportedToast: "Les notifications ne sont pas disponibles dans ce navigateur.",
+    notificationsEnabledToast: "Notifications activées.",
+    notificationsSettingsToast: "Veuillez activer les notifications dans les paramètres du navigateur.",
+    privacyIntro:
+      "Nous traitons vos données exclusivement sur votre appareil ou lors de l’envoi de votre demande. Il n’y a pas de trackers cachés ni de profils cloud.",
+    privacySections: [
+      {
+        title: "Responsable",
+        body: "VermögensKompass (Vibecode GmbH) traite uniquement les données que vous partagez activement."
+      },
+      {
+        title: "Résumé de la collecte",
+        body: [
+          "Les données de marché et de crise proviennent d’APIs publiques (World Bank, USGS, NOAA, GoldPrice.org) et sont évaluées localement.",
+          "Nous ne stockons aucune donnée personnelle sur nos serveurs."
+        ]
+      },
+      {
+        title: "Contact",
+        body:
+          "Lorsque vous appuyez sur \"Demander une consultation\", nous envoyons votre message à notre équipe. Le transfert est sécurisé; nous ne conservons aucune copie."
+      },
+      {
+        title: "Notifications",
+        body:
+          "Les notifications de crise sont traitées exclusivement sur votre appareil. Vous pouvez révoquer l’autorisation à tout moment dans les paramètres du navigateur."
+      },
+      {
+        title: "Analytics & tracking",
+        body: "Pas de suivi, pas de SDK tiers. L’application fonctionne entièrement hors ligne avec les dernières données synchronisées."
+      },
+      {
+        title: "Vos droits",
+        body:
+          "Vous pouvez demander l’accès, la correction ou la suppression de votre contact en écrivant à datenschutz@vermoegenskompass.de."
+      }
+    ],
+    crisisSummaryHeadlineNone: "Aucun événement à haut risque détecté",
+    crisisSummaryHeadlineCountOne: "%s événement à haut risque actif",
+    crisisSummaryHeadlineCountOther: "%s événements à haut risque actifs",
+    crisisSummaryHighlightRegion: "%sx événements en %s",
+    crisisSummaryHighlightCategory: "%sx catégorie %s",
+    crisisSummaryHighlightLatest: "Dernier %s à %s",
+    syncBannerWithTime: "Hors ligne : dernière synchronisation %s.",
+    syncBannerWithoutTime: "Hors ligne : dernière synchronisation.",
+    syncPartialOffline: "Partiellement hors ligne (%s)",
+    syncFailed: "Synchronisation échouée",
+    offlineToastPrefix: "Hors ligne : %s",
+    syncFailureMetals: "Métaux",
+    syncFailureMacro: "Macro",
+    syncFailureCrisis: "Crises",
+    notAvailableShort: "n/d",
+    macroDeltaNoTrend: "Aucune tendance",
+    macroDeltaVsPrevious: "%s%s%s vs. année précédente",
+    chartAriaLabel: "Graphique de données"
+  };
+
+  STRINGS.es = {
+    appName: "CRISIS 2050",
+    skipLink: "Saltar al contenido",
+    navLabel: "Navegación principal",
+    refreshAriaLabel: "Actualizar datos",
+    settingsAriaLabel: "Abrir ajustes",
+    settingsCloseAriaLabel: "Cerrar ajustes",
+    privacyCloseAriaLabel: "Cerrar la política de privacidad",
+    overviewHeaderTitle: "Resumen",
+    overviewHeaderSubtitle: "Protección patrimonial, metales preciosos y panorama macro de un vistazo.",
+    overviewCtaTitle: "Solicitar asesoría",
+    overviewCtaSubtitle: "Obtener una evaluación personal",
+    comparisonHeaderTitle: "Comparación",
+    comparisonHeaderSubtitle: "Clases de activos en comparación histórica y pronóstico.",
+    metalsHeaderTitle: "Metales",
+    metalsHeaderSubtitle: "Enfoque de precios, resiliencia y proyección a largo plazo hasta 2050.",
+    metalsCtaTitle: "Hablar de estrategia",
+    metalsCtaSubtitle: "Optimizar la cuota de metales",
+    crisisHeaderTitle: "Crisis",
+    crisisHeaderSubtitle: "Señales de alerta geopolíticas y financieras en tiempo real.",
+    crisisDetailHeaderTitle: "Detalles de crisis",
+    crisisDetailHeaderSubtitle: "Contexto y línea de tiempo del evento seleccionado.",
+    crisisDetailBack: "Volver",
+    consultationHeaderTitle: "Asesoría",
+    consultationHeaderSubtitle: "Solicite una evaluación personalizada para proteger su patrimonio.",
+    consultationFormTitle: "Contacto",
+    consultationNameLabel: "Nombre*",
+    consultationEmailLabel: "Correo electrónico*",
+    consultationPhoneLabel: "Teléfono*",
+    consultationMessageLabel: "Mensaje*",
+    consultationSubmitLabel: "Enviar solicitud",
+    consultationFormHint: "Al enviar, acepta el tratamiento de sus datos conforme a la política de privacidad.",
+    settingsTitle: "Ajustes",
+    settingsSectionGeneral: "General",
+    settingsCurrencyLabel: "Moneda",
+    settingsCurrencyHint: "Tipo de cambio del BCE, actualizaciones cada 12 horas.",
+    settingsLanguageLabel: "Idioma de la app",
+    settingsLanguageHint: "Cambia el idioma de la interfaz.",
+    settingsSectionWatchlist: "Filtros de crisis",
+    settingsWatchlistGeopolitical: "Lista geopolítica",
+    settingsWatchlistFinancial: "Lista financiera",
+    settingsSectionThresholds: "Umbrales",
+    settingsThresholdLabel: "Umbrales",
+    settingsThresholdStandard: "Estándar",
+    settingsThresholdSensitive: "Sensible",
+    settingsThresholdConservative: "Conservador",
+    settingsThresholdHint: "Controla cuándo un evento se marca como de alto riesgo.",
+    settingsSectionNotifications: "Notificaciones",
+    settingsNotificationsStatusLabel: "Estado",
+    settingsNotificationsHint: "Las notificaciones se procesan localmente.",
+    settingsSectionPrivacy: "Privacidad",
+    settingsPrivacyButton: "Política de privacidad",
+    settingsPrivacyHint: "Sin seguimiento, sin SDK ocultos. Solo procesamiento local.",
+    settingsNewsApiTitle: "NewsAPI (opcional)",
+    settingsNewsApiLabel: "Clave API",
+    settingsNewsApiPlaceholder: "X-Api-Key",
+    settingsNewsApiHint: "Se guarda solo localmente y nunca se sube.",
+    privacyTitle: "Política de privacidad",
+    noscriptMessage: "Habilite JavaScript para usar la app web CRISIS 2050.",
+    languageLabels: {
+      de: "Alemán",
+      en: "Inglés",
+      fr: "Francés",
+      es: "Español"
+    },
+    watchlistCountries: {
+      UKR: "Ucrania",
+      ISR: "Israel",
+      TWN: "Taiwán",
+      ZAF: "Sudáfrica",
+      DEU: "Alemania",
+      USA: "Estados Unidos",
+      GBR: "Reino Unido",
+      JPN: "Japón",
+      CHN: "China"
+    },
+    assetGroups: {
+      equities: "Mercados de acciones",
+      real_estate: "Precios inmobiliarios",
+      metals: "Metales"
+    },
+    assetLabels: {
+      EQUITY_DE: "Acciones Alemania",
+      EQUITY_USA: "Acciones EE. UU.",
+      EQUITY_LON: "Acciones Londres",
+      REAL_ESTATE_DE: "Inmobiliario Alemania",
+      REAL_ESTATE_ES: "Inmobiliario España",
+      REAL_ESTATE_FR: "Inmobiliario Francia",
+      REAL_ESTATE_LON: "Inmobiliario Londres",
+      GOLD: "Oro",
+      SILVER: "Plata"
+    },
+    macroKinds: {
+      INFLATION: {
+        title: "Inflación",
+        description: "Inflación anual de precios al consumidor (Banco Mundial)",
+        unit: "%"
+      },
+      GROWTH: {
+        title: "Crecimiento",
+        description: "Crecimiento real del PIB",
+        unit: "%"
+      },
+      DEFENSE: {
+        title: "Defensa",
+        description: "Gasto militar como porcentaje del PIB",
+        unit: "% del PIB"
+      }
+    },
+    bennerPhases: {
+      panic: {
+        title: "Año de pánico",
+        subtitle: "Presión de venta extrema - Fase A",
+        guidance:
+          "Históricamente, estos años fueron seguidos por fuertes caídas del mercado. Asegure liquidez y limite el riesgo."
+      },
+      good: {
+        title: "Buenos tiempos",
+        subtitle: "Precios altos - Fase B (preferir ventas)",
+        guidance: "Valoraciones superiores a la media. Asegure ganancias y reduzca la exposición."
+      },
+      hard: {
+        title: "Tiempos difíciles",
+        subtitle: "Precios bajos - Fase C (acumulación)",
+        guidance: "Los precios se consideran atractivos. Se recomiendan posiciones y planes de ahorro."
+      }
+    },
+    heroTitle: "Protección del patrimonio",
+    heroSubtitle: "Pronóstico actual",
+    heroLabel: "Pronóstico",
+    heroHint: "Se recomienda precaución - priorice la protección.",
+    metalsFocusTitle: "Metales en foco",
+    metalsFocusSubtitle: "Oro y plata en el contexto de mercado actual",
+    macroTitle: "Panorama macro",
+    macroSubtitle: "Inflación, tipo de cambio y crecimiento por región",
+    whyMetalsTitle: "Por qué metales y estructura",
+    whyMetalsBullets: [
+      "Valor físico independiente de las monedas",
+      "Protección contra la inflación y la pérdida de poder adquisitivo",
+      "Estabilidad en guerras y crisis económicas",
+      "Protección patrimonial estructurada mediante una asignación planificada",
+      "Almacenamiento seguro en depósito aduanero fuera del sistema bancario"
+    ],
+    comparisonSectionTitle: "Comparación de clases de activos",
+    comparisonSectionSubtitle: "Histórico y pronóstico 2025–2050",
+    comparisonModeHistory: "Histórico",
+    comparisonModeForecast: "Pronóstico",
+    comparisonChartTitle: "Evolución del valor",
+    comparisonChartSubtitle: "Toque el gráfico para ver detalles.",
+    comparisonPerformanceTitle: "Resumen de rendimiento",
+    comparisonPerformanceSubtitle: "Histórico y pronóstico",
+    comparisonPerformanceFormat: "Histórico %s / Pronóstico %s",
+    comparisonNoData: "No hay datos de mercado disponibles.",
+    comparisonLoading: "Cargando datos de mercado…",
+    comparisonMacroTitle: "Comparación macro",
+    comparisonMacroSubtitle: "Tendencias regionales lado a lado",
+    comparisonMacroLoading: "Cargando datos macro.",
+    comparisonMacroNoData: "No hay datos macro disponibles.",
+    comparisonScenarioTitle: "Laboratorio de escenarios",
+    comparisonScenarioSubtitle: "Ajustar inflación, crecimiento y defensa",
+    scenarioInflation: "Inflación (%)",
+    scenarioGrowth: "Crecimiento (%)",
+    scenarioDefense: "Defensa (% del PIB)",
+    scenarioEquities: "Acciones",
+    scenarioRealEstate: "Inmobiliario",
+    scenarioMetals: "Metales",
+    portfolioTitle: "Resiliencia del portafolio",
+    portfolioSubtitle: "Mezcla de acciones, inmobiliario y metales",
+    metalsSelectorTitle: "Seleccionar metal",
+    metalInsight24h: "24h",
+    metalInsightChange: "Variación",
+    metalsUpdatedLabel: "Actualizado: %s",
+    metalsProjectionTitle: "Pronóstico a 3 años",
+    metalsProjectionSubtitle: "Perspectiva de %s",
+    metalsTrendTitle: "Histórico y pronóstico hasta 2050",
+    metalsTrendSubtitle: "Evolución del índice %s",
+    metalsTrendHistoryLabel: "Histórico de %s",
+    metalsTrendForecastLabel: "Pronóstico de %s",
+    metalsTrendLoading: "Cargando datos de mercado…",
+    metalsResilienceTitle: "Resiliencia en crisis",
+    metalsResilienceSubtitle: "%s en distintos escenarios",
+    metalsScenarioInflation: "Inflación",
+    metalsScenarioInflationDetail: "%s reacciona históricamente de forma positiva al aumento de los precios al consumidor.",
+    metalsScenarioWars: "Conflictos",
+    metalsScenarioWarsDetail: "Las tensiones geopolíticas aumentan la demanda de activos refugio.",
+    metalsScenarioRecession: "Recesiones",
+    metalsScenarioRecessionDetail: "En recesiones, %s actúa como reserva de liquidez.",
+    metalsBadgeProtection: "Protección",
+    metalsBadgeShield: "Cobertura",
+    metalsBadgeDiversification: "Diversificación",
+    crisisOverviewTitle: "Situación de crisis",
+    crisisOverviewSubtitle: "Señales actuales de fuentes externas",
+    crisisOverviewEmpty: "No hay señales actuales.",
+    crisisFeedTitle: "Feed de crisis",
+    crisisFeedSubtitle: "Noticias de NewsAPI y del Banco Mundial",
+    crisisFeedEmpty: "No hay titulares de crisis actuales.",
+    crisisCategoryFinancial: "Finanzas",
+    crisisCategoryGeopolitical: "Geopolítica",
+    crisisBadgeInfo: "Info",
+    crisisBadgeModerate: "Moderado",
+    crisisBadgeHigh: "Alto",
+    crisisDetailTitle: "Detalles de crisis",
+    crisisDetailMissing: "Evento no encontrado.",
+    crisisDetailTimeline: "Línea de tiempo",
+    crisisDetailOpenSource: "Abrir fuente",
+    crisisDetailTimeLabel: "Momento: %s",
+    crisisDetailSourceLabel: "Fuente: %s",
+    crisisEventTitleGovernance: "Inestabilidad política en %s",
+    crisisEventTitleRecession: "Recesión en %s",
+    crisisGovernanceSummary: "Índice de gobernanza %s",
+    crisisRecessionSummary: "Crecimiento real del PIB %s%",
+    regionGlobal: "Global",
+    regionEurope: "Europa",
+    sampleNewsTitle: "El estrés bancario en Europa aumenta",
+    sampleNewsSummary: "Las tensiones financieras crecen en varios países de la UE.",
+    consultationExpectationsTitle: "Qué puede esperar",
+    consultationExpectations: [
+      "Primera asesoría gratuita con expertos en metales preciosos",
+      "Estructuración patrimonial individual",
+      "Información sobre almacenamiento en depósito aduanero",
+      "Aspectos fiscales y protección legal"
+    ],
+    consultationMoreInfoTitle: "Más información",
+    consultationInfo1Title: "Almacenamiento en depósito aduanero",
+    consultationInfo1Text:
+      "Separación física del sistema bancario, seguro y vigilancia 24/7 para máxima seguridad y flexibilidad.",
+    consultationInfo2Title: "El valor - la estructura gana",
+    consultationInfo2Text: "Una asignación clara en metales preciosos crea estabilidad en inflación, reformas monetarias y crisis.",
+    consultationPrivacyNote:
+      "Al enviar, acepta que respondamos a su solicitud conforme a la política de privacidad. No almacenamos datos de forma permanente en este dispositivo.",
+    consultationSuccessTitle: "Gracias",
+    consultationSuccessMessage: "Su solicitud fue enviada. Nos pondremos en contacto pronto.",
+    consultationFailureTitle: "Envío fallido",
+    consultationFailureMessage: "Error al enviar la solicitud.",
+    consultationErrorName: "Por favor, indique su nombre.",
+    consultationErrorEmail: "Por favor, introduzca una dirección de correo válida.",
+    consultationErrorPhone: "Por favor, indique su número de teléfono.",
+    consultationErrorMessage: "Su mensaje debe tener al menos 10 caracteres.",
+    notificationsActive: "Activas",
+    notificationsDenied: "Desactivadas",
+    notificationsUnknown: "Desconocido",
+    notificationsActiveDesc: "Recibirá alertas cuando cambien los pronósticos o haya crisis importantes.",
+    notificationsDeniedDesc: "Las notificaciones están desactivadas. Actívelas en los ajustes del navegador.",
+    notificationsUnknownDesc: "Aún no se solicitó permiso.",
+    notificationsActionEnable: "Activar notificaciones",
+    notificationsActionOpenSettings: "Abrir ajustes del navegador",
+    notificationsCrisisTitle: "Alerta de crisis: %s",
+    notificationsCrisisBody: "Región: %s. Categoría: %s.",
+    notificationsUnsupportedStatus: "No disponible",
+    notificationsUnsupportedDescription: "Este navegador no admite notificaciones.",
+    notificationsUnsupportedToast: "Las notificaciones no están disponibles en este navegador.",
+    notificationsEnabledToast: "Notificaciones activadas.",
+    notificationsSettingsToast: "Active las notificaciones en los ajustes del navegador.",
+    privacyIntro:
+      "Procesamos sus datos solo en el dispositivo o al enviar su solicitud. No hay rastreadores ocultos ni perfiles en la nube.",
+    privacySections: [
+      {
+        title: "Responsable",
+        body: "VermögensKompass (Vibecode GmbH) procesa solo los datos que usted comparte activamente."
+      },
+      {
+        title: "Resumen de la recopilación",
+        body: [
+          "Los datos de mercado y crisis provienen de APIs públicas (World Bank, USGS, NOAA, GoldPrice.org) y se evalúan localmente.",
+          "No almacenamos datos personales en nuestros servidores."
+        ]
+      },
+      {
+        title: "Contacto",
+        body:
+          "Cuando toca \"Solicitar asesoría\", enviamos su mensaje a nuestro equipo. El envío es seguro; no almacenamos una copia."
+      },
+      {
+        title: "Notificaciones",
+        body:
+          "Las notificaciones de crisis se procesan solo en su dispositivo. Puede revocar el permiso en cualquier momento en los ajustes del navegador."
+      },
+      {
+        title: "Analítica y seguimiento",
+        body: "Sin seguimiento, sin SDKs de terceros. La app funciona totalmente sin conexión con los últimos datos sincronizados."
+      },
+      {
+        title: "Sus derechos",
+        body:
+          "Puede solicitar acceso, corrección o eliminación de su contacto escribiéndonos a datenschutz@vermoegenskompass.de."
+      }
+    ],
+    crisisSummaryHeadlineNone: "No se detectan eventos de alto riesgo",
+    crisisSummaryHeadlineCountOne: "%s evento de alto riesgo activo",
+    crisisSummaryHeadlineCountOther: "%s eventos de alto riesgo activos",
+    crisisSummaryHighlightRegion: "%sx eventos en %s",
+    crisisSummaryHighlightCategory: "%sx categoría %s",
+    crisisSummaryHighlightLatest: "Último %s a las %s",
+    syncBannerWithTime: "Sin conexión: última sincronización %s.",
+    syncBannerWithoutTime: "Sin conexión: última sincronización.",
+    syncPartialOffline: "Parcialmente sin conexión (%s)",
+    syncFailed: "Sincronización fallida",
+    offlineToastPrefix: "Sin conexión: %s",
+    syncFailureMetals: "Metales",
+    syncFailureMacro: "Macro",
+    syncFailureCrisis: "Crisis",
+    notAvailableShort: "n/d",
+    macroDeltaNoTrend: "Sin tendencia",
+    macroDeltaVsPrevious: "%s%s%s vs. año anterior",
+    chartAriaLabel: "Gráfico de datos"
+  };
+
+  let TEXT = STRINGS[DEFAULT_LANGUAGE];
 
   const state = {
     settings: null,
@@ -275,7 +1353,7 @@
     fxRate: null,
     stooqCache: readJson(STORAGE_KEYS.stooqCache, {}),
     newsCache: readJson(STORAGE_KEYS.newsCache, null),
-    bennerEntries: makeBennerEntries(),
+    bennerEntries: [],
     comparisonSeries: [],
     comparisonLoading: false,
     macroComparison: { kindId: "INFLATION", data: {}, loading: false },
@@ -294,8 +1372,44 @@
 
   document.addEventListener("DOMContentLoaded", init);
 
+  function normalizeLanguage(value) {
+    if (SUPPORTED_LANGUAGES.includes(value)) return value;
+    return DEFAULT_LANGUAGE;
+  }
+
+  function configureLanguage(value) {
+    const normalized = normalizeLanguage(value);
+    state.settings.language = normalized;
+    TEXT = STRINGS[normalized] || STRINGS[DEFAULT_LANGUAGE];
+    state.bennerEntries = makeBennerEntries();
+  }
+
+  function applyStaticText() {
+    document.documentElement.lang = state.settings.language;
+    document.title = TEXT.appName;
+
+    $$("[data-i18n]").forEach((element) => {
+      const key = element.getAttribute("data-i18n");
+      if (!key || !(key in TEXT)) return;
+      element.textContent = TEXT[key];
+    });
+
+    $$("[data-i18n-aria]").forEach((element) => {
+      const key = element.getAttribute("data-i18n-aria");
+      if (!key || !(key in TEXT)) return;
+      element.setAttribute("aria-label", TEXT[key]);
+    });
+
+    $$("[data-i18n-placeholder]").forEach((element) => {
+      const key = element.getAttribute("data-i18n-placeholder");
+      if (!key || !(key in TEXT)) return;
+      element.setAttribute("placeholder", TEXT[key]);
+    });
+  }
+
   function init() {
     state.settings = loadSettings();
+    configureLanguage(state.settings.language);
     state.snapshot = loadSnapshot() || makeSampleSnapshot();
     state.lastSyncAt = readJson(STORAGE_KEYS.snapshotAt, null);
     state.fxRate = readJson(STORAGE_KEYS.fxRate, null);
@@ -305,6 +1419,7 @@
 
     cacheElements();
     bindEvents();
+    applyStaticText();
     applySettingsToUI();
     setRoute(state.route, { skipHash: true });
     renderAll();
@@ -400,6 +1515,9 @@
       if (!(target instanceof HTMLElement)) return;
       if (target.dataset.currency) {
         updateCurrency(target.dataset.currency);
+      }
+      if (target.dataset.language) {
+        updateLanguage(target.dataset.language);
       }
       if (target.dataset.threshold) {
         updateThresholdProfile(target.dataset.threshold);
@@ -611,6 +1729,69 @@
     renderSettings();
   }
 
+  function watchlistLabel(code) {
+    return TEXT.watchlistCountries?.[code] || code;
+  }
+
+  function assetGroupLabel(groupId) {
+    return TEXT.assetGroups?.[groupId] || groupId;
+  }
+
+  function assetLabel(assetId) {
+    return TEXT.assetLabels?.[assetId] || assetId;
+  }
+
+  function macroKindMeta(kindId) {
+    const localized = TEXT.macroKinds?.[kindId];
+    const fallback = MACRO_KIND_MAP.get(kindId);
+    return {
+      title: localized?.title || kindId,
+      description: localized?.description || "",
+      unit: localized?.unit || fallback?.unit || ""
+    };
+  }
+
+  function bennerPhaseText(phaseId) {
+    return TEXT.bennerPhases?.[phaseId] || { title: phaseId, subtitle: phaseId, guidance: "" };
+  }
+
+  function metalLabel(id, fallback) {
+    if (id === "XAU") return TEXT.assetLabels?.GOLD || fallback || "Gold";
+    if (id === "XAG") return TEXT.assetLabels?.SILVER || fallback || "Silver";
+    return fallback || id;
+  }
+
+  function localizedCrisisTitle(event) {
+    if (event.source === "WORLD_BANK_GOVERNANCE") {
+      return formatText(TEXT.crisisEventTitleGovernance, localizedRegion(event.region));
+    }
+    if (event.source === "WORLD_BANK_FINANCE") {
+      return formatText(TEXT.crisisEventTitleRecession, localizedRegion(event.region));
+    }
+    return event.title;
+  }
+
+  function localizedRegion(region) {
+    if (!region) return region;
+    const normalized = region.trim().toUpperCase();
+    if (TEXT.watchlistCountries?.[normalized]) return TEXT.watchlistCountries[normalized];
+    const map = {
+      GERMANY: "DEU",
+      UNITED_STATES: "USA",
+      UNITEDKINGDOM: "GBR",
+      UK: "GBR",
+      JAPAN: "JPN",
+      CHINA: "CHN",
+      SOUTHAFRICA: "ZAF",
+      UKRAINE: "UKR",
+      ISRAEL: "ISR",
+      TAIWAN: "TWN"
+    };
+    const key = normalized.replace(/[\s.-]/g, "");
+    const mapped = map[key];
+    return mapped ? TEXT.watchlistCountries?.[mapped] || region : region;
+  }
+
   function renderOverview() {
     if (!state.snapshot) return;
     renderOverviewHero();
@@ -692,8 +1873,8 @@
 
     const modeRow = makeEl("div", "segmented");
     [
-      { id: "history", label: "Historisch" },
-      { id: "forecast", label: "Prognose" }
+      { id: "history", label: TEXT.comparisonModeHistory },
+      { id: "forecast", label: TEXT.comparisonModeForecast }
     ].forEach((mode) => {
       const button = makeEl("button", "segmented-button", mode.label);
       button.type = "button";
@@ -703,11 +1884,11 @@
     });
     container.append(modeRow);
 
-    ASSET_GROUPS.forEach((group) => {
-      container.append(makeEl("p", "label", group.label));
+    ASSET_GROUPS.forEach((groupId) => {
+      container.append(makeEl("p", "label", assetGroupLabel(groupId)));
       const row = makeEl("div", "chip-row");
-      COMPARISON_ASSETS.filter((asset) => asset.group === group.id).forEach((asset) => {
-        const button = makeEl("button", "chip", asset.label);
+      COMPARISON_ASSETS.filter((asset) => asset.group === groupId).forEach((asset) => {
+        const button = makeEl("button", "chip", assetLabel(asset.id));
         button.type = "button";
         button.dataset.assetId = asset.id;
         if (state.selectedAssets.has(asset.id)) button.classList.add("is-active");
@@ -735,7 +1916,7 @@
         const points = mode === "history" ? item.history : item.projection;
         return points.length
           ? {
-              label: COMPARISON_ASSET_MAP.get(item.assetId)?.label || item.assetId,
+              label: assetLabel(item.assetId),
               points: points.map((point) => ({ x: point.year, y: point.value })),
               color: COMPARISON_ASSET_MAP.get(item.assetId)?.color || COLORS.accent,
               dashed: mode === "forecast"
@@ -779,8 +1960,12 @@
 
     selected.forEach((item) => {
       const row = makeEl("div", "row");
-      row.append(makeEl("span", "label", COMPARISON_ASSET_MAP.get(item.assetId)?.label || item.assetId));
-      const value = `Historisch ${calcCagr(item.history)} / Prognose ${calcProjectionDelta(item.history, item.projection)}`;
+      row.append(makeEl("span", "label", assetLabel(item.assetId)));
+      const value = formatText(
+        TEXT.comparisonPerformanceFormat,
+        calcCagr(item.history),
+        calcProjectionDelta(item.history, item.projection)
+      );
       row.append(makeEl("span", "hint", value));
       container.append(row);
     });
@@ -794,7 +1979,8 @@
 
     const segmented = makeEl("div", "segmented");
     MACRO_KINDS.forEach((kind) => {
-      const button = makeEl("button", "segmented-button", kind.title);
+      const meta = macroKindMeta(kind.id);
+      const button = makeEl("button", "segmented-button", meta.title);
       button.type = "button";
       button.dataset.macroKind = kind.id;
       if (state.macroComparison.kindId === kind.id) button.classList.add("is-active");
@@ -877,7 +2063,7 @@
 
     const row = makeEl("div", "chip-row");
     state.snapshot.metals.forEach((metal) => {
-      const button = makeEl("button", "chip", metal.name);
+      const button = makeEl("button", "chip", metalLabel(metal.id, metal.name));
       button.type = "button";
       button.dataset.metalId = metal.id;
       if (state.selectedMetalId === metal.id) button.classList.add("is-active");
@@ -899,8 +2085,9 @@
     const changeText = formatSignedPercent(metal.dailyChangePercentage);
     const changeClass = metal.dailyChangePercentage >= 0 ? "badge high" : "badge low";
 
+    const metalName = metalLabel(metal.id, metal.name);
     const headerRow = makeEl("div", "row");
-    headerRow.append(makeEl("h3", null, metal.name));
+    headerRow.append(makeEl("h3", null, metalName));
     headerRow.append(makeEl("span", "pill", metal.symbol));
 
     const valueRow = makeEl("div", "row");
@@ -908,7 +2095,7 @@
     valueRow.append(makeEl("span", changeClass, changeText));
 
     const updated = metal.lastUpdated ? new Date(metal.lastUpdated) : null;
-    const updatedText = updated ? `Stand: ${formatDateTime(updated)}` : "";
+    const updatedText = updated ? formatText(TEXT.metalsUpdatedLabel, formatDateTime(updated)) : "";
 
     container.append(headerRow, valueRow, makeEl("p", "hint", updatedText));
     const insights = makeEl("div", "metric-grid");
@@ -916,8 +2103,8 @@
       ? metal.change
       : metal.dailyChangePercentage * metal.price * 0.01;
     const changeValue = convertCurrency(changeValueRaw, metal.currency, state.settings.currency, state.fxRate);
-    insights.append(renderMetric("24h", formatPercent(metal.dailyChangePercentage)));
-    insights.append(renderMetric("Veraenderung", formatNumber(changeValue, 2)));
+    insights.append(renderMetric(TEXT.metalInsight24h, formatPercent(metal.dailyChangePercentage)));
+    insights.append(renderMetric(TEXT.metalInsightChange, formatNumber(changeValue, 2)));
     container.append(insights);
   }
 
@@ -929,7 +2116,8 @@
     const metal = selectedMetal();
     if (!metal) return;
 
-    container.append(cardHeader(TEXT.metalsProjectionTitle, `${metal.name} Ausblick`));
+    const metalName = metalLabel(metal.id, metal.name);
+    container.append(cardHeader(TEXT.metalsProjectionTitle, formatText(TEXT.metalsProjectionSubtitle, metalName)));
 
     const currentYear = new Date().getFullYear();
     const projections = state.bennerEntries.filter((entry) => entry.year >= currentYear).slice(0, 3);
@@ -955,7 +2143,8 @@
     const metal = selectedMetal();
     if (!metal) return;
 
-    container.append(cardHeader(TEXT.metalsTrendTitle, TEXT.metalsTrendSubtitle.replace("%s", metal.name)));
+    const metalName = metalLabel(metal.id, metal.name);
+    container.append(cardHeader(TEXT.metalsTrendTitle, formatText(TEXT.metalsTrendSubtitle, metalName)));
 
     const history = metalHistoryFor(metal);
     if (!history && state.metalHistoryLoading) {
@@ -975,14 +2164,14 @@
     const series = [];
     if (historyPoints.length) {
       series.push({
-        label: `${metal.name} Historie`,
+        label: formatText(TEXT.metalsTrendHistoryLabel, metalName),
         points: historyPoints.map((point) => ({ x: point.year, y: point.value })),
         color: COLORS.strong
       });
     }
     if (projectionPoints.length) {
       series.push({
-        label: `${metal.name} Prognose`,
+        label: formatText(TEXT.metalsTrendForecastLabel, metalName),
         points: projectionPoints.map((point) => ({ x: point.year, y: point.value })),
         color: COLORS.strong,
         dashed: true
@@ -1000,7 +2189,8 @@
     const metal = selectedMetal();
     if (!metal) return;
 
-    container.append(cardHeader(TEXT.metalsResilienceTitle, TEXT.metalsResilienceSubtitle.replace("%s", metal.name)));
+    const metalName = metalLabel(metal.id, metal.name);
+    container.append(cardHeader(TEXT.metalsResilienceTitle, formatText(TEXT.metalsResilienceSubtitle, metalName)));
 
     const inflation = indicatorValue("INFLATION");
     const growth = indicatorValue("GROWTH");
@@ -1009,7 +2199,7 @@
     const scenarios = [
       {
         title: TEXT.metalsScenarioInflation,
-        description: `${metal.name} reagiert historisch positiv auf steigende Verbraucherpreise.`,
+        description: formatText(TEXT.metalsScenarioInflationDetail, metalName),
         score: normalizedScore(inflation + metal.dailyChangePercentage),
         badge: TEXT.metalsBadgeProtection,
         tone: "accent"
@@ -1023,7 +2213,7 @@
       },
       {
         title: TEXT.metalsScenarioRecession,
-        description: TEXT.metalsScenarioRecessionDetail.replace("%s", metal.name),
+        description: formatText(TEXT.metalsScenarioRecessionDetail, metalName),
         score: normalizedScore(-growth + 8),
         badge: TEXT.metalsBadgeDiversification,
         tone: "strong"
@@ -1103,17 +2293,17 @@
     }
 
     const detail = makeEl("div", "stack");
-    detail.append(makeEl("h2", null, event.title));
-    detail.append(makeEl("p", "hint", event.region));
+    detail.append(makeEl("h2", null, localizedCrisisTitle(event)));
+    detail.append(makeEl("p", "hint", localizedRegion(event.region)));
     detail.append(makeEl("span", "pill", categoryLabel(event.category)));
 
     if (event.summary) {
       detail.append(makeEl("p", "hint", event.summary));
     }
 
-    detail.append(makeEl("p", "hint", `Zeitpunkt: ${formatDateTime(new Date(event.occurredAt))}`));
+    detail.append(makeEl("p", "hint", formatText(TEXT.crisisDetailTimeLabel, formatDateTime(new Date(event.occurredAt)))));
     if (event.sourceName) {
-      detail.append(makeEl("p", "hint", `Quelle: ${event.sourceName}`));
+      detail.append(makeEl("p", "hint", formatText(TEXT.crisisDetailSourceLabel, event.sourceName)));
     }
     if (event.detailURL) {
       const link = makeEl("a", "ghost-button", TEXT.crisisDetailOpenSource);
@@ -1170,6 +2360,14 @@
       button.classList.toggle("is-active", button.dataset.currency === state.settings.currency);
     });
 
+    $$("[data-language]").forEach((button) => {
+      const language = button.dataset.language;
+      if (!language) return;
+      const label = TEXT.languageLabels?.[language];
+      if (label) button.textContent = label;
+      button.classList.toggle("is-active", language === state.settings.language);
+    });
+
     $$("[data-threshold]").forEach((button) => {
       button.classList.toggle("is-active", button.dataset.threshold === state.settings.thresholdProfile);
     });
@@ -1224,7 +2422,7 @@
       const key = value.getAttribute("data-slider-value");
       if (!key) return;
       const amount = scenario[key];
-      value.textContent = Number.isFinite(amount) ? amount.toFixed(1) : "0";
+      value.textContent = Number.isFinite(amount) ? formatNumber(amount, 1) : TEXT.notAvailableShort;
     });
 
     const impacts = scenarioImpacts(scenario);
@@ -1263,6 +2461,17 @@
     }
   }
 
+  function updateLanguage(language) {
+    const normalized = normalizeLanguage(language);
+    if (state.settings.language === normalized) return;
+    state.settings.language = normalized;
+    saveSettings();
+    configureLanguage(normalized);
+    applyStaticText();
+    renderAll();
+    updateSyncBanner();
+  }
+
   function updateThresholdProfile(profileId) {
     if (!THRESHOLD_PROFILES[profileId]) return;
     state.settings.thresholdProfile = profileId;
@@ -1299,28 +2508,28 @@
 
   async function handleNotificationAction() {
     if (!("Notification" in window)) {
-      showToast("Benachrichtigungen sind in diesem Browser nicht verfuegbar.");
+      showToast(TEXT.notificationsUnsupportedToast);
       return;
     }
 
     if (Notification.permission === "default") {
       const result = await Notification.requestPermission();
       if (result === "granted") {
-        showToast("Benachrichtigungen aktiviert.");
+        showToast(TEXT.notificationsEnabledToast);
       }
       updateNotificationUI();
       return;
     }
 
-    showToast("Bitte aktivieren Sie Benachrichtigungen in den Browser-Einstellungen.");
+    showToast(TEXT.notificationsSettingsToast);
   }
 
   function updateNotificationUI() {
     if (!elements.notificationStatus || !elements.notificationAction || !elements.notificationDescription) return;
 
     if (!("Notification" in window)) {
-      elements.notificationStatus.textContent = "Nicht verfuegbar";
-      elements.notificationDescription.textContent = "Dieser Browser unterstuetzt keine Benachrichtigungen.";
+      elements.notificationStatus.textContent = TEXT.notificationsUnsupportedStatus;
+      elements.notificationDescription.textContent = TEXT.notificationsUnsupportedDescription;
       elements.notificationAction.disabled = true;
       return;
     }
@@ -1360,27 +2569,28 @@
       const response = await fetch("https://api.midainvest.com/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, message, locale: navigator.language || "de-DE" })
+        body: JSON.stringify({ name, email, phone, message, locale: currentLocale() })
       });
 
       if (!response.ok) {
-        throw new Error("Fehler beim Senden");
+        throw new Error(TEXT.consultationFailureMessage);
       }
 
       elements.consultationForm.reset();
       showToast(`${TEXT.consultationSuccessTitle}: ${TEXT.consultationSuccessMessage}`);
     } catch (error) {
-      showToast(`${TEXT.consultationFailureTitle}: ${(error && error.message) || "Fehler beim Senden"}`);
+      const message = (error && error.message) || TEXT.consultationFailureMessage;
+      showToast(`${TEXT.consultationFailureTitle}: ${message}`);
     }
   }
 
   function validateConsultation(name, email, phone, message) {
-    if (name.length < 2) return "Bitte geben Sie Ihren Namen an.";
+    if (name.length < 2) return TEXT.consultationErrorName;
     if (!/^([A-Z0-9._%+-]+)@([A-Z0-9.-]+)\.([A-Z]{2,})$/i.test(email)) {
-      return "Bitte geben Sie eine gueltige E-Mail-Adresse an.";
+      return TEXT.consultationErrorEmail;
     }
-    if (phone.length < 5) return "Bitte geben Sie Ihre Telefonnummer an.";
-    if (message.length < 10) return "Ihre Nachricht sollte mindestens 10 Zeichen enthalten.";
+    if (phone.length < 5) return TEXT.consultationErrorPhone;
+    if (message.length < 10) return TEXT.consultationErrorMessage;
     return "";
   }
 
@@ -1411,14 +2621,14 @@
       };
 
       const failures = [];
-      if (metalsResult.status === "rejected") failures.push("Metalle");
-      if (macroResult.status === "rejected") failures.push("Makro");
-      if (crisisResult.status === "rejected") failures.push("Krisen");
+      if (metalsResult.status === "rejected") failures.push(TEXT.syncFailureMetals);
+      if (macroResult.status === "rejected") failures.push(TEXT.syncFailureMacro);
+      if (crisisResult.status === "rejected") failures.push(TEXT.syncFailureCrisis);
 
       if (failures.length === 0) {
         state.lastSyncAt = Date.now();
       }
-      state.lastError = failures.length ? `Teilweise offline (${failures.join(", ")})` : null;
+      state.lastError = failures.length ? formatText(TEXT.syncPartialOffline, failures.join(", ")) : null;
       saveSnapshot(state.snapshot);
 
       if (!state.scenarioTouched) {
@@ -1427,13 +2637,13 @@
 
       maybeNotify(crises);
     } catch (error) {
-      state.lastError = error instanceof Error ? error.message : "Sync fehlgeschlagen";
+      state.lastError = error instanceof Error && error.message ? error.message : TEXT.syncFailed;
     } finally {
       elements.refreshButton?.classList.remove("is-loading");
       updateSyncBanner();
       renderAll();
       if (!options.silent && state.lastError) {
-        showToast(`Offline: ${state.lastError}`);
+        showToast(formatText(TEXT.offlineToastPrefix, state.lastError));
       }
     }
   }
@@ -1496,9 +2706,8 @@
 
     if (state.lastError || !navigator.onLine) {
       const time = state.lastSyncAt ? formatDateTime(new Date(state.lastSyncAt)) : "";
-      banner.textContent = state.lastError
-        ? `Offline: letzte Synchronisierung ${time}. ${state.lastError}`
-        : `Offline: letzte Synchronisierung ${time}.`;
+      const base = time ? formatText(TEXT.syncBannerWithTime, time) : TEXT.syncBannerWithoutTime;
+      banner.textContent = state.lastError ? `${base} ${state.lastError}` : base;
       banner.classList.add("is-visible");
       return;
     }
@@ -1565,15 +2774,16 @@
     const sorted = points.slice().sort((a, b) => a.year - b.year);
     const latest = sorted[sorted.length - 1];
     const previous = sorted[sorted.length - 2];
+    const meta = macroKindMeta(kind.id);
 
     return {
       indicator: {
         id: kind.id,
-        title: kind.title,
+        title: meta.title,
         latestValue: latest?.value ?? null,
         previousValue: previous?.value ?? null,
-        unit: kind.unit,
-        description: kind.explanation
+        unit: meta.unit || kind.unit,
+        description: meta.description
       },
       series: { kindId: kind.id, points: sorted }
     };
@@ -1671,7 +2881,7 @@
       id,
       title: article.title,
       summary: article.description || article.content || "",
-      region: article.source?.name || "Weltweit",
+      region: article.source?.name || TEXT.regionGlobal,
       occurredAt: Number.isFinite(publishedAt) ? publishedAt : Date.now(),
       publishedAt: Number.isFinite(publishedAt) ? publishedAt : Date.now(),
       detailURL: article.url || "",
@@ -1683,18 +2893,19 @@
   }
 
   async function fetchGovernanceAlerts(profile) {
-    const active = WATCHLISTS.geopolitical.filter((item) => state.settings.watchlistGeo.includes(item.code));
+    const active = WATCHLISTS.geopolitical.filter((code) => state.settings.watchlistGeo.includes(code));
     if (!active.length) return [];
 
     const results = await Promise.allSettled(
-      active.map(async (country) => {
-        const value = await fetchWorldBankLatest(country.code, "PV.PSR.PIND");
+      active.map(async (code) => {
+        const value = await fetchWorldBankLatest(code, "PV.PSR.PIND");
         if (!value || value.value >= profile.governanceCutoff) return null;
+        const region = watchlistLabel(code);
         return {
-          id: `geo-${country.code}`,
-          title: `Politische Instabilitaet ${country.name}`,
-          summary: `Governance-Index ${formatNumber(value.value, 2)}`,
-          region: country.name,
+          id: `geo-${code}`,
+          title: formatText(TEXT.crisisEventTitleGovernance, region),
+          summary: formatText(TEXT.crisisGovernanceSummary, formatNumber(value.value, 2)),
+          region,
           occurredAt: yearInstant(value.year),
           publishedAt: yearInstant(value.year),
           detailURL: "https://data.worldbank.org/indicator/PV.PSR.PIND",
@@ -1712,18 +2923,19 @@
   }
 
   async function fetchRecessionAlerts(profile) {
-    const active = WATCHLISTS.financial.filter((item) => state.settings.watchlistFinancial.includes(item.code));
+    const active = WATCHLISTS.financial.filter((code) => state.settings.watchlistFinancial.includes(code));
     if (!active.length) return [];
 
     const results = await Promise.allSettled(
-      active.map(async (country) => {
-        const value = await fetchWorldBankLatest(country.code, "NY.GDP.MKTP.KD.ZG");
+      active.map(async (code) => {
+        const value = await fetchWorldBankLatest(code, "NY.GDP.MKTP.KD.ZG");
         if (!value || value.value >= profile.recessionCutoff) return null;
+        const region = watchlistLabel(code);
         return {
-          id: `finance-${country.code}`,
-          title: `Rezession ${country.name}`,
-          summary: `Reales BIP-Wachstum ${formatNumber(value.value, 1)}%`,
-          region: country.name,
+          id: `finance-${code}`,
+          title: formatText(TEXT.crisisEventTitleRecession, region),
+          summary: formatText(TEXT.crisisRecessionSummary, formatNumber(value.value, 1)),
+          region,
           occurredAt: yearInstant(value.year),
           publishedAt: yearInstant(value.year),
           detailURL: "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG",
@@ -1913,7 +3125,7 @@
       if (panicYear > BENNER_CONFIG.rangeEnd) break;
 
       if (panicYear >= BENNER_CONFIG.rangeStart && panicYear <= BENNER_CONFIG.rangeEnd) {
-        entries.push(makeBennerEntry(panicYear, BENNER_PHASES.panic, 1, 1));
+        entries.push(makeBennerEntry(panicYear, "panic", 1, 1));
       }
 
       const availableYears = Math.max(Math.min(nextPanic, BENNER_CONFIG.rangeEnd + 1) - panicYear - 1, 0);
@@ -1923,14 +3135,14 @@
       for (let offset = 1; offset <= cycleGoodYears; offset += 1) {
         const year = panicYear + offset;
         if (year >= BENNER_CONFIG.rangeStart && year <= BENNER_CONFIG.rangeEnd) {
-          entries.push(makeBennerEntry(year, BENNER_PHASES.good, offset, cycleGoodYears));
+          entries.push(makeBennerEntry(year, "good", offset, cycleGoodYears));
         }
       }
 
       for (let i = 0; i < cycleHardYears; i += 1) {
         const year = panicYear + cycleGoodYears + 1 + i;
         if (year >= BENNER_CONFIG.rangeStart && year <= BENNER_CONFIG.rangeEnd) {
-          entries.push(makeBennerEntry(year, BENNER_PHASES.hard, i + 1, cycleHardYears));
+          entries.push(makeBennerEntry(year, "hard", i + 1, cycleHardYears));
         }
       }
     }
@@ -1938,10 +3150,12 @@
     return entries.sort((a, b) => a.year - b.year);
   }
 
-  function makeBennerEntry(year, phase, order, length) {
+  function makeBennerEntry(year, phaseId, order, length) {
+    const base = BENNER_PHASES[phaseId] || { id: phaseId, metalTrendMultiplier: 0 };
+    const localized = bennerPhaseText(phaseId);
     return {
       year,
-      phase,
+      phase: { ...base, ...localized },
       orderInPhase: order,
       phaseLength: length,
       progress: length > 0 ? order / length : 1
@@ -1964,22 +3178,35 @@
 
     const severe = events.filter((event) => event.severityScore >= highRiskThreshold);
     const headline = severe.length
-      ? `${severe.length} Hochrisiko-Ereignis(se) aktiv`
-      : "Keine Hochrisiko-Ereignisse erkennbar";
+      ? formatText(
+          severe.length === 1 ? TEXT.crisisSummaryHeadlineCountOne : TEXT.crisisSummaryHeadlineCountOther,
+          String(severe.length)
+        )
+      : TEXT.crisisSummaryHeadlineNone;
 
     const dominantRegion = dominantGroup(events, (event) => event.region);
     const dominantCategory = dominantGroup(events, (event) => event.category);
 
     const highlights = [];
     if (dominantRegion) {
-      highlights.push(`${dominantRegion.count}x Ereignisse in ${dominantRegion.key}`);
+      highlights.push(
+        formatText(TEXT.crisisSummaryHighlightRegion, String(dominantRegion.count), localizedRegion(dominantRegion.key))
+      );
     }
     if (dominantCategory) {
-      highlights.push(`${dominantCategory.count}x Kategorie ${categoryLabel(dominantCategory.key)}`);
+      highlights.push(
+        formatText(TEXT.crisisSummaryHighlightCategory, String(dominantCategory.count), categoryLabel(dominantCategory.key))
+      );
     }
 
     const latest = events.reduce((acc, event) => (event.occurredAt > acc.occurredAt ? event : acc), events[0]);
-    highlights.push(`Zuletzt ${latest.title} um ${formatDateTime(new Date(latest.occurredAt))}`);
+    highlights.push(
+      formatText(
+        TEXT.crisisSummaryHighlightLatest,
+        localizedCrisisTitle(latest),
+        formatDateTime(new Date(latest.occurredAt))
+      )
+    );
 
     return { headline, highlights };
   }
@@ -2040,7 +3267,7 @@
     card.dataset.crisisId = event.id;
 
     const header = makeEl("div", "row");
-    header.append(makeEl("h3", null, event.title));
+    header.append(makeEl("h3", null, localizedCrisisTitle(event)));
     const badge = makeEl("span", `badge ${severityClass(event.severityScore)}`, severityBadge(event.severityScore));
     header.append(badge);
 
@@ -2050,7 +3277,7 @@
     }
 
     const meta = makeEl("div", "row");
-    meta.append(makeEl("span", "hint", event.region));
+    meta.append(makeEl("span", "hint", localizedRegion(event.region)));
     meta.append(makeEl("span", "hint", formatDateTime(new Date(event.occurredAt))));
     card.append(meta);
 
@@ -2066,7 +3293,7 @@
     const row = makeEl("div", "timeline-item");
     row.append(makeEl("span", "timeline-dot", ""));
     const content = makeEl("div", "stack");
-    content.append(makeEl("span", "label", event.title));
+    content.append(makeEl("span", "label", localizedCrisisTitle(event)));
     content.append(makeEl("span", "hint", formatDateTime(new Date(event.occurredAt))));
     row.append(content);
     return row;
@@ -2076,7 +3303,7 @@
     const wrapper = makeEl("div", "slider-row");
     const header = makeEl("div", "row");
     header.append(makeEl("label", "label", label));
-    const valueLabel = makeEl("span", "hint", value.toFixed(1));
+    const valueLabel = makeEl("span", "hint", formatNumber(value, 1));
     valueLabel.dataset.sliderValue = name;
     header.append(valueLabel);
     const input = document.createElement("input");
@@ -2146,7 +3373,8 @@
   function renderMacroIndicator(indicator, region) {
     const card = makeEl("div", "metric");
     const header = makeEl("div", "row");
-    header.append(makeEl("span", "label", indicator.title));
+    const meta = macroKindMeta(indicator.id);
+    header.append(makeEl("span", "label", meta.title));
     header.append(makeEl("span", "pill", region));
     card.append(header);
 
@@ -2154,14 +3382,15 @@
     const previous = indicator.previousValue;
     const hasLatest = Number.isFinite(latest);
     const hasPrevious = Number.isFinite(previous);
-    const formatted = hasLatest ? `${formatNumber(latest, 1)}${indicator.unit}` : "-";
+    const unit = meta.unit || indicator.unit || "";
+    const formatted = hasLatest ? `${formatNumber(latest, 1)}${unit}` : TEXT.notAvailableShort;
     card.append(makeEl("div", "value", formatted));
 
-    let delta = "Kein Verlauf";
+    let delta = TEXT.macroDeltaNoTrend;
     if (hasLatest && hasPrevious) {
       const diff = latest - previous;
       const sign = diff >= 0 ? "+" : "";
-      delta = `${sign}${formatNumber(diff, 1)}${indicator.unit} vs. Vorjahr`;
+      delta = formatText(TEXT.macroDeltaVsPrevious, sign, formatNumber(diff, 1), unit);
     }
     card.append(makeEl("p", "hint", delta));
 
@@ -2172,7 +3401,7 @@
     const card = makeEl("div", "stack");
 
     const header = makeEl("div", "row");
-    header.append(makeEl("h3", null, metal.name));
+    header.append(makeEl("h3", null, metalLabel(metal.id, metal.name)));
     header.append(makeEl("span", "pill", metal.symbol));
     card.append(header);
 
@@ -2180,7 +3409,7 @@
     card.append(makeEl("div", "value", formatCurrency(converted, state.settings.currency)));
 
     const change = formatSignedPercent(metal.dailyChangePercentage);
-    card.append(makeEl("p", "hint", `24h: ${change}`));
+    card.append(makeEl("p", "hint", `${TEXT.metalInsight24h}: ${change}`));
 
     return wrapInCard(card);
   }
@@ -2279,7 +3508,7 @@
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
     svg.setAttribute("class", "chart");
     svg.setAttribute("role", "img");
-    svg.setAttribute("aria-label", "Datenchart");
+    svg.setAttribute("aria-label", TEXT.chartAriaLabel);
 
     if (options.showTodayMarker) {
       const currentYear = new Date().getFullYear();
@@ -2322,10 +3551,19 @@
       .join(" ");
   }
 
+  function formatText(template, ...values) {
+    if (!template) return "";
+    return values.reduce((acc, value) => acc.replace("%s", value), template);
+  }
+
+  function currentLocale() {
+    return LOCALE_BY_LANGUAGE[state.settings.language] || LOCALE_BY_LANGUAGE[DEFAULT_LANGUAGE];
+  }
+
   function formatCurrency(value, currency) {
     if (!Number.isFinite(value)) return "-";
     try {
-      return new Intl.NumberFormat("de-DE", {
+      return new Intl.NumberFormat(currentLocale(), {
         style: "currency",
         currency: currency || "EUR",
         maximumFractionDigits: 2
@@ -2337,7 +3575,7 @@
 
   function formatNumber(value, decimals) {
     if (!Number.isFinite(value)) return "-";
-    return new Intl.NumberFormat("de-DE", {
+    return new Intl.NumberFormat(currentLocale(), {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals
     }).format(value);
@@ -2354,7 +3592,7 @@
   }
 
   function formatDateTime(date) {
-    return new Intl.DateTimeFormat("de-DE", {
+    return new Intl.DateTimeFormat(currentLocale(), {
       dateStyle: "medium",
       timeStyle: "short"
     }).format(date);
@@ -2372,7 +3610,7 @@
   function calcCagr(history) {
     const first = history[0];
     const last = history[history.length - 1];
-    if (!first || !last || first.year === last.year) return "n/v";
+    if (!first || !last || first.year === last.year) return TEXT.notAvailableShort;
     const years = last.year - first.year;
     const base = Math.max(last.value, 0.1) / Math.max(first.value, 0.1);
     const growth = Math.pow(base, 1 / years) - 1;
@@ -2382,7 +3620,7 @@
   function calcProjectionDelta(history, projection) {
     const lastHistory = history[history.length - 1];
     const lastProjection = projection[projection.length - 1];
-    if (!lastHistory || !lastProjection) return "n/v";
+    if (!lastHistory || !lastProjection) return TEXT.notAvailableShort;
     const delta = (lastProjection.value - lastHistory.value) / Math.max(lastHistory.value, 0.1);
     return `${formatNumber(delta * 100, 1)}%`;
   }
@@ -2398,6 +3636,7 @@
     }
     return {
       currency: saved.currency === "USD" ? "USD" : "EUR",
+      language: normalizeLanguage(saved.language),
       thresholdProfile: THRESHOLD_PROFILES[saved.thresholdProfile] ? saved.thresholdProfile : "standard",
       watchlistGeo: convertToSet(saved.watchlistGeo).filter(Boolean),
       watchlistFinancial: convertToSet(saved.watchlistFinancial).filter(Boolean),
@@ -2408,6 +3647,7 @@
   function saveSettings() {
     writeJson(STORAGE_KEYS.settings, {
       currency: state.settings.currency,
+      language: state.settings.language,
       thresholdProfile: state.settings.thresholdProfile,
       watchlistGeo: state.settings.watchlistGeo,
       watchlistFinancial: state.settings.watchlistFinancial,
@@ -2467,9 +3707,14 @@
     const lastNotified = readJson(STORAGE_KEYS.lastNotified, "");
     if (lastNotified === topEvent.id) return;
 
-    new Notification(`Krisenlage: ${topEvent.title}`, {
-      body: `Region: ${topEvent.region}. Kategorie: ${categoryLabel(topEvent.category)}.`
-    });
+    const title = formatText(TEXT.notificationsCrisisTitle, localizedCrisisTitle(topEvent));
+    const body = formatText(
+      TEXT.notificationsCrisisBody,
+      localizedRegion(topEvent.region),
+      categoryLabel(topEvent.category)
+    );
+
+    new Notification(title, { body });
 
     writeJson(STORAGE_KEYS.lastNotified, topEvent.id);
   }
@@ -2488,13 +3733,13 @@
     if (!container) return;
     clearElement(container);
 
-    list.forEach((country) => {
+    list.forEach((code) => {
       const wrapper = makeEl("label", "toggle");
-      const label = makeEl("span", null, country.name);
+      const label = makeEl("span", null, watchlistLabel(code));
       const input = document.createElement("input");
       input.type = "checkbox";
-      input.checked = activeList.includes(country.code);
-      input.value = country.code;
+      input.checked = activeList.includes(code);
+      input.value = code;
       input.dataset.watchlist = type;
       wrapper.append(label, input);
       container.append(wrapper);
@@ -2503,54 +3748,62 @@
 
   function makeSampleSnapshot() {
     const now = Date.now();
+    const goldName = metalLabel("XAU", "Gold");
+    const silverName = metalLabel("XAG", "Silver");
+    const inflationMeta = macroKindMeta("INFLATION");
+    const growthMeta = macroKindMeta("GROWTH");
+    const defenseMeta = macroKindMeta("DEFENSE");
+    const regionEurope = TEXT.regionEurope;
+    const regionUkraine = watchlistLabel("UKR");
+    const regionGermany = watchlistLabel("DEU");
     return {
       metals: [
         {
           id: "XAU",
-          name: "Gold",
-        symbol: "XAU",
-        price: 2328.2,
-        dailyChangePercentage: 0.8,
-        change: 18.6,
-        currency: "USD",
-        lastUpdated: now - 60 * 60 * 1000
-      },
+          name: goldName,
+          symbol: "XAU",
+          price: 2328.2,
+          dailyChangePercentage: 0.8,
+          change: 18.6,
+          currency: "USD",
+          lastUpdated: now - 60 * 60 * 1000
+        },
         {
           id: "XAG",
-          name: "Silber",
-        symbol: "XAG",
-        price: 28.9,
-        dailyChangePercentage: -0.3,
-        change: -0.12,
-        currency: "USD",
-        lastUpdated: now - 60 * 60 * 1000
-      }
+          name: silverName,
+          symbol: "XAG",
+          price: 28.9,
+          dailyChangePercentage: -0.3,
+          change: -0.12,
+          currency: "USD",
+          lastUpdated: now - 60 * 60 * 1000
+        }
       ],
       macroOverview: {
         indicators: [
           {
             id: "INFLATION",
-            title: "Inflation",
+            title: inflationMeta.title,
             latestValue: 3.1,
             previousValue: 4.0,
-            unit: "%",
-            description: "Jaehrliche Verbraucherpreisinflation laut Weltbank"
+            unit: inflationMeta.unit,
+            description: inflationMeta.description
           },
           {
             id: "GROWTH",
-            title: "Wachstum",
+            title: growthMeta.title,
             latestValue: 0.6,
             previousValue: 1.2,
-            unit: "%",
-            description: "Reales BIP-Wachstum"
+            unit: growthMeta.unit,
+            description: growthMeta.description
           },
           {
             id: "DEFENSE",
-            title: "Verteidigung",
+            title: defenseMeta.title,
             latestValue: 1.8,
             previousValue: 1.6,
-            unit: "% BIP",
-            description: "Militaerausgaben im Verhaeltnis zum BIP"
+            unit: defenseMeta.unit,
+            description: defenseMeta.description
           }
         ]
       },
@@ -2595,9 +3848,9 @@
       crises: [
         {
           id: "news-sample-1",
-          title: "Bankenstress in Europa nimmt zu",
-          summary: "Finanzielle Spannung in mehreren EU-Laendern.",
-          region: "Europa",
+          title: TEXT.sampleNewsTitle,
+          summary: TEXT.sampleNewsSummary,
+          region: regionEurope,
           occurredAt: now - 3 * 60 * 60 * 1000,
           publishedAt: now - 3 * 60 * 60 * 1000,
           detailURL: "",
@@ -2608,9 +3861,9 @@
         },
         {
           id: "geo-sample-ukr",
-          title: "Politische Instabilitaet Ukraine",
-          summary: "Governance-Index -1.1",
-          region: "Ukraine",
+          title: formatText(TEXT.crisisEventTitleGovernance, regionUkraine),
+          summary: formatText(TEXT.crisisGovernanceSummary, formatNumber(-1.1, 2)),
+          region: regionUkraine,
           occurredAt: yearInstant(2024),
           publishedAt: yearInstant(2024),
           detailURL: "https://data.worldbank.org/indicator/PV.PSR.PIND",
@@ -2621,9 +3874,9 @@
         },
         {
           id: "finance-sample-de",
-          title: "Rezession Germany",
-          summary: "Reales BIP-Wachstum -0.4%",
-          region: "Germany",
+          title: formatText(TEXT.crisisEventTitleRecession, regionGermany),
+          summary: formatText(TEXT.crisisRecessionSummary, formatNumber(-0.4, 1)),
+          region: regionGermany,
           occurredAt: yearInstant(2024),
           publishedAt: yearInstant(2024),
           detailURL: "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG",

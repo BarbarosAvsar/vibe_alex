@@ -116,7 +116,7 @@ class GeopoliticalAlertCrisisFeed(
         val yearDate = yearInstant(latest.year)
         return CrisisEvent(
             id = "geo-$code",
-            title = "Politische Instabilitaet $name",
+            title = "Politische Instabilität in $name",
             summary = "Governance-Index ${"%.2f".format(value)}",
             region = name,
             occurredAt = yearDate,
@@ -171,7 +171,7 @@ class FinancialStressCrisisFeed(
         val yearDate = yearInstant(latest.year)
         return CrisisEvent(
             id = "finance-$code",
-            title = "Rezession $name",
+            title = "Rezession in $name",
             summary = "Reales BIP-Wachstum ${"%.1f".format(value)}%",
             region = name,
             occurredAt = yearDate,

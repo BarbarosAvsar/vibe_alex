@@ -4,12 +4,13 @@ import SwiftUI
 struct MetalCard: View {
     let asset: MetalAsset
     @Environment(CurrencySettings.self) private var currencySettings
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(asset.name)
+                    Text(asset.localizedName(language: languageSettings.selectedLanguage))
                         .font(.headline)
                     Text(asset.symbol)
                         .font(.caption)
@@ -41,7 +42,7 @@ struct MetalCard: View {
                     HStack {
                         Image(systemName: insight.icon)
                             .font(.caption)
-                        Text(insight.label)
+                        Text(insight.localizedLabel(language: languageSettings.selectedLanguage))
                             .font(.caption)
                         Spacer()
                         Text(insight.value)
@@ -55,7 +56,7 @@ struct MetalCard: View {
                 }
             }
 
-            Text("Quelle: \(asset.dataSource.rawValue)")
+            Text(Localization.format("metal_source_label", language: languageSettings.selectedLanguage, asset.dataSource.rawValue))
                 .font(.caption2)
                 .foregroundStyle(Theme.textMuted)
         }
@@ -63,8 +64,12 @@ struct MetalCard: View {
     }
 
     private var changeText: String {
-        let value = asset.dailyChangePercentage.formatted(.number.precision(.fractionLength(2)))
-        return "\(value)% 24h"
+        let formatter = FloatingPointFormatStyle<Double>.number
+            .precision(.fractionLength(2))
+            .locale(languageSettings.selectedLanguage.locale)
+        let value = asset.dailyChangePercentage.formatted(formatter)
+        let label = Localization.text("metal_insight_24h", language: languageSettings.selectedLanguage)
+        return "\(value)% \(label)"
     }
 
     private var displayPrice: Double {

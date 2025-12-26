@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BennerCycleView: View {
     let entries: [BennerCycleEntry]
+    @Environment(LanguageSettings.self) private var languageSettings
 
     private var currentYear: Int {
         Calendar.current.component(.year, from: Date())
@@ -34,14 +35,16 @@ struct BennerCycleView: View {
 private struct BennerCycleFocusCard: View {
     let entry: BennerCycleEntry
     let currentYear: Int
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
+        let language = languageSettings.selectedLanguage
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(entry.summary)
+                    Text(Localization.format("benner_entry_summary", language: language, entry.year, entry.phase.localizedSubtitle(language: language)))
                         .font(.headline)
-                    Text(entry.phase.guidance)
+                    Text(entry.phase.localizedGuidance(language: language))
                         .font(.subheadline)
                         .foregroundStyle(Theme.textSecondary)
                 }
@@ -50,7 +53,7 @@ private struct BennerCycleFocusCard: View {
                     Text("\(entry.year)")
                         .font(.system(size: 34, weight: .heavy, design: .rounded))
                         .foregroundStyle(entry.phase.tint)
-                    Text(entry.phase == .panic ? "Panik" : (entry.year >= currentYear ? "Ausblick" : "Historie"))
+                    Text(statusLabel(language: language))
                         .font(.caption)
                         .foregroundStyle(Theme.textMuted)
                 }
@@ -68,14 +71,16 @@ private struct BennerCycleFocusCard: View {
     }
 
     private var progressLabel: String {
-        switch entry.phase {
-        case .panic:
-            return "Panikjahre markieren Wendepunkte im langfristigen Prognosemodell."
-        case .goodTimes:
-            return "Good Times Jahr \(entry.orderInPhase) von \(entry.phaseLength) nach dem letzten Panikjahr."
-        case .hardTimes:
-            return "Hard Times Jahr \(entry.orderInPhase) von \(entry.phaseLength) – traditionell Kaufgelegenheiten."
+        entry.phase.localizedGuidance(language: languageSettings.selectedLanguage)
+    }
+
+    private func statusLabel(language: AppLanguage) -> String {
+        if entry.phase == .panic {
+            return entry.phase.localizedTitle(language: language)
         }
+        return entry.year >= currentYear
+            ? Localization.text("comparison_mode_forecast", language: language)
+            : Localization.text("comparison_mode_history", language: language)
     }
 }
 
@@ -98,18 +103,20 @@ private struct BennerCycleTimeline: View {
 private struct BennerCyclePill: View {
     let entry: BennerCycleEntry
     let isCurrent: Bool
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
+        let language = languageSettings.selectedLanguage
         VStack(alignment: .leading, spacing: 8) {
             Text("\(entry.year)")
                 .font(.headline)
-            Text(entry.phase.title)
+            Text(entry.phase.localizedTitle(language: language))
                 .font(.subheadline.weight(.semibold))
-            Text(entry.phase.subtitle)
+            Text(entry.phase.localizedSubtitle(language: language))
                 .font(.caption2)
                 .foregroundStyle(Theme.textSecondary)
             Spacer(minLength: 0)
-            Text(progressText)
+            Text(progressText(language: language))
                 .font(.caption2)
                 .foregroundStyle(Theme.textMuted)
         }
@@ -125,15 +132,8 @@ private struct BennerCyclePill: View {
         )
     }
 
-    private var progressText: String {
-        switch entry.phase {
-        case .panic:
-            return "Phase A"
-        case .goodTimes:
-            return "Phase B • \(entry.orderInPhase)/\(entry.phaseLength)"
-        case .hardTimes:
-            return "Phase C • \(entry.orderInPhase)/\(entry.phaseLength)"
-        }
+    private func progressText(language: AppLanguage) -> String {
+        entry.phase.localizedSubtitle(language: language)
     }
 }
 

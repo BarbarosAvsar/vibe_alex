@@ -25,13 +25,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import de.vibecode.crisis.R
-import de.vibecode.crisis.core.domain.CrisisSummaryGenerator
 import de.vibecode.crisis.core.model.CrisisThresholdProfile
 import de.vibecode.crisis.core.model.AsyncState
 import de.vibecode.crisis.core.model.CrisisEvent
+import de.vibecode.crisis.core.model.CrisisCategory
 import de.vibecode.crisis.core.model.DashboardSnapshot
 import de.vibecode.crisis.ui.components.AdaptiveColumns
 import de.vibecode.crisis.ui.components.AsyncStateView
@@ -39,6 +40,7 @@ import de.vibecode.crisis.ui.components.DashboardSection
 import de.vibecode.crisis.ui.components.GlassCard
 import de.vibecode.crisis.ui.components.LogoMark
 import de.vibecode.crisis.ui.components.SettingsButton
+import de.vibecode.crisis.ui.crisisEventTitle
 import de.vibecode.crisis.ui.theme.CrisisColors
 import java.text.DateFormat
 import java.util.Date
@@ -54,7 +56,6 @@ fun CrisisScreen(
     onEventSelected: (CrisisEvent) -> Unit
 ) {
     val pullState = rememberPullRefreshState(refreshing = dashboardState is AsyncState.Loading, onRefresh = onRefresh)
-    val summaryGenerator = remember { CrisisSummaryGenerator() }
 
     Column {
         TopAppBar(
@@ -74,7 +75,7 @@ fun CrisisScreen(
                     AdaptiveColumns(
                         windowSizeClass = windowSizeClass,
                         first = {
-                            CrisisOverviewSection(summaryGenerator, snapshot.crises, thresholdProfile)
+                            CrisisOverviewSection(snapshot.crises, thresholdProfile)
                         },
                         second = {
                             CrisisFeedSection(snapshot.crises, onEventSelected)
@@ -93,7 +94,6 @@ fun CrisisScreen(
 
 @Composable
 private fun CrisisOverviewSection(
-    summaryGenerator: CrisisSummaryGenerator,
     events: List<CrisisEvent>,
     thresholdProfile: CrisisThresholdProfile
 ) {
@@ -101,7 +101,7 @@ private fun CrisisOverviewSection(
         title = stringResource(R.string.crisis_overview_title),
         subtitle = stringResource(R.string.crisis_overview_subtitle)
     ) {
-        val summary = summaryGenerator.summarize(events, thresholdProfile.highRiskSeverityScore)
+        val summary = buildCrisisSummary(events, thresholdProfile.highRiskSeverityScore)
         if (summary == null) {
             Text(text = stringResource(R.string.crisis_overview_empty), color = CrisisColors.textSecondary)
         } else {
@@ -149,7 +149,7 @@ private fun CrisisEventCard(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Row {
-                Text(text = event.title, style = MaterialTheme.typography.titleMedium)
+                Text(text = crisisEventTitle(event), style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = severityBadge(event.severityScore),
@@ -211,16 +211,82 @@ private fun severityTint(score: Double): androidx.compose.ui.graphics.Color {
 
 @Composable
 private fun categoryLabel(event: CrisisEvent): String {
-    return when (event.category) {
-        de.vibecode.crisis.core.model.CrisisCategory.FINANCIAL -> stringResource(R.string.crisis_category_financial)
-        de.vibecode.crisis.core.model.CrisisCategory.GEOPOLITICAL -> stringResource(R.string.crisis_category_geopolitical)
+    return categoryLabel(event.category)
+}
+
+@Composable
+private fun categoryLabel(category: CrisisCategory): String {
+    return when (category) {
+        CrisisCategory.FINANCIAL -> stringResource(R.string.crisis_category_financial)
+        CrisisCategory.GEOPOLITICAL -> stringResource(R.string.crisis_category_geopolitical)
     }
 }
 
 @Composable
 private fun categoryTint(event: CrisisEvent): androidx.compose.ui.graphics.Color {
     return when (event.category) {
-        de.vibecode.crisis.core.model.CrisisCategory.FINANCIAL -> CrisisColors.accent
-        de.vibecode.crisis.core.model.CrisisCategory.GEOPOLITICAL -> CrisisColors.accentInfo
+        CrisisCategory.FINANCIAL -> CrisisColors.accent
+        CrisisCategory.GEOPOLITICAL -> CrisisColors.accentInfo
     }
+}
+
+private data class CrisisSummaryUi(
+    val headline: String,
+    val highlights: List<String>
+)
+
+@Composable
+private fun buildCrisisSummary(events: List<CrisisEvent>, highRiskThreshold: Double): CrisisSummaryUi? {
+    if (events.isEmpty()) return null
+
+    val severeEvents = events.filter { it.severityScore >= highRiskThreshold }
+    val headline = if (severeEvents.isEmpty()) {
+        stringResource(R.string.crisis_summary_headline_none)
+    } else {
+        pluralStringResource(R.plurals.crisis_summary_headline_count, severeEvents.size, severeEvents.size)
+    }
+
+    val dominantRegion = events.groupBy { it.region }
+        .map { it.key to it.value.size }
+        .sortedByDescending { it.second }
+        .firstOrNull()
+
+    val dominantCategory = events.groupBy { it.category }
+        .map { it.key to it.value.size }
+        .sortedByDescending { it.second }
+        .firstOrNull()
+
+    val highlights = mutableListOf<String>()
+    if (dominantRegion != null) {
+        highlights.add(
+            pluralStringResource(
+                R.plurals.crisis_summary_highlight_region,
+                dominantRegion.second,
+                dominantRegion.second,
+                dominantRegion.first
+            )
+        )
+    }
+    if (dominantCategory != null) {
+        highlights.add(
+            stringResource(
+                R.string.crisis_summary_highlight_category,
+                dominantCategory.second,
+                categoryLabel(dominantCategory.first)
+            )
+        )
+    }
+    events.maxByOrNull { it.occurredAt }?.let { latest ->
+        val formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
+        val formatted = formatter.format(Date(latest.occurredAt.toEpochMilliseconds()))
+        highlights.add(
+            stringResource(
+                R.string.crisis_summary_highlight_latest,
+                crisisEventTitle(latest),
+                formatted
+            )
+        )
+    }
+
+    return CrisisSummaryUi(headline, highlights)
 }

@@ -10,6 +10,7 @@ final class ConsultationFormViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private let service: ConsultationServiceProtocol
+    private let languageKey = "preferredLanguage"
 
     init(service: ConsultationServiceProtocol = ConsultationService()) {
         self.service = service
@@ -21,23 +22,23 @@ final class ConsultationFormViewModel: ObservableObject {
 
     var validationError: String? {
         if name.trimmed.count < 2 {
-            return "Bitte geben Sie Ihren Namen an."
+            return Localization.text("consultation_error_name", language: selectedLanguage)
         }
         if email.trimmed.isEmpty || emailPredicate.evaluate(with: email.trimmed) == false {
-            return "Bitte geben Sie eine gültige E-Mail-Adresse an."
+            return Localization.text("consultation_error_email", language: selectedLanguage)
         }
         if phone.trimmed.count < 5 {
-            return "Bitte geben Sie Ihre Telefonnummer an."
+            return Localization.text("consultation_error_phone", language: selectedLanguage)
         }
         if message.trimmed.count < 10 {
-            return "Ihre Nachricht sollte mindestens 10 Zeichen enthalten."
+            return Localization.text("consultation_error_message", language: selectedLanguage)
         }
         return nil
     }
 
     func submit() async -> ConsultationSubmissionResult {
         guard validationError == nil else {
-            return .failure(validationError ?? "Ungültige Eingabe")
+            return .failure(validationError ?? Localization.text("consultation_error_invalid", language: selectedLanguage))
         }
         isSubmitting = true
         errorMessage = nil
@@ -46,7 +47,7 @@ final class ConsultationFormViewModel: ObservableObject {
             email: email.trimmed,
             phone: phone.trimmed,
             message: message.trimmed,
-            locale: Locale.current.identifier
+            locale: selectedLanguage.locale.identifier
         )
 
         do {
@@ -55,8 +56,10 @@ final class ConsultationFormViewModel: ObservableObject {
             return .success
         } catch {
             isSubmitting = false
-            errorMessage = error.localizedDescription
-            return .failure(error.localizedDescription)
+            let fallback = Localization.text("consultation_submit_failure_message", language: selectedLanguage)
+            let message = error.localizedDescription.isEmpty ? fallback : error.localizedDescription
+            errorMessage = message
+            return .failure(message)
         }
     }
 
@@ -64,6 +67,14 @@ final class ConsultationFormViewModel: ObservableObject {
         format: "SELF MATCHES[c] %@",
         "^([A-Z0-9._%+-]+)@([A-Z0-9.-]+)\\.([A-Z]{2,})$"
     )
+
+    private var selectedLanguage: AppLanguage {
+        if let stored = UserDefaults.standard.string(forKey: languageKey),
+           let language = AppLanguage(rawValue: stored) {
+            return language
+        }
+        return .german
+    }
 }
 
 enum ConsultationSubmissionResult {

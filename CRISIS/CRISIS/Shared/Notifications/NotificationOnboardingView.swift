@@ -6,6 +6,7 @@ struct NotificationOnboardingView: View {
     let skipAction: () -> Void
     let completion: (Bool) -> Void
 
+    @Environment(LanguageSettings.self) private var languageSettings
     @Environment(\.dismiss) private var dismiss
     @State private var wantsAlerts = true
     @State private var isProcessing = false
@@ -15,13 +16,14 @@ struct NotificationOnboardingView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
+                let language = languageSettings.selectedLanguage
                 VStack(spacing: 12) {
                     Image(systemName: "bell.badge.fill")
                         .font(.largeTitle)
                         .symbolRenderingMode(.multicolor)
-                    Text("Krisen-Alerts")
+                    Text(Localization.text("notification_onboarding_headline", language: language))
                         .font(.title2.bold())
-                    Text("Erhalten Sie einmalige Push-Mitteilungen bei Hochrisiko-Ereignissen. Wir senden nur Meldungen, wenn die Lage ernst ist.")
+                    Text(Localization.text("notification_onboarding_body", language: language))
                         .multilineTextAlignment(.center)
                         .font(.callout)
                         .foregroundStyle(Theme.textSecondary)
@@ -36,9 +38,9 @@ struct NotificationOnboardingView: View {
 
                     Toggle(isOn: $wantsAlerts) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Echtzeit-Benachrichtigungen")
+                            Text(Localization.text("notification_onboarding_toggle_title", language: language))
                                 .font(.headline)
-                            Text("Nur Krisen ab Schweregrad 5 und keine Werbung.")
+                            Text(Localization.text("notification_onboarding_toggle_hint", language: language))
                                 .font(.footnote)
                                 .foregroundStyle(Theme.textMuted)
                         }
@@ -55,9 +57,9 @@ struct NotificationOnboardingView: View {
                     )
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Label("Sie können Ihre Entscheidung jederzeit in den iOS-Einstellungen ändern.", systemImage: "lock.shield")
+                        Label(Localization.text("notification_onboarding_device_hint", language: language), systemImage: "lock.shield")
                             .font(.footnote)
-                        Label("Keine Daten verlassen Ihr Gerät. Grundlage: App Store Guideline 5.1.1.", systemImage: "checkmark.seal")
+                        Label(Localization.text("notification_onboarding_privacy_hint", language: language), systemImage: "checkmark.seal")
                             .font(.footnote)
                     }
                     .foregroundStyle(Theme.textMuted)
@@ -71,7 +73,7 @@ struct NotificationOnboardingView: View {
 
                     Button {
                         guard wantsAlerts else {
-                            errorMessage = "Aktivieren Sie die Umschaltung, um Benachrichtigungen zu erlauben."
+                            errorMessage = Localization.text("notification_onboarding_error_toggle", language: language)
                             return
                         }
                         Task {
@@ -82,18 +84,23 @@ struct NotificationOnboardingView: View {
                                 completion(true)
                                 dismiss()
                             } else {
-                                errorMessage = "Bitte erlauben Sie Mitteilungen in den iOS-Einstellungen."
+                                errorMessage = Localization.text("notification_onboarding_error_settings", language: language)
                                 completion(false)
                             }
                         }
                     } label: {
-                        Text(isProcessing ? "Aktiviere…" : "Krisen-Alerts aktivieren")
-                            .frame(maxWidth: .infinity)
+                        if isProcessing {
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                        } else {
+                            Text(Localization.text("notification_onboarding_enable", language: language))
+                                .frame(maxWidth: .infinity)
+                        }
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(isProcessing)
 
-                    Button("Vielleicht später", role: .cancel) {
+                    Button(Localization.text("notification_onboarding_later", language: language), role: .cancel) {
                         skipAction()
                         dismiss()
                     }
@@ -101,10 +108,10 @@ struct NotificationOnboardingView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Mitteilungen")
+            .navigationTitle(Localization.text("notification_onboarding_title", language: languageSettings.selectedLanguage))
             .toolbar {
                 ToolbarItem(placement: AdaptiveToolbarPlacement.trailing) {
-                    Button("Fertig") {
+                    Button(Localization.text("settings_done", language: languageSettings.selectedLanguage)) {
                         skipAction()
                         dismiss()
                     }
@@ -116,11 +123,12 @@ struct NotificationOnboardingView: View {
 
 private extension NotificationOnboardingView {
     var statusHintText: String? {
+        let language = languageSettings.selectedLanguage
         switch status {
         case .denied:
-            return "Benachrichtigungen sind derzeit deaktiviert. Aktivieren Sie sie unten oder in den iOS-Einstellungen."
+            return Localization.text("notifications_description_denied", language: language)
         case .provisional:
-            return "Aktuell werden Meldungen nur still zugestellt. Aktivieren Sie Töne/Banner für Krisen-Alerts."
+            return Localization.text("notification_banner_message_limited", language: language)
         default:
             return nil
         }
@@ -130,6 +138,7 @@ private extension NotificationOnboardingView {
 struct NotificationPermissionBanner: View {
     let status: NotificationAuthorizationState
     let action: () -> Void
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -168,39 +177,42 @@ struct NotificationPermissionBanner: View {
     }
 
     private var statusTitle: String {
+        let language = languageSettings.selectedLanguage
         switch status {
         case .denied:
-            return "Krisen-Alerts deaktiviert"
+            return Localization.text("notification_banner_denied", language: language)
         case .provisional:
-            return "Krisen-Alerts in Ruhigstellung"
+            return Localization.text("notification_banner_limited", language: language)
         case .notDetermined:
-            return "Krisen-Alerts noch nicht aktiviert"
+            return Localization.text("notification_banner_missing", language: language)
         default:
-            return "Benachrichtigungen"
+            return Localization.text("settings_notifications_label", language: language)
         }
     }
 
     private var statusMessage: String {
+        let language = languageSettings.selectedLanguage
         switch status {
         case .denied:
-            return "Aktivieren Sie Benachrichtigungen, um akute Krisen sofort zu sehen."
+            return Localization.text("notification_banner_message_denied", language: language)
         case .provisional:
-            return "App Mitteilungen werden momentan nur still zugestellt. Aktivieren Sie Banner/Töne."
+            return Localization.text("notification_banner_message_limited", language: language)
         case .notDetermined:
-            return "Tippen Sie hier, um Push-Mitteilungen für Hochrisiko-Lagen einzuschalten."
+            return Localization.text("notification_banner_message_missing", language: language)
         default:
             return ""
         }
     }
 
     private var buttonTitle: String {
+        let language = languageSettings.selectedLanguage
         switch status {
         case .denied:
-            return "Einstellungen öffnen"
+            return Localization.text("notification_banner_action_settings", language: language)
         case .provisional:
-            return "Einstellungen anpassen"
+            return Localization.text("notification_banner_action_adjust", language: language)
         default:
-            return "Krisen-Alerts aktivieren"
+            return Localization.text("notification_onboarding_enable", language: language)
         }
     }
 }

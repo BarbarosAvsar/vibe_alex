@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OverviewView: View {
     @Environment(AppState.self) private var appState
+    @Environment(LanguageSettings.self) private var languageSettings
     @Binding var showSettings: Bool
     let onRequestConsultation: () -> Void
     @State private var selectedRegion: MacroRegion = .germany
@@ -35,7 +36,7 @@ struct OverviewView: View {
                     }
                 }
             }
-            .navigationTitle("Übersicht")
+            .navigationTitle(Localization.text("overview_title", language: languageSettings.selectedLanguage))
             .toolbar {
                 ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
@@ -56,10 +57,14 @@ struct OverviewView: View {
     @ViewBuilder
     private func warningHero() -> some View {
         if let entry = nextBennerEntry(from: appState.bennerCycleEntries) {
-            DashboardSection("Vermögenssicherung", subtitle: "Aktuelle Prognose") {
+            let language = languageSettings.selectedLanguage
+            DashboardSection(
+                Localization.text("overview_hero_title", language: language),
+                subtitle: Localization.text("overview_hero_subtitle", language: language)
+            ) {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Text("Prognose")
+                        Text(Localization.text("overview_forecast_label", language: language))
                             .font(.headline)
                             .foregroundStyle(Theme.textOnAccent)
                             .padding(.horizontal, 12)
@@ -69,9 +74,9 @@ struct OverviewView: View {
                         Text("\(entry.year)")
                             .font(.title3.weight(.semibold))
                     }
-                    Text(entry.summary)
+                    Text(Localization.format("benner_entry_summary", language: language, entry.year, entry.phase.localizedSubtitle(language: language)))
                         .font(.headline)
-                    Text("Vorsicht empfohlen – Absicherung priorisieren.")
+                    Text(Localization.text("overview_forecast_hint", language: language))
                         .font(.caption)
                         .foregroundStyle(Theme.textMuted)
                 }
@@ -90,7 +95,11 @@ struct OverviewView: View {
 
     @ViewBuilder
     private func metalFocusSection(_ snapshot: DashboardSnapshot) -> some View {
-        DashboardSection("Edelmetalle im Fokus", subtitle: "Gold & Silber im aktuellen Marktumfeld") {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("overview_metals_focus", language: language),
+            subtitle: Localization.text("overview_metals_focus_subtitle", language: language)
+        ) {
             VStack(alignment: .leading, spacing: 12) {
                 ForEach(snapshot.metals.prefix(2)) { asset in
                     MetalCard(asset: asset)
@@ -101,14 +110,18 @@ struct OverviewView: View {
 
     @ViewBuilder
     private func macroSection(_ snapshot: DashboardSnapshot) -> some View {
-        DashboardSection("Makro-Lage", subtitle: "Inflation, Wechsel & Wachstum je Region") {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("overview_macro_title", language: language),
+            subtitle: Localization.text("overview_macro_subtitle", language: language)
+        ) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
                     ForEach(MacroRegion.allCases) { region in
                         Button {
                             selectedRegion = region
                         } label: {
-                            Text(region.label)
+                            Text(region.label(language: language))
                                 .font(.subheadline.weight(.semibold))
                                 .padding(.horizontal, 12)
                                 .padding(.vertical, 8)
@@ -144,22 +157,23 @@ struct OverviewView: View {
 private struct MacroKPI: View {
     let indicator: MacroIndicator
     let region: MacroRegion
+    @Environment(LanguageSettings.self) private var languageSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(indicator.title)
+                Text(indicator.localizedTitle(language: languageSettings.selectedLanguage))
                     .font(.headline)
                 Spacer()
-                Text(region.short)
+                Text(region.short(language: languageSettings.selectedLanguage))
                     .font(.caption.weight(.semibold))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(Theme.accentInfo.opacity(0.4), in: Capsule())
             }
-            Text(indicator.formattedValue)
+            Text(indicator.localizedFormattedValue(language: languageSettings.selectedLanguage))
                 .font(.title3.weight(.semibold))
-            Text(indicator.deltaDescription)
+            Text(indicator.localizedDeltaDescription(language: languageSettings.selectedLanguage))
                 .font(.caption)
                 .foregroundStyle(Theme.textMuted)
         }
@@ -176,14 +190,18 @@ private enum MacroRegion: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    var label: String {
+    func label(language: AppLanguage) -> String {
         switch self {
-        case .germany: return "DE"
-        case .usa: return "USA"
-        case .spain: return "ES"
-        case .uk: return "UK"
+        case .germany:
+            return Localization.text("macro_region_de", language: language)
+        case .usa:
+            return Localization.text("macro_region_us", language: language)
+        case .spain:
+            return Localization.text("macro_region_es", language: language)
+        case .uk:
+            return Localization.text("macro_region_uk", language: language)
         }
     }
 
-    var short: String { label }
+    func short(language: AppLanguage) -> String { label(language: language) }
 }

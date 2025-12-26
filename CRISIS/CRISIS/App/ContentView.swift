@@ -1,9 +1,10 @@
-import SwiftUI
+﻿import SwiftUI
 import UIKit
 
 struct ContentView: View {
     @Environment(AppState.self) private var appState
     @Environment(CurrencySettings.self) private var currencySettings
+    @Environment(LanguageSettings.self) private var languageSettings
     @State private var selectedTab: Tab = .overview
     @State private var showSettings = false
     @State private var showNotificationOnboarding = false
@@ -32,30 +33,31 @@ struct ContentView: View {
                     .padding(.horizontal)
                     .transition(.opacity)
                 }
+                let language = languageSettings.selectedLanguage
                 TabView(selection: $selectedTab) {
                     OverviewView(showSettings: $showSettings, onRequestConsultation: openConsultation)
-                        .tabItem { Label("Übersicht", systemImage: "house.fill") }
+                        .tabItem { Label(Localization.text("tab_overview", language: language), systemImage: "house.fill") }
                         .tag(Tab.overview)
 
                     ComparisonView(showSettings: $showSettings)
-                        .tabItem { Label("Vergleich", systemImage: "chart.bar.fill") }
+                        .tabItem { Label(Localization.text("tab_comparison", language: language), systemImage: "chart.bar.fill") }
                         .tag(Tab.comparison)
 
                     MetalsView(showSettings: $showSettings, onRequestConsultation: openConsultation)
                         .tabItem {
                             VStack {
                                 BrilliantDiamondIcon(size: 22)
-                                Text("Edelmetalle")
+                                Text(Localization.text("tab_metals", language: language))
                             }
                         }
                         .tag(Tab.metals)
 
                     CrisisView(showSettings: $showSettings)
-                        .tabItem { Label("Krisen", systemImage: "exclamationmark.triangle.fill") }
+                        .tabItem { Label(Localization.text("tab_crisis", language: language), systemImage: "exclamationmark.triangle.fill") }
                         .tag(Tab.crisis)
 
                     ConsultationView(showSettings: $showSettings)
-                        .tabItem { Label("Beratung", systemImage: "person.text.rectangle") }
+                        .tabItem { Label(Localization.text("tab_consultation", language: language), systemImage: "person.text.rectangle") }
                         .tag(Tab.consultation)
                 }
                 .tint(Theme.accent)
@@ -117,3 +119,4 @@ extension ContentView {
         case consultation
     }
 }
+

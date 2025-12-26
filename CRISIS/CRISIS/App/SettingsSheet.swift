@@ -5,25 +5,37 @@ import UIKit
 struct SettingsSheet: View {
     @Environment(AppState.self) private var appState
     @Environment(CurrencySettings.self) private var currencySettings
+    @Environment(LanguageSettings.self) private var languageSettings
     @Environment(\.dismiss) private var dismiss
     @State private var isRequestingNotifications = false
 
     var body: some View {
         NavigationStack {
             Form {
-                Section("Allgemein") {
-                    Picker("Anzeigewährung", selection: currencyBinding) {
+                let language = languageSettings.selectedLanguage
+                Section(Localization.text("settings_section_general", language: language)) {
+                    Picker(Localization.text("settings_currency_label", language: language), selection: currencyBinding) {
                         ForEach(DisplayCurrency.allCases) { currency in
-                            Text(currency.title).tag(currency)
+                            Text(currency.localizedTitle(language: language)).tag(currency)
                         }
                     }
-                    Text("Steuert, in welcher Währung Edelmetallpreise im gesamten Interface angezeigt werden.")
+                    Text(Localization.text("settings_currency_hint", language: language))
+                        .font(.footnote)
+                        .foregroundStyle(Theme.textSecondary)
+                        .padding(.top, 4)
+
+                    Picker(Localization.text("settings_language_label", language: language), selection: languageBinding) {
+                        ForEach(AppLanguage.allCases) { locale in
+                            Text(locale.localizedName(in: language)).tag(locale)
+                        }
+                    }
+                    Text(Localization.text("settings_language_hint", language: language))
                         .font(.footnote)
                         .foregroundStyle(Theme.textSecondary)
                         .padding(.top, 4)
                 }
 
-                Section("Benachrichtigungen") {
+                Section(Localization.text("settings_notifications_section", language: language)) {
                     HStack {
                         Label(notificationStatusLabel, systemImage: "bell.badge.fill")
                             .foregroundStyle(Theme.accent)
@@ -48,36 +60,27 @@ struct SettingsSheet: View {
                     .disabled(isRequestingNotifications)
                 }
 
-                Section("Beratung & Datenschutz") {
-                    NavigationLink("Datenschutzerklärung") {
+                Section(Localization.text("settings_privacy_section", language: language)) {
+                    NavigationLink(Localization.text("settings_privacy_policy", language: language)) {
                         PrivacyPolicyView()
-                            .navigationTitle("Datenschutzerklärung")
+                            .navigationTitle(Localization.text("privacy_policy_title", language: language))
                             .navigationBarTitleDisplayMode(.inline)
                     }
-                    VStack(alignment: .leading, spacing: 8) {
-                        Label("Datenschutz", systemImage: "lock.shield")
-                        Text("Persönliche Daten verlassen Ihr Gerät nur, wenn Sie eine Anfrage senden. Es erfolgt keine lokale Speicherung.")
-                            .font(.footnote)
-                            .foregroundStyle(Theme.textSecondary)
-                    }
-                    VStack(alignment: .leading, spacing: 8) {
-                        Label("Transparenz", systemImage: "chart.pie.fill")
-                        Text("Alle Wirtschaftsdaten stammen aus offenen APIs von GoldPrice.org und der Weltbank.")
-                            .font(.footnote)
-                            .foregroundStyle(Theme.textSecondary)
-                    }
-                    VStack(alignment: .leading, spacing: 8) {
-                        Label("Kontakt", systemImage: "paperplane")
-                        Text("Nutzen Sie den Tab Beratung für individuelle Fragen. Antworten erfolgen DSGVO-konform per E-Mail.")
-                            .font(.footnote)
-                            .foregroundStyle(Theme.textSecondary)
-                    }
+                    Text(Localization.text("settings_privacy_note", language: language))
+                        .font(.footnote)
+                        .foregroundStyle(Theme.textSecondary)
+                    Text(Localization.text("settings_transparency_note", language: language))
+                        .font(.footnote)
+                        .foregroundStyle(Theme.textSecondary)
+                    Text(Localization.text("settings_contact_note", language: language))
+                        .font(.footnote)
+                        .foregroundStyle(Theme.textSecondary)
                 }
             }
-            .navigationTitle("Einstellungen")
+            .navigationTitle(Localization.text("settings_title", language: languageSettings.selectedLanguage))
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Fertig") { dismiss() }
+                    Button(Localization.text("settings_done", language: languageSettings.selectedLanguage)) { dismiss() }
                 }
             }
         }
@@ -90,39 +93,55 @@ struct SettingsSheet: View {
         )
     }
 
+    private var languageBinding: Binding<AppLanguage> {
+        Binding(
+            get: { languageSettings.selectedLanguage },
+            set: { languageSettings.selectedLanguage = $0 }
+        )
+    }
+
     private var notificationStatusLabel: String {
-        "Benachrichtigungen"
+        Localization.text("settings_notifications_label", language: languageSettings.selectedLanguage)
     }
 
     private var notificationStatusValue: String {
         switch appState.notificationStatus {
-        case .authorized: return "Aktiv"
-        case .denied: return "Deaktiviert"
-        case .provisional: return "Begrenzt"
-        case .notDetermined: return "Unbekannt"
-        case .unknown: return "–"
+        case .authorized:
+            return Localization.text("notifications_status_active", language: languageSettings.selectedLanguage)
+        case .denied:
+            return Localization.text("notifications_status_denied", language: languageSettings.selectedLanguage)
+        case .provisional:
+            return Localization.text("notifications_status_limited", language: languageSettings.selectedLanguage)
+        case .notDetermined:
+            return Localization.text("notifications_status_unknown", language: languageSettings.selectedLanguage)
+        case .unknown:
+            return Localization.text("notifications_status_unknown", language: languageSettings.selectedLanguage)
         }
     }
 
     private var notificationStatusDescription: String {
         switch appState.notificationStatus {
         case .authorized:
-            return "Sie erhalten Warnhinweise bei Prognose-Wechseln oder größeren Krisen."
+            return Localization.text("notifications_description_active", language: languageSettings.selectedLanguage)
         case .denied:
-            return "Benachrichtigungen sind ausgeschaltet. Aktivieren Sie sie in den iOS-Einstellungen."
+            return Localization.text("notifications_description_denied", language: languageSettings.selectedLanguage)
         case .provisional:
-            return "Temporäre Berechtigung – bestätigen Sie sie, um kritische Hinweise zu behalten."
+            return Localization.text("notifications_description_limited", language: languageSettings.selectedLanguage)
         case .notDetermined, .unknown:
-            return "Noch keine Berechtigung angefragt."
+            return Localization.text("notifications_description_undetermined", language: languageSettings.selectedLanguage)
         }
     }
 
     private var notificationButtonTitle: String {
         switch appState.notificationStatus {
-        case .authorized: return "Systemeinstellungen öffnen"
-        case .denied: return "In den Einstellungen aktivieren"
-        case .provisional: return "Berechtigung bestätigen"
-        case .notDetermined, .unknown: return "Benachrichtigungen aktivieren"
+        case .authorized:
+            return Localization.text("notifications_action_open_settings", language: languageSettings.selectedLanguage)
+        case .denied:
+            return Localization.text("notifications_action_open_settings", language: languageSettings.selectedLanguage)
+        case .provisional:
+            return Localization.text("notifications_action_adjust", language: languageSettings.selectedLanguage)
+        case .notDetermined, .unknown:
+            return Localization.text("notifications_action_enable", language: languageSettings.selectedLanguage)
         }
     }
 

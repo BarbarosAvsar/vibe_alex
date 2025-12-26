@@ -26,7 +26,8 @@ class DashboardRefreshWorker(
             container.notificationHelper.processHighPriorityAlert(snapshot.crises)
             Result.success()
         } catch (error: Exception) {
-            container.userPreferences.setLastSyncError(error.message ?: "Fehler beim Hintergrund-Update")
+            val fallback = applicationContext.getString(R.string.sync_error_background_update)
+            container.userPreferences.setLastSyncError(error.message ?: fallback)
             Result.retry()
         }
     }

@@ -28,6 +28,7 @@ import de.vibecode.crisis.R
 import de.vibecode.crisis.core.model.CrisisEvent
 import de.vibecode.crisis.ui.components.GlassCard
 import de.vibecode.crisis.ui.components.LogoMark
+import de.vibecode.crisis.ui.crisisEventTitle
 import de.vibecode.crisis.ui.theme.CrisisColors
 import java.text.DateFormat
 import java.util.Date
@@ -63,7 +64,7 @@ fun CrisisDetailScreen(
 
             GlassCard {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(text = event.title, style = MaterialTheme.typography.titleLarge)
+                    Text(text = crisisEventTitle(event), style = MaterialTheme.typography.titleLarge)
                     Text(text = event.region, style = MaterialTheme.typography.bodyMedium, color = CrisisColors.textSecondary)
                     Text(
                         text = categoryLabel(event),
@@ -129,7 +130,7 @@ private fun TimelineItem(event: CrisisEvent) {
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column {
-            Text(text = event.title, style = MaterialTheme.typography.bodyMedium)
+            Text(text = crisisEventTitle(event), style = MaterialTheme.typography.bodyMedium)
             Text(
                 text = formatter.format(Date(event.occurredAt.toEpochMilliseconds())),
                 style = MaterialTheme.typography.bodySmall,

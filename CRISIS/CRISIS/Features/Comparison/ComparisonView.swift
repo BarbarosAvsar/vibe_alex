@@ -5,6 +5,7 @@ import Charts
 struct ComparisonView: View {
     @Environment(AppState.self) private var appState
     @Environment(CurrencySettings.self) private var currencySettings
+    @Environment(LanguageSettings.self) private var languageSettings
     @Binding var showSettings: Bool
     private let comparisonEngine = AssetComparisonEngine()
     @State private var mode: ComparisonMode = .history
@@ -39,7 +40,7 @@ struct ComparisonView: View {
                     }
                 }
             }
-            .navigationTitle("Vergleich")
+            .navigationTitle(Localization.text("comparison_title", language: languageSettings.selectedLanguage))
             .toolbar {
                 ToolbarItem(placement: AdaptiveToolbarPlacement.leading) {
                     LogoMark()
@@ -59,21 +60,25 @@ struct ComparisonView: View {
 
     @ViewBuilder
     private func assetSelection(_ series: [ComparisonAssetSeries]) -> some View {
-        DashboardSection("Asset-Klassen Vergleich", subtitle: "Historisch & Prognose 2025â€“2050") {
+        let language = languageSettings.selectedLanguage
+        DashboardSection(
+            Localization.text("comparison_section_title", language: language),
+            subtitle: Localization.text("comparison_section_subtitle", language: language)
+        ) {
             if isLoadingSeries && series.isEmpty {
-                ProgressView("Lade Marktdatenâ€¦")
+                ProgressView(Localization.text("comparison_loading", language: language))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Picker("Zeitraum", selection: $mode) {
+            Picker(Localization.text("comparison_period", language: language), selection: $mode) {
                 ForEach(ComparisonMode.allCases) { item in
-                    Text(item.label).tag(item)
+                    Text(item.label(language: language)).tag(item)
                 }
             }
             .pickerStyle(.segmented)
 
             ForEach(AssetGroup.allCases, id: \.self) { group in
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(group.rawValue)
+                    Text(group.localizedLabel(language: language))
                         .font(.subheadline.weight(.semibold))
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 10) {
@@ -88,7 +93,7 @@ struct ComparisonView: View {
                                 } label: {
                                     HStack(spacing: 6) {
                                         assetIcon(for: item.asset)
-                                        Text(item.asset.name)
+                                        Text(item.asset.localizedName(language: language))
                                     }
                                     .font(.subheadline.weight(.semibold))
                                     .padding(.horizontal, 12)
@@ -113,14 +118,18 @@ struct ComparisonView: View {
 
     @ViewBuilder
     private func comparisonChart(_ series: [ComparisonAssetSeries]) -> some View {
+        let language = languageSettings.selectedLanguage
         let selected = series.filter { activeAssets.contains($0.asset) }
-        DashboardSection("Wertentwicklung", subtitle: "Tippen Sie auf den Chart um Details zu sehen") {
+        DashboardSection(
+            Localization.text("comparison_chart_title", language: language),
+            subtitle: Localization.text("comparison_chart_subtitle", language: language)
+        ) {
             let hasData = selected.contains { $0.history.isEmpty == false || $0.projection.isEmpty == false }
             if isLoadingSeries && hasData == false {
                 ProgressView()
                     .frame(height: 240)
             } else if hasData == false {
-                Text("Keine Marktdaten verfuegbar.")
+                Text(Localization.text("comparison_no_data", language: language))
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
                     .frame(height: 240)
@@ -132,23 +141,32 @@ struct ComparisonView: View {
 
     @ViewBuilder
     private func performanceOverview(_ series: [ComparisonAssetSeries]) -> some View {
+        let language = languageSettings.selectedLanguage
         let selected = series.filter { activeAssets.contains($0.asset) }
-        DashboardSection("Performance Uebersicht", subtitle: "Historisch und Prognose") {
+        DashboardSection(
+            Localization.text("comparison_performance_title", language: language),
+            subtitle: Localization.text("comparison_performance_subtitle", language: language)
+        ) {
             let hasHistory = selected.contains { $0.history.isEmpty == false }
             if isLoadingSeries && hasHistory == false {
                 ProgressView()
             } else if hasHistory == false {
-                Text("Keine Marktdaten verfuegbar.")
+                Text(Localization.text("comparison_no_data", language: language))
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
             } else {
                 VStack(spacing: 12) {
                     ForEach(selected) { item in
                         HStack {
-                            Text(item.asset.name)
+                            Text(item.asset.localizedName(language: language))
                                 .font(.subheadline.weight(.semibold))
                             Spacer()
-                            Text("Historisch \(cagr(for: item)) / Prognose \(projectionDelta(for: item))")
+                            Text(Localization.format(
+                                "comparison_performance_format",
+                                language: language,
+                                cagr(for: item),
+                                projectionDelta(for: item)
+                            ))
                                 .font(.caption)
                                 .foregroundStyle(Theme.textSecondary)
                         }
@@ -181,18 +199,26 @@ struct ComparisonView: View {
 
     private func cagr(for series: ComparisonAssetSeries) -> String {
         guard let first = series.history.first, let last = series.history.last, first.year != last.year else {
-            return "n/v"
+            return Localization.text("not_available_short", language: languageSettings.selectedLanguage)
         }
         let years = Double(last.year - first.year)
         let growth = pow(max(last.value, 0.1) / max(first.value, 0.1), 1 / years) - 1
-        return growth.formatted(.percent.precision(.fractionLength(1)))
+        let formatter = FloatingPointFormatStyle<Double>.percent
+            .precision(.fractionLength(1))
+            .locale(languageSettings.selectedLanguage.locale)
+        return growth.formatted(formatter)
     }
 
     private func projectionDelta(for series: ComparisonAssetSeries) -> String {
         guard let lastHistory = series.history.last,
-              let lastProjection = series.projection.last else { return "n/v" }
+              let lastProjection = series.projection.last else {
+            return Localization.text("not_available_short", language: languageSettings.selectedLanguage)
+        }
         let delta = (lastProjection.value - lastHistory.value) / max(lastHistory.value, 0.1)
-        return delta.formatted(.percent.precision(.fractionLength(1)))
+        let formatter = FloatingPointFormatStyle<Double>.percent
+            .precision(.fractionLength(1))
+            .locale(languageSettings.selectedLanguage.locale)
+        return delta.formatted(formatter)
     }
 }
 
@@ -200,6 +226,7 @@ private struct AssetComparisonChart: View {
     let series: [ComparisonAssetSeries]
     let mode: ComparisonMode
     let currency: String
+    @Environment(LanguageSettings.self) private var languageSettings
 
     private let colors: [ComparisonAsset: Color] = [
         .equityDE: Theme.accent,
@@ -214,14 +241,15 @@ private struct AssetComparisonChart: View {
     ]
 
     var body: some View {
+        let language = languageSettings.selectedLanguage
         let currentYear = Calendar.current.component(.year, from: Date())
         Chart {
             ForEach(series) { asset in
                 if mode == .history {
                     ForEach(asset.history) { point in
                         LineMark(
-                            x: .value("Jahr", point.year),
-                            y: .value("Wert", point.value)
+                            x: .value(Localization.text("comparison_chart_x_label", language: language), point.year),
+                            y: .value(Localization.format("comparison_chart_y_label", language: language, currency), point.value)
                         )
                         .interpolationMethod(.catmullRom)
                         .foregroundStyle(colors[asset.asset] ?? Theme.accent)
@@ -229,25 +257,25 @@ private struct AssetComparisonChart: View {
                 } else {
                     ForEach(asset.projection) { point in
                         LineMark(
-                            x: .value("Jahr", point.year),
-                            y: .value("Wert", point.value)
+                            x: .value(Localization.text("comparison_chart_x_label", language: language), point.year),
+                            y: .value(Localization.format("comparison_chart_y_label", language: language, currency), point.value)
                         )
                         .interpolationMethod(.catmullRom)
                         .foregroundStyle(colors[asset.asset] ?? Theme.accent)
                     }
                 }
             }
-            RuleMark(x: .value("Heute", currentYear))
+            RuleMark(x: .value(Localization.text("comparison_chart_today", language: language), currentYear))
                 .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
                 .annotation(position: .topTrailing) {
-                    Text("Heute")
+                    Text(Localization.text("comparison_chart_today", language: language))
                         .font(.caption2)
                         .foregroundStyle(Theme.textSecondary)
                 }
         }
         .frame(height: 260)
-        .chartXAxisLabel("Jahr")
-        .chartYAxisLabel("Wert in \(currency)")
+        .chartXAxisLabel(Localization.text("comparison_chart_x_label", language: language))
+        .chartYAxisLabel(Localization.format("comparison_chart_y_label", language: language, currency))
         .chartXScale(domain: xDomain)
         .chartYScale(domain: yDomain)
         .cardStyle()
@@ -277,10 +305,12 @@ private enum ComparisonMode: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    var label: String {
+    func label(language: AppLanguage) -> String {
         switch self {
-        case .history: return "Historisch"
-        case .forecast: return "Prognose"
+        case .history:
+            return Localization.text("comparison_mode_history", language: language)
+        case .forecast:
+            return Localization.text("comparison_mode_forecast", language: language)
         }
     }
 }

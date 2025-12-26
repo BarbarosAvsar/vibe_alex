@@ -65,13 +65,20 @@ class NotificationHelper(
         }
         val manager = NotificationManagerCompat.from(context)
         if (!manager.areNotificationsEnabled()) return
+        val title = when (event.source) {
+            de.vibecode.crisis.core.model.DataSource.WORLD_BANK_GOVERNANCE ->
+                context.getString(R.string.crisis_event_title_governance, event.region)
+            de.vibecode.crisis.core.model.DataSource.WORLD_BANK_FINANCE ->
+                context.getString(R.string.crisis_event_title_recession, event.region)
+            else -> event.title
+        }
         val category = when (event.category) {
             de.vibecode.crisis.core.model.CrisisCategory.FINANCIAL -> context.getString(R.string.crisis_category_financial)
             de.vibecode.crisis.core.model.CrisisCategory.GEOPOLITICAL -> context.getString(R.string.crisis_category_geopolitical)
         }
         val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(context.getString(R.string.crisis_notification_title, event.title))
+            .setContentTitle(context.getString(R.string.crisis_notification_title, title))
             .setContentText(context.getString(R.string.crisis_notification_body, event.region, category))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)

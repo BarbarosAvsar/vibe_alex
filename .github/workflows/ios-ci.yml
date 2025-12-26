@@ -56,9 +56,14 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Select bundled Xcode 15.4
-        # Change the path below if you need to pin a different Xcode from the GitHub macOS runner image.
-        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+      - name: Select Xcode
+        run: |
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s "/Applications/Xcode_15.4.app/Contents/Developer"
+          else
+            echo "Xcode_15.4.app not found; using default Xcode"
+            sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
+          fi
 
       - name: Show Xcode version
         run: xcodebuild -version
@@ -192,8 +197,14 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Select bundled Xcode 15.4
-        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+      - name: Select Xcode
+        run: |
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s "/Applications/Xcode_15.4.app/Contents/Developer"
+          else
+            echo "Xcode_15.4.app not found; using default Xcode"
+            sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
+          fi
 
       - name: Show Xcode version
         run: xcodebuild -version

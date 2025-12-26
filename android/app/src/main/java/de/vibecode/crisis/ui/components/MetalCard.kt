@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -71,7 +71,7 @@ fun MetalCard(
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
-            Divider(color = CrisisColors.border)
+            HorizontalDivider(color = CrisisColors.border)
             Spacer(modifier = Modifier.height(6.dp))
             Column(verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
                 asset.insights.chunked(2).forEach { rowItems ->

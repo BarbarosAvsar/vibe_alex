@@ -303,8 +303,4 @@ private fun comparisonColors(): Map<ComparisonAsset, Color> {
 enum class ComparisonMode(val label: Int) {
     HISTORY(R.string.comparison_mode_history),
     FORECAST(R.string.comparison_mode_forecast);
-
-    companion object {
-        val entries = values().toList()
-    }
 }

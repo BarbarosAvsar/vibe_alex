@@ -1,5 +1,6 @@
 ﻿package de.vibecode.crisis.core.network
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -21,6 +22,7 @@ object NetworkClient {
             .build()
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     private fun retrofit(baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)

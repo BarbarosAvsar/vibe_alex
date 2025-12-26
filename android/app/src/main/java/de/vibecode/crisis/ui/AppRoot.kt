@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShowChart
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -266,12 +266,8 @@ fun AppRoot(
 
 enum class TopLevelDestination(val route: String, val label: Int, val icon: @Composable () -> Unit) {
     Overview("overview", R.string.tab_overview, { androidx.compose.material3.Icon(Icons.Default.Home, null) }),
-    Comparison("comparison", R.string.tab_comparison, { androidx.compose.material3.Icon(Icons.Default.ShowChart, null) }),
+    Comparison("comparison", R.string.tab_comparison, { androidx.compose.material3.Icon(Icons.AutoMirrored.Filled.ShowChart, null) }),
     Metals("metals", R.string.tab_metals, { de.vibecode.crisis.ui.components.BrilliantDiamondIcon(iconSize = 20.dp) }),
     Crisis("crisis", R.string.tab_crisis, { androidx.compose.material3.Icon(Icons.Default.Warning, null) }),
     Consultation("consultation", R.string.tab_consultation, { androidx.compose.material3.Icon(Icons.Default.Person, null) });
-
-    companion object {
-        val entries = values().toList()
-    }
 }

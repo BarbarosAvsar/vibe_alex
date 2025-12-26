@@ -61,11 +61,11 @@
   const MACRO_KIND_MAP = new Map(MACRO_KINDS.map((kind) => [kind.id, kind]));
 
   const COLORS = {
-    accent: "#e6a3b0",
-    strong: "rgba(230, 163, 176, 0.72)",
-    info: "#7fb3d5",
-    muted: "rgba(127, 179, 213, 0.7)",
-    subtle: "rgba(127, 179, 213, 0.5)"
+    accent: "#c7e8e3",
+    strong: "rgba(199, 232, 227, 0.7)",
+    info: "#c7e8e3",
+    muted: "rgba(15, 28, 61, 0.6)",
+    subtle: "rgba(15, 28, 61, 0.35)"
   };
 
   const MACRO_COMPARISON_REGIONS = [
@@ -2867,7 +2867,7 @@
       state.newsCache = { fetchedAt: Date.now(), events };
       writeJson(STORAGE_KEYS.newsCache, state.newsCache);
       return events;
-    } catch (error) {
+    } catch {
       return state.newsCache?.events || [];
     }
   }
@@ -2978,7 +2978,7 @@
       const fxRate = await fetchFxRate();
       state.fxRate = fxRate;
       writeJson(STORAGE_KEYS.fxRate, fxRate);
-    } catch (error) {
+    } catch {
       if (!state.fxRate) {
         state.fxRate = null;
       }
@@ -3025,7 +3025,7 @@
         writeJson(STORAGE_KEYS.stooqCache, state.stooqCache);
       }
       return points;
-    } catch (error) {
+    } catch {
       return cached?.points || [];
     }
   }

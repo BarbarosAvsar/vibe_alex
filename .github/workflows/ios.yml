@@ -43,19 +43,42 @@ jobs:
             ${{ runner.os }}-xcode-
       - name: Resolve packages
         run: xcodebuild -resolvePackageDependencies -project CRISIS/CRISIS.xcodeproj -scheme CRISIS
-      - name: Run tests (iPhone 15)
+      - name: Select iOS Simulator
+        id: select-sim
+        run: |
+          set -euo pipefail
+          device=$(xcrun simctl list devices available | grep -m 1 -E "iPhone|iPad" | sed -E 's/ \\(.*//') || true
+          if [ -z "$device" ]; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "name=$device" >> "$GITHUB_OUTPUT"
+      - name: Run tests (simulator)
+        if: ${{ steps.select-sim.outputs.found == 'true' }}
         run: |
           set -o pipefail
           xcodebuild \
             -project CRISIS/CRISIS.xcodeproj \
             -scheme CRISIS \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination "platform=iOS Simulator,name=${{ steps.select-sim.outputs.name }}" \
             -enableCodeCoverage YES \
             -parallel-testing-enabled YES \
             -resultBundlePath build/TestResults.xcresult \
             clean test
         env:
           NSUnbufferedIO: "YES"
+      - name: Build (no simulator available)
+        if: ${{ steps.select-sim.outputs.found != 'true' }}
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project CRISIS/CRISIS.xcodeproj \
+            -scheme CRISIS \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
       - name: Install SwiftLint
         run: brew install swiftlint
       - name: SwiftLint
@@ -91,7 +114,9 @@ jobs:
           xcodebuild \
             -project CRISIS/CRISIS.xcodeproj \
             -scheme CRISIS \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
             build
       - name: Analyze
         uses: github/codeql-action/analyze@v3

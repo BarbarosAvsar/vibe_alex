@@ -1,8 +1,8 @@
 ﻿<resources>
-    <color name="brand_warm">#E6A3B0</color>
-    <color name="brand_warm_dark">#E6A3B0</color>
-    <color name="brand_cool">#7FB3D5</color>
-    <color name="brand_primary">#0F1C3D</color>
-    <color name="brand_background">#0F1C3D</color>
-    <color name="brand_surface">#0F1C3D</color>
+    <color name="brand_warm">#C7E8E3</color>
+    <color name="brand_warm_dark">#C7E8E3</color>
+    <color name="brand_cool">#0F1C3D</color>
+    <color name="brand_primary">#E8B9C8</color>
+    <color name="brand_background">#E8B9C8</color>
+    <color name="brand_surface">#C7E8E3</color>
 </resources>

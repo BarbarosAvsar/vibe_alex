@@ -33,9 +33,9 @@ struct CRISISApp: App {
 
 private enum Appearance {
     static func configure() {
-        let accent = UIColor(named: "BrandWarm") ?? UIColor(red: 0.902, green: 0.639, blue: 0.690, alpha: 1.0)
-        let background = UIColor(named: "BrandPrimary") ?? UIColor(red: 0.059, green: 0.110, blue: 0.239, alpha: 1.0)
-        let text = UIColor(named: "BrandWarm") ?? accent
+        let accent = UIColor(named: "BrandWarm") ?? UIColor(red: 0.780, green: 0.910, blue: 0.890, alpha: 1.0)
+        let background = UIColor(named: "BrandPrimary") ?? UIColor(red: 0.910, green: 0.725, blue: 0.784, alpha: 1.0)
+        let text = UIColor(named: "BrandCool") ?? UIColor(red: 0.059, green: 0.110, blue: 0.239, alpha: 1.0)
 
         let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()

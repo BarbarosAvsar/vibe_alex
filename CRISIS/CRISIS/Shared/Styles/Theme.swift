@@ -6,17 +6,17 @@ enum Theme {
     private static let baseCool = Color("BrandCool")
 
     static let background = baseBackground
-    static let surface = baseCool.opacity(0.15)
-    static let border = baseCool.opacity(0.35)
+    static let surface = baseWarm.opacity(0.35)
+    static let border = baseCool.opacity(0.2)
 
     static let accent = baseWarm
     static let accentStrong = baseWarm.opacity(0.9)
-    static let accentInfo = baseCool
+    static let accentInfo = baseWarm
 
-    static let textPrimary = baseWarm
-    static let textSecondary = baseWarm.opacity(0.8)
-    static let textMuted = baseCool.opacity(0.7)
-    static let textOnAccent = baseBackground
+    static let textPrimary = baseCool
+    static let textSecondary = baseCool.opacity(0.8)
+    static let textMuted = baseCool.opacity(0.6)
+    static let textOnAccent = baseCool
 }
 
 extension View {

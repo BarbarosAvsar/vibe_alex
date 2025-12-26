@@ -1,16 +1,17 @@
 :root {
   color-scheme: only light;
-  --bg: #0f1c3d;
-  --surface: rgba(127, 179, 213, 0.12);
-  --surface-strong: rgba(127, 179, 213, 0.2);
-  --border: rgba(127, 179, 213, 0.3);
-  --text: #e6a3b0;
-  --text-secondary: rgba(230, 163, 176, 0.85);
-  --text-muted: rgba(127, 179, 213, 0.75);
-  --accent: #e6a3b0;
-  --accent-strong: rgba(230, 163, 176, 0.92);
-  --accent-info: #7fb3d5;
-  --shadow: 0 18px 44px rgba(15, 28, 61, 0.6);
+
+  --bg: #e8b9c8;
+  --surface: rgba(199, 232, 227, 0.2);
+  --surface-strong: rgba(199, 232, 227, 0.4);
+  --border: rgba(15, 28, 61, 0.25);
+  --text: #0f1c3d;
+  --text-secondary: rgba(15, 28, 61, 0.78);
+  --text-muted: rgba(15, 28, 61, 0.6);
+  --accent: #c7e8e3;
+  --accent-strong: rgba(199, 232, 227, 0.9);
+  --accent-info: #c7e8e3;
+  --shadow: 0 18px 44px rgba(15, 28, 61, 0.25);
   --radius-lg: 24px;
   --radius-md: 16px;
   --radius-pill: 999px;
@@ -25,7 +26,7 @@
 }
 
 @font-face {
-  font-family: "Manrope";
+  font-family: Manrope;
   src: url("assets/fonts/manrope_variable.ttf") format("truetype");
   font-weight: 300 800;
   font-style: normal;
@@ -40,7 +41,7 @@
 
 body {
   margin: 0;
-  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-family: Manrope, "Segoe UI", sans-serif;
   color: var(--text);
   background: var(--bg);
   min-height: 100vh;
@@ -57,7 +58,7 @@ body.modal-open {
 h1,
 h2,
 h3 {
-  font-family: "Playfair Display", "Georgia", serif;
+  font-family: "Playfair Display", Georgia, serif;
   margin: 0;
 }
 
@@ -91,14 +92,6 @@ a.ghost-button {
   justify-content: center;
 }
 
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--accent-strong);
-  outline-offset: 2px;
-}
-
 .skip-link {
   position: absolute;
   left: -999px;
@@ -119,10 +112,10 @@ a:focus-visible {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(circle at top right, rgba(127, 179, 213, 0.25), transparent 55%),
-    radial-gradient(circle at bottom left, rgba(230, 163, 176, 0.25), transparent 60%),
-    radial-gradient(circle at center, rgba(127, 179, 213, 0.18), transparent 70%),
-    linear-gradient(140deg, rgba(15, 28, 61, 0.96), rgba(15, 28, 61, 0.9));
+    radial-gradient(circle at top right, rgba(199, 232, 227, 0.4), transparent 55%),
+    radial-gradient(circle at bottom left, rgba(232, 185, 200, 0.35), transparent 60%),
+    radial-gradient(circle at center, rgba(199, 232, 227, 0.28), transparent 70%),
+    linear-gradient(140deg, rgba(232, 185, 200, 0.96), rgba(232, 185, 200, 0.9));
 }
 
 .app-shell {
@@ -135,30 +128,6 @@ body.is-ready .app-shell {
   animation: fade-in 0.5s ease both;
 }
 
-.screen.is-active .card {
-  animation: card-rise 0.45s ease both;
-}
-
-.card.stagger-1 {
-  animation-delay: 0.04s;
-}
-
-.card.stagger-2 {
-  animation-delay: 0.08s;
-}
-
-.card.stagger-3 {
-  animation-delay: 0.12s;
-}
-
-.card.stagger-4 {
-  animation-delay: 0.16s;
-}
-
-.card.stagger-5 {
-  animation-delay: 0.2s;
-}
-
 .top-bar {
   position: sticky;
   top: 0;
@@ -168,7 +137,7 @@ body.is-ready .app-shell {
   align-items: center;
   padding: 18px 20px;
   backdrop-filter: blur(16px);
-  background: rgba(15, 28, 61, 0.85);
+  background: rgba(232, 185, 200, 0.9);
   border-bottom: 1px solid var(--border);
 }
 
@@ -204,15 +173,11 @@ body.is-ready .app-shell {
   stroke-width: 1.5;
 }
 
-.icon-button.is-loading svg {
-  animation: spin 1s linear infinite;
-}
-
 .status-banner {
   margin: 0 20px;
   padding: 10px 14px;
   border-radius: var(--radius-pill);
-  background: rgba(127, 179, 213, 0.2);
+  background: rgba(199, 232, 227, 0.45);
   font-size: 0.9rem;
   display: none;
 }
@@ -260,6 +225,30 @@ main {
   border: 1px solid var(--border);
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow);
+}
+
+.screen.is-active .card {
+  animation: card-rise 0.45s ease both;
+}
+
+.card.stagger-1 {
+  animation-delay: 0.04s;
+}
+
+.card.stagger-2 {
+  animation-delay: 0.08s;
+}
+
+.card.stagger-3 {
+  animation-delay: 0.12s;
+}
+
+.card.stagger-4 {
+  animation-delay: 0.16s;
+}
+
+.card.stagger-5 {
+  animation-delay: 0.2s;
 }
 
 .card-header {
@@ -368,12 +357,12 @@ main {
 }
 
 .segmented-button.is-active {
-  background: rgba(230, 163, 176, 0.2);
-  border-color: rgba(230, 163, 176, 0.5);
+  background: rgba(199, 232, 227, 0.5);
+  border-color: rgba(199, 232, 227, 0.7);
 }
 
 .pill {
-  background: rgba(127, 179, 213, 0.25);
+  background: rgba(199, 232, 227, 0.5);
   border-radius: var(--radius-pill);
   padding: 4px 12px;
   font-size: 0.85rem;
@@ -410,8 +399,8 @@ main {
 }
 
 .chip.is-active {
-  background: rgba(230, 163, 176, 0.2);
-  border-color: rgba(230, 163, 176, 0.5);
+  background: rgba(199, 232, 227, 0.5);
+  border-color: rgba(199, 232, 227, 0.7);
 }
 
 .hint {
@@ -435,13 +424,13 @@ main {
 
 .progress {
   --progress-color: var(--accent);
+
   width: 100%;
   height: 10px;
   border: none;
   border-radius: 999px;
   appearance: none;
-  -webkit-appearance: none;
-  background: rgba(15, 28, 61, 0.35);
+  background: rgba(15, 28, 61, 0.2);
   overflow: hidden;
 }
 
@@ -458,7 +447,7 @@ main {
 }
 
 .progress::-webkit-progress-bar {
-  background: rgba(15, 28, 61, 0.35);
+  background: rgba(15, 28, 61, 0.2);
 }
 
 .progress::-webkit-progress-value {
@@ -477,15 +466,15 @@ main {
 }
 
 .badge.high {
-  background: rgba(230, 163, 176, 0.4);
+  background: rgba(199, 232, 227, 0.6);
 }
 
 .badge.medium {
-  background: rgba(230, 163, 176, 0.2);
+  background: rgba(199, 232, 227, 0.4);
 }
 
 .badge.low {
-  background: rgba(127, 179, 213, 0.2);
+  background: rgba(199, 232, 227, 0.25);
 }
 
 .chart {
@@ -568,6 +557,14 @@ textarea {
   resize: vertical;
 }
 
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
 .form-hint {
   font-size: 0.85rem;
   color: var(--text-muted);
@@ -580,7 +577,7 @@ textarea {
   bottom: 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background: rgba(15, 28, 61, 0.95);
+  background: rgba(232, 185, 200, 0.92);
   border-top: 1px solid var(--border);
   padding: 10px 12px 16px;
   gap: 6px;
@@ -601,7 +598,11 @@ textarea {
 .nav-item svg {
   width: 20px;
   height: 20px;
-  fill: currentColor;
+  fill: currentcolor;
+}
+
+.icon-button.is-loading svg {
+  animation: spin 1s linear infinite;
 }
 
 .nav-item[aria-current="page"] {
@@ -611,7 +612,7 @@ textarea {
 .sheet-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 28, 61, 0.7);
+  background: rgba(15, 28, 61, 0.45);
   display: grid;
   place-items: end center;
   z-index: 20;
@@ -694,7 +695,7 @@ textarea {
   text-align: center;
 }
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .kpi-grid {
     grid-template-columns: 1fr;
   }
@@ -709,6 +710,7 @@ textarea {
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -720,6 +722,7 @@ textarea {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -730,12 +733,13 @@ textarea {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
-@media (min-width: 960px) {
+@media (width >= 960px) {
   main {
     padding-bottom: 40px;
   }

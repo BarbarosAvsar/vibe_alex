@@ -39,7 +39,7 @@ jobs:
         uses: gradle/gradle-build-action@v3
         with:
           build-root-directory: android
-          gradle-home-cache-cleanup: true
+          gradle-home-cache-cleanup: false
       - name: Make Gradle wrapper executable
         run: chmod +x android/gradlew
       - name: Run lint, tests, and build

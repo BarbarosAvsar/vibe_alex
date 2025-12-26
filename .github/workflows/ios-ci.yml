@@ -79,29 +79,6 @@ jobs:
         if: ${{ steps.signing.outputs.enabled != 'true' }}
         run: echo "Signing secrets missing; skipping release steps."
 
-      - name: Check signing secrets
-        id: signing
-        run: |
-          missing=0
-          if [ -z "${{ secrets.APPLE_TEAM_ID }}" ]; then missing=1; fi
-          if [ -z "${{ secrets.APPLE_KEYCHAIN_PASSWORD }}" ]; then missing=1; fi
-          if [ -z "${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}" ]; then missing=1; fi
-          if [ -z "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" ]; then missing=1; fi
-          if [ -z "${{ secrets.APPLE_PROVISIONING_PROFILE_BASE64 }}" ]; then missing=1; fi
-          if [ -z "${{ secrets.APPLE_PROVISIONING_PROFILE_NAME }}" ]; then missing=1; fi
-          if [ -z "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}" ]; then missing=1; fi
-          if [ -z "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}" ]; then missing=1; fi
-          if [ -z "${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}" ]; then missing=1; fi
-          if [ "$missing" -eq 1 ]; then
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Skip release steps (missing secrets)
-        if: ${{ steps.signing.outputs.enabled != 'true' }}
-        run: echo "Signing secrets missing; skipping release steps."
-
       - name: Select Xcode
         run: |
           if [ -d "/Applications/Xcode_15.4.app" ]; then
@@ -249,6 +226,29 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+
+      - name: Check signing secrets
+        id: signing
+        run: |
+          missing=0
+          if [ -z "${{ secrets.APPLE_TEAM_ID }}" ]; then missing=1; fi
+          if [ -z "${{ secrets.APPLE_KEYCHAIN_PASSWORD }}" ]; then missing=1; fi
+          if [ -z "${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}" ]; then missing=1; fi
+          if [ -z "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" ]; then missing=1; fi
+          if [ -z "${{ secrets.APPLE_PROVISIONING_PROFILE_BASE64 }}" ]; then missing=1; fi
+          if [ -z "${{ secrets.APPLE_PROVISIONING_PROFILE_NAME }}" ]; then missing=1; fi
+          if [ -z "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}" ]; then missing=1; fi
+          if [ -z "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}" ]; then missing=1; fi
+          if [ -z "${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}" ]; then missing=1; fi
+          if [ "$missing" -eq 1 ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip release steps (missing secrets)
+        if: ${{ steps.signing.outputs.enabled != 'true' }}
+        run: echo "Signing secrets missing; skipping release steps."
 
       - name: Select Xcode
         run: |

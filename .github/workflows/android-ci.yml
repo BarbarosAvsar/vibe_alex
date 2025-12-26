@@ -40,6 +40,10 @@ jobs:
             echo "enabled=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Ensure Gradle wrapper is executable
+        working-directory: android
+        run: chmod +x ./gradlew
+
       - name: Build, Lint, and Test
         working-directory: android
         run: ./gradlew :core-domain:test :core-data:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug

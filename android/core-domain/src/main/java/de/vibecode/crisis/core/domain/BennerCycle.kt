@@ -38,7 +38,11 @@ class BennerCycleService(
     private val goodSpan: Int = 7,
     private val hardSpan: Int = 11
 ) {
-    fun makeEntries(): List<BennerCycleEntry> {
+    private val cachedEntries: List<BennerCycleEntry> by lazy { buildEntries() }
+
+    fun makeEntries(): List<BennerCycleEntry> = cachedEntries
+
+    private fun buildEntries(): List<BennerCycleEntry> {
         val panicYears = makePanicYears(range.last + hardSpan + (intervals.maxOrNull() ?: 20))
         val entries = mutableListOf<BennerCycleEntry>()
 

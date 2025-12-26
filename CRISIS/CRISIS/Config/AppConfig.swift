@@ -6,6 +6,9 @@ enum AppConfig {
     static let focusCountryISO = "DEU"
     static let consultationEndpoint = URL(string: "https://api.midainvest.com/contact")!
 
+    // Add sha256/<base64> pins keyed by hostname when you are ready to enforce pinning.
+    static let certificatePins: [String: [String]] = [:]
+
     static var newsAPIKey: String? {
         if let envKey = ProcessInfo.processInfo.environment["NEWSAPI_API_KEY"], envKey.isEmpty == false {
             return envKey

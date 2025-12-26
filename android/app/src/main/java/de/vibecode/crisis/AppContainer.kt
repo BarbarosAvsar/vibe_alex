@@ -18,6 +18,7 @@ import de.vibecode.crisis.core.data.MetalPriceService
 import de.vibecode.crisis.core.data.PoliticalFinancialNewsFeed
 import de.vibecode.crisis.core.data.NewsCache
 import de.vibecode.crisis.core.data.UserPreferences
+import de.vibecode.crisis.core.data.WorldBankClient
 import de.vibecode.crisis.core.domain.BennerCycleService
 import de.vibecode.crisis.core.network.NetworkClient
 
@@ -29,6 +30,7 @@ class AppContainer(context: Context) {
     private val goldPriceApi = NetworkClient.goldPriceApi()
     private val newsApi = NetworkClient.newsApi()
     private val newsCache = NewsCache(appContext, json)
+    private val worldBankClient = WorldBankClient(okHttpClient, json)
 
     val userPreferences = UserPreferences(appContext)
     val bennerCycleService = BennerCycleService()
@@ -38,8 +40,8 @@ class AppContainer(context: Context) {
     val crisisMonitorService = CrisisMonitorService(
         listOf(
             PoliticalFinancialNewsFeed(newsApi, BuildConfig.NEWS_API_KEY.ifBlank { null }, newsCache),
-            GeopoliticalAlertCrisisFeed(okHttpClient, json),
-            FinancialStressCrisisFeed(okHttpClient, json)
+            GeopoliticalAlertCrisisFeed(worldBankClient),
+            FinancialStressCrisisFeed(worldBankClient)
         )
     )
 

@@ -11,10 +11,11 @@ struct CrisisMonitorService {
         if let feeds {
             self.feeds = feeds
         } else {
+            let worldBankClient = WorldBankClient(client: client)
             self.feeds = [
                 PoliticalFinancialNewsFeed(client: client, apiKey: AppConfig.newsAPIKey),
-                GeopoliticalAlertCrisisFeed(client: client),
-                FinancialStressCrisisFeed(client: client)
+                GeopoliticalAlertCrisisFeed(client: worldBankClient),
+                FinancialStressCrisisFeed(client: worldBankClient)
             ]
         }
     }
@@ -150,12 +151,11 @@ struct PoliticalFinancialNewsFeed: CrisisFeedService {
 }
 
 struct GeopoliticalAlertCrisisFeed: CrisisFeedService {
-    private let client: HTTPClienting
-    private let decoder = JSONDecoder()
+    private let client: WorldBankClient
     private let watchList: [(name: String, code: String)]
 
     init(
-        client: HTTPClienting = HTTPClient(),
+        client: WorldBankClient = WorldBankClient(),
         watchList: [(String, String)] = [("Ukraine", "UKR"), ("Israel", "ISR"), ("Taiwan", "TWN"), ("South Africa", "ZAF"), ("Germany", "DEU")]
     ) {
         self.client = client
@@ -181,23 +181,20 @@ struct GeopoliticalAlertCrisisFeed: CrisisFeedService {
     }
 
     private func fetchGovernanceAlert(for entry: (name: String, code: String)) async throws -> CrisisEvent? {
-        guard let url = URL(string: "https://api.worldbank.org/v2/country/\(entry.code)/indicator/PV.PSR.PIND?format=json&per_page=2") else {
-            return nil
-        }
-        guard let data = try? await client.get(url),
-              let response = try? decoder.decode(WorldBankValueResponse.self, from: data),
-              let latest = response.entries.first(where: { $0.value != nil }),
-              let value = latest.value,
-              value < CrisisThresholds.politicalInstabilityCutoff else {
+        guard let latest = try await client.fetchLatestValue(
+            countryCode: entry.code,
+            indicatorCode: "PV.PSR.PIND"
+        ),
+        latest.value < CrisisThresholds.politicalInstabilityCutoff else {
             return nil
         }
 
-        let yearDate = makeYearDate(from: latest.date)
+        let yearDate = makeYearDate(from: latest.year)
 
         return CrisisEvent(
             id: "geo-\(entry.code)",
             title: "Politische Instabilität \(entry.name)",
-            summary: "Governance-Index \(value.formatted(.number.precision(.fractionLength(2))))",
+            summary: "Governance-Index \(latest.value.formatted(.number.precision(.fractionLength(2))))",
             region: entry.name,
             occurredAt: yearDate,
             publishedAt: yearDate,
@@ -205,18 +202,17 @@ struct GeopoliticalAlertCrisisFeed: CrisisFeedService {
             sourceName: "World Bank",
             source: .worldBankGovernance,
             category: .geopolitical,
-            severityScore: abs(value) * 2
+            severityScore: abs(latest.value) * 2
         )
     }
 }
 
 struct FinancialStressCrisisFeed: CrisisFeedService {
-    private let client: HTTPClienting
-    private let decoder = JSONDecoder()
+    private let client: WorldBankClient
     private let watchList: [(name: String, code: String)]
 
     init(
-        client: HTTPClienting = HTTPClient(),
+        client: WorldBankClient = WorldBankClient(),
         watchList: [(String, String)] = [("Germany", "DEU"), ("United States", "USA"), ("United Kingdom", "GBR"), ("Japan", "JPN"), ("China", "CHN")]
     ) {
         self.client = client
@@ -242,23 +238,20 @@ struct FinancialStressCrisisFeed: CrisisFeedService {
     }
 
     private func fetchAlert(for entry: (name: String, code: String)) async throws -> CrisisEvent? {
-        guard let url = URL(string: "https://api.worldbank.org/v2/country/\(entry.code)/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=2") else {
-            return nil
-        }
-        guard let data = try? await client.get(url),
-              let response = try? decoder.decode(WorldBankValueResponse.self, from: data),
-              let latest = response.entries.first(where: { $0.value != nil }),
-              let value = latest.value,
-              value < CrisisThresholds.recessionGrowthCutoff else {
+        guard let latest = try await client.fetchLatestValue(
+            countryCode: entry.code,
+            indicatorCode: "NY.GDP.MKTP.KD.ZG"
+        ),
+        latest.value < CrisisThresholds.recessionGrowthCutoff else {
             return nil
         }
 
-        let yearDate = makeYearDate(from: latest.date)
+        let yearDate = makeYearDate(from: latest.year)
 
         return CrisisEvent(
             id: "finance-\(entry.code)",
             title: "Rezession \(entry.name)",
-            summary: "Reales BIP-Wachstum \(value.formatted(.number.precision(.fractionLength(1))))%",
+            summary: "Reales BIP-Wachstum \(latest.value.formatted(.number.precision(.fractionLength(1))))%",
             region: entry.name,
             occurredAt: yearDate,
             publishedAt: yearDate,
@@ -266,7 +259,7 @@ struct FinancialStressCrisisFeed: CrisisFeedService {
             sourceName: "World Bank",
             source: .worldbankFinance,
             category: .financial,
-            severityScore: abs(value)
+            severityScore: abs(latest.value)
         )
     }
 }
@@ -300,6 +293,34 @@ private struct WorldBankValueResponse: Decodable {
         var container = try decoder.unkeyedContainer()
         _ = try? container.decode(DecodableIgnored.self)
         entries = try container.decode([Entry].self)
+    }
+}
+
+struct WorldBankClient {
+    struct LatestValue {
+        let year: String
+        let value: Double
+    }
+
+    private let client: HTTPClienting
+    private let decoder: JSONDecoder
+
+    init(client: HTTPClienting = HTTPClient(), decoder: JSONDecoder = JSONDecoder()) {
+        self.client = client
+        self.decoder = decoder
+    }
+
+    func fetchLatestValue(countryCode: String, indicatorCode: String) async throws -> LatestValue? {
+        guard let url = URL(string: "https://api.worldbank.org/v2/country/\(countryCode)/indicator/\(indicatorCode)?format=json&per_page=2") else {
+            return nil
+        }
+        let data = try await client.get(url)
+        let response = try decoder.decode(WorldBankValueResponse.self, from: data)
+        guard let latest = response.entries.first(where: { $0.value != nil }),
+              let value = latest.value else {
+            return nil
+        }
+        return LatestValue(year: latest.date, value: value)
     }
 }
 

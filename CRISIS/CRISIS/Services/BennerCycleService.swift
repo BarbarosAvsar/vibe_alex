@@ -1,17 +1,24 @@
 import Foundation
 
 struct BennerCycleService {
-    private let initialPanicYear = 1700
-    private let intervals = [18, 20, 16]
+    private static let initialPanicYear = 1700
+    private static let intervals = [18, 20, 16]
+    private static let goodSpan = 7
+    private static let hardSpan = 11
+
     private let range: ClosedRange<Int>
-    private let goodSpan = 7
-    private let hardSpan = 11
+    private let entriesCache: [BennerCycleEntry]
 
     init(range: ClosedRange<Int> = 1780...2150) {
         self.range = range
+        self.entriesCache = Self.buildEntries(for: range)
     }
 
     func makeEntries() -> [BennerCycleEntry] {
+        entriesCache
+    }
+
+    private static func buildEntries(for range: ClosedRange<Int>) -> [BennerCycleEntry] {
         let panicYears = makePanicYears(upTo: range.upperBound + hardSpan + (intervals.max() ?? 20))
         var entries: [BennerCycleEntry] = []
 
@@ -70,7 +77,7 @@ struct BennerCycleService {
         return entries.sorted { $0.year < $1.year }
     }
 
-    private func makePanicYears(upTo limit: Int) -> [Int] {
+    private static func makePanicYears(upTo limit: Int) -> [Int] {
         var years = [initialPanicYear]
         var index = 0
 

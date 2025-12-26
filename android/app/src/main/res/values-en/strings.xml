@@ -40,8 +40,8 @@
     <string name="comparison_macro_no_data">No macro data available.</string>
     <string name="comparison_scenario_title">Scenario lab</string>
     <string name="comparison_scenario_subtitle">Adjust inflation, growth and defense</string>
-    <string name="comparison_scenario_inflation">Inflation (%)</string>
-    <string name="comparison_scenario_growth">Growth (%)</string>
+    <string name="comparison_scenario_inflation">Inflation (%%)</string>
+    <string name="comparison_scenario_growth">Growth (%%)</string>
     <string name="comparison_scenario_defense">Defense (%% GDP)</string>
     <string name="comparison_scenario_equities">Equities</string>
     <string name="comparison_scenario_real_estate">Real estate</string>
@@ -229,13 +229,13 @@
     <string name="asset_silver">Silver</string>
     <string name="macro_indicator_inflation_title">Inflation</string>
     <string name="macro_indicator_inflation_description">Annual consumer price inflation (World Bank)</string>
-    <string name="macro_indicator_inflation_unit">%</string>
+    <string name="macro_indicator_inflation_unit">%%</string>
     <string name="macro_indicator_growth_title">Growth</string>
     <string name="macro_indicator_growth_description">Real GDP growth</string>
-    <string name="macro_indicator_growth_unit">%</string>
+    <string name="macro_indicator_growth_unit">%%</string>
     <string name="macro_indicator_defense_title">Defense</string>
     <string name="macro_indicator_defense_description">Military expenditure as a share of GDP</string>
-    <string name="macro_indicator_defense_unit">% GDP</string>
+    <string name="macro_indicator_defense_unit">%% GDP</string>
     <string name="benner_phase_panic_title">Panic year</string>
     <string name="benner_phase_panic_subtitle">Extreme selling pressure - Phase A</string>
     <string name="benner_phase_panic_guidance">Historically, these years were followed by sharp market declines. Secure liquidity and limit risk.</string>

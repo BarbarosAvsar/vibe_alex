@@ -45,8 +45,8 @@
     <string name="comparison_macro_no_data">Keine Makro-Daten verfügbar.</string>
     <string name="comparison_scenario_title">Szenario-Labor</string>
     <string name="comparison_scenario_subtitle">Inflation, Wachstum und Verteidigung justieren</string>
-    <string name="comparison_scenario_inflation">Inflation (%)</string>
-    <string name="comparison_scenario_growth">Wachstum (%)</string>
+    <string name="comparison_scenario_inflation">Inflation (%%)</string>
+    <string name="comparison_scenario_growth">Wachstum (%%)</string>
     <string name="comparison_scenario_defense">Verteidigung (%% BIP)</string>
     <string name="comparison_scenario_equities">Aktien</string>
     <string name="comparison_scenario_real_estate">Immobilien</string>
@@ -255,13 +255,13 @@
 
     <string name="macro_indicator_inflation_title">Inflation</string>
     <string name="macro_indicator_inflation_description">Jährliche Verbraucherpreisinflation laut Weltbank</string>
-    <string name="macro_indicator_inflation_unit">%</string>
+    <string name="macro_indicator_inflation_unit">%%</string>
     <string name="macro_indicator_growth_title">Wachstum</string>
     <string name="macro_indicator_growth_description">Reales BIP-Wachstum</string>
-    <string name="macro_indicator_growth_unit">%</string>
+    <string name="macro_indicator_growth_unit">%%</string>
     <string name="macro_indicator_defense_title">Verteidigung</string>
     <string name="macro_indicator_defense_description">Militärausgaben im Verhältnis zum BIP</string>
-    <string name="macro_indicator_defense_unit">% BIP</string>
+    <string name="macro_indicator_defense_unit">%% BIP</string>
 
     <string name="benner_phase_panic_title">Panikjahr</string>
     <string name="benner_phase_panic_subtitle">Extremer Verkaufsdruck - Phase A</string>

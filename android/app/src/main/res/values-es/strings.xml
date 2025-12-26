@@ -40,8 +40,8 @@
     <string name="comparison_macro_no_data">No hay datos macro disponibles.</string>
     <string name="comparison_scenario_title">Laboratorio de escenarios</string>
     <string name="comparison_scenario_subtitle">Ajustar inflación, crecimiento y defensa</string>
-    <string name="comparison_scenario_inflation">Inflación (%)</string>
-    <string name="comparison_scenario_growth">Crecimiento (%)</string>
+    <string name="comparison_scenario_inflation">Inflación (%%)</string>
+    <string name="comparison_scenario_growth">Crecimiento (%%)</string>
     <string name="comparison_scenario_defense">Defensa (%% PIB)</string>
     <string name="comparison_scenario_equities">Acciones</string>
     <string name="comparison_scenario_real_estate">Inmobiliario</string>
@@ -229,13 +229,13 @@
     <string name="asset_silver">Plata</string>
     <string name="macro_indicator_inflation_title">Inflación</string>
     <string name="macro_indicator_inflation_description">Inflación anual de precios al consumidor (Banco Mundial)</string>
-    <string name="macro_indicator_inflation_unit">%</string>
+    <string name="macro_indicator_inflation_unit">%%</string>
     <string name="macro_indicator_growth_title">Crecimiento</string>
     <string name="macro_indicator_growth_description">Crecimiento real del PIB</string>
-    <string name="macro_indicator_growth_unit">%</string>
+    <string name="macro_indicator_growth_unit">%%</string>
     <string name="macro_indicator_defense_title">Defensa</string>
     <string name="macro_indicator_defense_description">Gasto militar como porcentaje del PIB</string>
-    <string name="macro_indicator_defense_unit">% PIB</string>
+    <string name="macro_indicator_defense_unit">%% PIB</string>
     <string name="benner_phase_panic_title">Año de pánico</string>
     <string name="benner_phase_panic_subtitle">Presión de venta extrema - Fase A</string>
     <string name="benner_phase_panic_guidance">Históricamente, estos años fueron seguidos por fuertes caídas del mercado. Asegure liquidez y limite el riesgo.</string>

@@ -1,0 +1,9 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "alpha-value-notation": "number",
+    "color-function-notation": "legacy",
+    "color-hex-length": "long",
+    "font-family-no-missing-generic-family-keyword": null
+  }
+}

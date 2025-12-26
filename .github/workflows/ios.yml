@@ -1,0 +1,97 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "CRISIS/**"
+      - "CRISISTests/**"
+      - ".github/workflows/ios.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "CRISIS/**"
+      - "CRISISTests/**"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build-test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Xcode 15.4
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.4"
+      - name: Cache Xcode data
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-xcode-${{ hashFiles('**/Package.resolved', 'CRISIS/CRISIS.xcodeproj/project.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-xcode-
+      - name: Resolve packages
+        run: xcodebuild -resolvePackageDependencies -project CRISIS/CRISIS.xcodeproj -scheme CRISIS
+      - name: Run tests (iPhone 15)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project CRISIS/CRISIS.xcodeproj \
+            -scheme CRISIS \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -enableCodeCoverage YES \
+            -parallel-testing-enabled YES \
+            -resultBundlePath build/TestResults.xcresult \
+            clean test
+        env:
+          NSUnbufferedIO: "YES"
+      - name: Install SwiftLint
+        run: brew install swiftlint
+      - name: SwiftLint
+        run: swiftlint --strict
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-test-results
+          path: build/TestResults.xcresult
+
+  codeql:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: macos-14
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Xcode 15.4
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.4"
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: swift
+          build-mode: manual
+      - name: Build for CodeQL
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project CRISIS/CRISIS.xcodeproj \
+            -scheme CRISIS \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            build
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3

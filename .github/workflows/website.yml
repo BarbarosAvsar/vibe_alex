@@ -1,30 +1,57 @@
-name: pages
+name: Website CI
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
     paths:
       - "docs/**"
-      - ".github/workflows/pages.yml"
+      - ".github/workflows/website.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - ".github/workflows/website.yml"
   workflow_dispatch:
+
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  lint-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        working-directory: docs
+        run: npm install
+      - name: Lint HTML
+        working-directory: docs
+        run: npx htmlhint "**/*.html"
+      - name: Lint CSS
+        working-directory: docs
+        run: npx stylelint "**/*.css"
+      - name: Lint JavaScript
+        working-directory: docs
+        run: npx eslint "**/*.js"
+      - name: Link check
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --no-progress --exclude-mail docs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: npm audit
+        working-directory: docs
+        run: npm audit --omit=dev
       - name: Check Pages enablement
         id: pages-check
         uses: actions/github-script@v7
@@ -53,9 +80,8 @@ jobs:
         env:
           PAGES_TOKEN: ${{ secrets.PAGES_TOKEN }}
       - name: Configure Pages
-        id: configure-pages
-        uses: actions/configure-pages@v5
         if: ${{ steps.pages-check.outputs.result == 'enabled' || env.PAGES_TOKEN_EXISTS == 'true' }}
+        uses: actions/configure-pages@v5
         with:
           enablement: true
           token: ${{ secrets.PAGES_TOKEN || github.token }}
@@ -64,7 +90,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs
-      - id: deployment
+      - name: Deploy to Pages
         if: ${{ steps.pages-check.outputs.result == 'enabled' || env.PAGES_TOKEN_EXISTS == 'true' }}
         uses: actions/deploy-pages@v4
       - name: Pages not enabled

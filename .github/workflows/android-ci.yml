@@ -31,12 +31,21 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Check release signing secrets
+        id: signing
+        run: |
+          if [ -z "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build, Lint, and Test
         working-directory: android
         run: ./gradlew :core-domain:test :core-data:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
 
       - name: Prepare release keystore
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        if: ${{ steps.signing.outputs.enabled == 'true' }}
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/release.keystore
           echo "ANDROID_KEYSTORE_PATH=$GITHUB_WORKSPACE/android/release.keystore" >> $GITHUB_ENV
@@ -45,6 +54,6 @@ jobs:
           echo "ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Build Release APK (signed)
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        if: ${{ steps.signing.outputs.enabled == 'true' }}
         working-directory: android
         run: ./gradlew :app:assembleRelease

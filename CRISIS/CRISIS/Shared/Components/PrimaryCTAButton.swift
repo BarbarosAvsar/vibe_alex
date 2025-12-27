@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct PrimaryCTAButton: View {
     @Environment(LanguageSettings.self) private var languageSettings
     let title: String?

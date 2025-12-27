@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct BennerCycleView: View {
     let entries: [BennerCycleEntry]
     @Environment(LanguageSettings.self) private var languageSettings
@@ -32,6 +33,7 @@ struct BennerCycleView: View {
     }
 }
 
+@MainActor
 private struct BennerCycleFocusCard: View {
     let entry: BennerCycleEntry
     let currentYear: Int
@@ -100,6 +102,7 @@ private struct BennerCycleTimeline: View {
     }
 }
 
+@MainActor
 private struct BennerCyclePill: View {
     let entry: BennerCycleEntry
     let isCurrent: Bool

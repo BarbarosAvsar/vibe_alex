@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct OverviewView: View {
     @Environment(AppState.self) private var appState
     @Environment(LanguageSettings.self) private var languageSettings
@@ -154,6 +155,7 @@ struct OverviewView: View {
     }
 }
 
+@MainActor
 private struct MacroKPI: View {
     let indicator: MacroIndicator
     let region: MacroRegion

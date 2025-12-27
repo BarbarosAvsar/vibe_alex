@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct SyncStatusBanner: View {
     let notice: SyncNotice
     @Environment(LanguageSettings.self) private var languageSettings

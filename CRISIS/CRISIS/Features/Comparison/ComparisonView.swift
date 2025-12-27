@@ -203,7 +203,7 @@ struct ComparisonView: View {
         }
         let years = Double(last.year - first.year)
         let growth = pow(max(last.value, 0.1) / max(first.value, 0.1), 1 / years) - 1
-        let formatter = FloatingPointFormatStyle<Double>.percent
+        let formatter = FloatingPointFormatStyle<Double>.Percent()
             .precision(.fractionLength(1))
             .locale(languageSettings.selectedLanguage.locale)
         return growth.formatted(formatter)
@@ -215,7 +215,7 @@ struct ComparisonView: View {
             return Localization.text("not_available_short", language: languageSettings.selectedLanguage)
         }
         let delta = (lastProjection.value - lastHistory.value) / max(lastHistory.value, 0.1)
-        let formatter = FloatingPointFormatStyle<Double>.percent
+        let formatter = FloatingPointFormatStyle<Double>.Percent()
             .precision(.fractionLength(1))
             .locale(languageSettings.selectedLanguage.locale)
         return delta.formatted(formatter)

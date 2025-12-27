@@ -43,6 +43,8 @@ jobs:
         run: chmod +x android/gradlew
       - name: Run lint, tests, and build
         working-directory: android
+        env:
+          _JAVA_OPTIONS: "-Xmx5g"
         run: ./gradlew :core-domain:test :core-data:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
       - name: Detect Snyk token
         run: |

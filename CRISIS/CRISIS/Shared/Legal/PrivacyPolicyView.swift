@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct PrivacyPolicyView: View {
     @Environment(LanguageSettings.self) private var languageSettings
 

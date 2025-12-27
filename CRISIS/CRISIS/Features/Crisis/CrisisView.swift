@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 struct CrisisView: View {
     @Environment(AppState.self) private var appState
     @Environment(LanguageSettings.self) private var languageSettings
@@ -108,6 +109,7 @@ struct CrisisView: View {
     }
 }
 
+@MainActor
 private struct CrisisEventCard: View {
     let event: CrisisEvent
     @Environment(LanguageSettings.self) private var languageSettings

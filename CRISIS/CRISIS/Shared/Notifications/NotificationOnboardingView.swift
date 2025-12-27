@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct NotificationOnboardingView: View {
     let status: NotificationAuthorizationState
     let enableAction: () async -> Bool
@@ -135,6 +136,7 @@ private extension NotificationOnboardingView {
     }
 }
 
+@MainActor
 struct NotificationPermissionBanner: View {
     let status: NotificationAuthorizationState
     let action: () -> Void

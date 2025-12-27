@@ -30,16 +30,15 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-          cache: gradle
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
       - name: Accept SDK licenses
         run: yes | sdkmanager --licenses
       - name: Configure Gradle caching
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
           build-root-directory: android
-          gradle-home-cache-cleanup: false
+          cache-cleanup: never
       - name: Make Gradle wrapper executable
         run: chmod +x android/gradlew
       - name: Run lint, tests, and build
@@ -56,7 +55,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Snyk security scan
         if: ${{ env.SNYK_TOKEN_EXISTS == 'true' }}
-        uses: snyk/actions/gradle-jdk17@master
+        uses: snyk/actions/gradle-jdk17@v1
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:

@@ -21,14 +21,12 @@ struct AdaptiveStack<Content: View>: View {
     }
 
     var body: some View {
-        let primary = AnyLayout(prefersHorizontal
-            ? HStackLayout(alignment: horizontalAlignment, spacing: spacing)
-            : VStackLayout(alignment: verticalAlignment, spacing: spacing)
-        )
-        let fallback = AnyLayout(prefersHorizontal
-            ? VStackLayout(alignment: verticalAlignment, spacing: spacing)
-            : HStackLayout(alignment: horizontalAlignment, spacing: spacing)
-        )
+        let primary = prefersHorizontal
+            ? AnyLayout(HStackLayout(alignment: horizontalAlignment, spacing: spacing))
+            : AnyLayout(VStackLayout(alignment: verticalAlignment, spacing: spacing))
+        let fallback = prefersHorizontal
+            ? AnyLayout(VStackLayout(alignment: verticalAlignment, spacing: spacing))
+            : AnyLayout(HStackLayout(alignment: horizontalAlignment, spacing: spacing))
 
         ViewThatFits(in: .horizontal) {
             primary { content() }

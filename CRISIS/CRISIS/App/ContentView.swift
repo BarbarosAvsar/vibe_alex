@@ -23,7 +23,7 @@ struct ContentView: View {
                 }
                 if appState.notificationStatus.requiresOnboarding {
                     NotificationPermissionBanner(status: appState.notificationStatus) {
-                        if (appState.notificationStatus == .denied || appState.notificationStatus == .provisional),
+                        if appState.notificationStatus == .denied || appState.notificationStatus == .provisional,
                            let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                             UIApplication.shared.open(settingsURL)
                         } else {
@@ -119,4 +119,3 @@ extension ContentView {
         case consultation
     }
 }
-

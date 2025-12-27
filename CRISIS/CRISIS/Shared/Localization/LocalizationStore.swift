@@ -267,7 +267,7 @@ enum LocalizationStore {
             "crisis_summary_headline_count_one": "%d Hochrisiko-Ereignis aktiv",
             "crisis_summary_headline_count_other": "%d Hochrisiko-Ereignisse aktiv",
             "crisis_summary_highlight_region_one": "%1$dx Ereignis in %2$@",
-            "crisis_summary_highlight_region_other": "%1$dx Ereignisse in %2$@",
+            "crisis_summary_highlight_region_other": "%1$dx Ereignisse in %2$@"
         ],
 
         .english: [
@@ -535,7 +535,7 @@ enum LocalizationStore {
             "crisis_summary_headline_count_one": "%d high-risk event active",
             "crisis_summary_headline_count_other": "%d high-risk events active",
             "crisis_summary_highlight_region_one": "%1$dx event in %2$@",
-            "crisis_summary_highlight_region_other": "%1$dx events in %2$@",
+            "crisis_summary_highlight_region_other": "%1$dx events in %2$@"
         ],
 
         .french: [
@@ -803,7 +803,7 @@ enum LocalizationStore {
             "crisis_summary_headline_count_one": "%d événement à haut risque actif",
             "crisis_summary_headline_count_other": "%d événements à haut risque actifs",
             "crisis_summary_highlight_region_one": "%1$dx événement en %2$@",
-            "crisis_summary_highlight_region_other": "%1$dx événements en %2$@",
+            "crisis_summary_highlight_region_other": "%1$dx événements en %2$@"
         ],
 
         .spanish: [
@@ -1071,7 +1071,7 @@ enum LocalizationStore {
             "crisis_summary_headline_count_one": "%d evento de alto riesgo activo",
             "crisis_summary_headline_count_other": "%d eventos de alto riesgo activos",
             "crisis_summary_highlight_region_one": "%1$dx evento en %2$@",
-            "crisis_summary_highlight_region_other": "%1$dx eventos en %2$@",
-        ],
+            "crisis_summary_highlight_region_other": "%1$dx eventos en %2$@"
+        ]
     ]
 }

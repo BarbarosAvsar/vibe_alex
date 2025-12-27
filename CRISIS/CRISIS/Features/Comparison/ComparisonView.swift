@@ -314,5 +314,3 @@ private enum ComparisonMode: String, CaseIterable, Identifiable {
         }
     }
 }
-
-

@@ -12,12 +12,12 @@ import XCTest
 
 final class CrisisFeedTests: XCTestCase {
     func testNewsFeedParsesArticles() async throws {
-        let financialPayload = """
+        let financialPayload = Data("""
         {"articles":[{"source":{"name":"Reuters"},"title":"Banken geraten unter Druck","description":"Stress im Bankensektor","publishedAt":"2024-01-01T12:00:00Z"}]}
-        """.data(using: .utf8)!
-        let politicalPayload = """
+        """.utf8)
+        let politicalPayload = Data("""
         {"articles":[{"source":{"name":"AP"},"title":"Regierungskrise in Europa","description":"Koalition gerät ins Wanken","publishedAt":"2024-01-02T08:00:00Z"}]}
-        """.data(using: .utf8)!
+        """.utf8)
         let businessURL = Self.topHeadlinesURL.absoluteString
         let politicsURL = Self.politicsURL.absoluteString
         let stub = StubHTTPClient(responses: [
@@ -73,14 +73,14 @@ final class CrisisFeedTests: XCTestCase {
     }
 
     private static func makeWorldBankResponse(value: Double) -> Data {
-        """
+        Data("""
         [
           {"page":1},
           [
             {"date":"2023","value":\(value)}
           ]
         ]
-        """.data(using: .utf8)!
+        """.utf8)
     }
 
     private static var topHeadlinesURL: URL {
@@ -140,4 +140,3 @@ private final class StubHTTPClient: HTTPClienting {
         return try await get(url)
     }
 }
-

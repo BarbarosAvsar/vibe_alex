@@ -40,4 +40,3 @@ final class BennerCycleServiceTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(sample?.phaseLength ?? 0, 8)
     }
 }
-

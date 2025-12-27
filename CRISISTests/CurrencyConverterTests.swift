@@ -36,4 +36,3 @@ final class CurrencyConverterTests: XCTestCase {
         XCTAssertEqual(converter.convert(amount: 80, from: "USD", to: .eur), 64, accuracy: 0.001)
     }
 }
-

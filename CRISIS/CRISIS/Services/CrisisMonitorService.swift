@@ -66,10 +66,8 @@ struct PoliticalFinancialNewsFeed: CrisisFeedService {
         var unique: [CrisisEvent] = []
         var seenIDs = Set<String>()
 
-        for event in merged {
-            if seenIDs.insert(event.id).inserted {
-                unique.append(event)
-            }
+        for event in merged where seenIDs.insert(event.id).inserted {
+            unique.append(event)
         }
 
         // Preserve the order in which the different feeds were combined so that we keep

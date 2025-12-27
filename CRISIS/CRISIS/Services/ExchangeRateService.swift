@@ -84,7 +84,7 @@ private final class ECBRateParser: NSObject, XMLParserDelegate {
         parser.parse()
     }
 
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
         if elementName == "Cube", let timeValue = attributeDict["time"] {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"

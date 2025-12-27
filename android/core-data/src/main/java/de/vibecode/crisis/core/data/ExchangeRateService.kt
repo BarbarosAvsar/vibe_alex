@@ -16,11 +16,10 @@ import okhttp3.Request
 class ExchangeRateService(private val client: OkHttpClient) {
     suspend fun fetchRates(): ExchangeRates {
         val body = getBody("https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD")
-        val response = Json { ignoreUnknownKeys = true }.decodeFromString(FrankfurterResponse.serializer(), body)
-        val usdRate = response.rates["USD"] ?: error("Missing USD rate")
-        val timestamp = response.date?.let {
-            runCatching { LocalDate.parse(it).atStartOfDayIn(TimeZone.UTC) }.getOrNull()
-        } ?: Instant.fromEpochMilliseconds(0)
+        val parser = FrankfurterRateParser()
+        parser.parse(body)
+        val usdRate = parser.rates["USD"] ?: error("Missing USD rate")
+        val timestamp = parser.date ?: Instant.fromEpochMilliseconds(0)
         return ExchangeRates(base = DisplayCurrency.EUR, timestamp = timestamp, values = mapOf(DisplayCurrency.USD to usdRate))
     }
 
@@ -28,6 +27,21 @@ class ExchangeRateService(private val client: OkHttpClient) {
         val request = Request.Builder().url(url).build()
         client.newCall(request).execute().use { response ->
             response.body?.string().orEmpty()
+        }
+    }
+}
+
+internal class FrankfurterRateParser {
+    var rates: Map<String, Double> = emptyMap()
+        private set
+    var date: Instant? = null
+        private set
+
+    fun parse(body: String) {
+        val response = Json { ignoreUnknownKeys = true }.decodeFromString(FrankfurterResponse.serializer(), body)
+        rates = response.rates
+        date = response.date?.let {
+            runCatching { LocalDate.parse(it).atStartOfDayIn(TimeZone.UTC) }.getOrNull()
         }
     }
 }

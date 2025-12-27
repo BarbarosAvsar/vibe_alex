@@ -1,4 +1,5 @@
-﻿(() => {
+﻿/* global ApexCharts */
+(() => {
   "use strict";
 
   const STORAGE_KEYS = {

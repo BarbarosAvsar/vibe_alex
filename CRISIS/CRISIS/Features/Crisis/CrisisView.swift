@@ -122,7 +122,7 @@ struct CrisisView: View {
             VStack(alignment: .leading, spacing: 16) {
                 TimelineIntroCard(
                     title: Localization.text("crisis_timeline_intro_title", language: language),
-                    body: Localization.text("crisis_timeline_intro_body", language: language)
+                    bodyText: Localization.text("crisis_timeline_intro_body", language: language)
                 )
 
                 ForEach(events) { event in
@@ -135,7 +135,7 @@ struct CrisisView: View {
 
                 TimelineInsightCard(
                     title: Localization.text("crisis_timeline_insight_title", language: language),
-                    body: Localization.text("crisis_timeline_insight_body", language: language)
+                    bodyText: Localization.text("crisis_timeline_insight_body", language: language)
                 )
             }
         }
@@ -226,7 +226,7 @@ private struct CrisisEventCard: View {
 
 private struct TimelineIntroCard: View {
     let title: String
-    let body: String
+    let bodyText: String
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -235,7 +235,7 @@ private struct TimelineIntroCard: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.headline)
-                Text(body)
+                Text(bodyText)
                     .font(.subheadline)
                     .foregroundStyle(Theme.textSecondary)
             }
@@ -246,13 +246,13 @@ private struct TimelineIntroCard: View {
 
 private struct TimelineInsightCard: View {
     let title: String
-    let body: String
+    let bodyText: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.headline)
-            Text(body)
+            Text(bodyText)
                 .font(.subheadline)
                 .foregroundStyle(Theme.textSecondary)
         }

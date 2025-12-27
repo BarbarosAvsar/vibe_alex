@@ -48,19 +48,20 @@ class ParsingTests {
     }
 
     @Test
-    fun `ecb xml parsing extracts date and usd rate`() {
-        val xml = """
-            <gesmes:Envelope xmlns:gesmes="http://www.gesmes.org/xml/2002-08-01">
-              <Cube>
-                <Cube time="2024-04-10">
-                  <Cube currency="USD" rate="1.1"/>
-                </Cube>
-              </Cube>
-            </gesmes:Envelope>
+    fun `frankfurter json parsing extracts date and usd rate`() {
+        val json = """
+            {
+              "amount": 1.0,
+              "base": "EUR",
+              "date": "2024-04-10",
+              "rates": {
+                "USD": 1.1
+              }
+            }
         """.trimIndent()
 
-        val parser = EcbRateParser()
-        parser.parse(xml)
+        val parser = FrankfurterRateParser()
+        parser.parse(json)
         assertEquals(1.1, parser.rates["USD"] ?: 0.0, 0.0001)
         assertNotNull(parser.date)
         assertEquals(Instant.parse("2024-04-10T00:00:00Z"), parser.date)

@@ -8,15 +8,11 @@ import de.vibecode.crisis.core.model.CrisisWatchlists
 import de.vibecode.crisis.core.model.DataSource
 import de.vibecode.crisis.core.model.WatchlistCountry
 import de.vibecode.crisis.core.network.NewsApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flatMapMerge
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -37,10 +33,11 @@ interface CrisisFeedService {
 
 class CrisisMonitorService(private val feeds: List<CrisisFeedService>) {
     suspend fun fetchEvents(settings: CrisisSettings, limit: Int = 12): List<CrisisEvent> {
-        val results = feeds.asFlow()
-            .flatMapMerge { feed -> flow { emit(feed.fetchEvents(settings)) } }
-            .flatMapConcat { it.asFlow() }
-            .toList()
+        val results = coroutineScope {
+            feeds.map { feed -> async { feed.fetchEvents(settings) } }
+                .awaitAll()
+                .flatten()
+        }
 
         return results.sortedByDescending { it.occurredAt }.take(limit)
     }
@@ -172,14 +169,14 @@ class FinancialStressCrisisFeed(
     }
 }
 
-private data class WorldBankValue(val year: Int, val value: Double)
+internal data class WorldBankValue(val year: Int, val value: Double)
 
 class WorldBankClient(
     private val client: OkHttpClient,
     private val json: Json,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend fun fetchLatestValue(countryCode: String, indicatorCode: String): WorldBankValue? {
+    internal suspend fun fetchLatestValue(countryCode: String, indicatorCode: String): WorldBankValue? {
         val url = "https://api.worldbank.org/v2/country/$countryCode/indicator/$indicatorCode?format=json&per_page=2"
         val body = getBody(url)
         return parseWorldBankValue(body)

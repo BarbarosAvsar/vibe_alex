@@ -9,11 +9,12 @@
     <meta http-equiv="X-Frame-Options" content="DENY" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self' https://data-asg.goldprice.org https://api.worldbank.org https://www.ecb.europa.eu https://stooq.pl https://newsapi.org https://api.midainvest.com; form-action 'self' https://api.midainvest.com; upgrade-insecure-requests"
+      content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://data-asg.goldprice.org https://api.worldbank.org https://www.ecb.europa.eu https://stooq.pl https://newsapi.org https://api.midainvest.com https://api.frankfurter.dev; form-action 'self' https://api.midainvest.com; upgrade-insecure-requests"
     />
     <title>CRISIS 2050</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script defer src="app.js"></script>
   </head>
   <body>
@@ -21,7 +22,9 @@
     <div class="glass-background" aria-hidden="true"></div>
     <div class="app-shell">
       <header class="top-bar">
-        <div class="logo-mark" aria-label="CRISIS 2050" data-i18n="appName" data-i18n-aria="appName">CRISIS 2050</div>
+        <div class="logo-mark">
+          <img src="assets/crisis-logo.svg" alt="CRISIS 2050 logo" class="logo" />
+        </div>
         <div class="top-actions">
           <button class="icon-button" id="refresh-button" aria-label="Daten aktualisieren" data-i18n-aria="refreshAriaLabel">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -126,6 +129,8 @@
               <p data-i18n="crisisHeaderSubtitle">Geopolitische und finanzielle Warnsignale in Echtzeit.</p>
             </div>
           </header>
+
+          <section class="card stack" id="crisis-timeline"></section>
 
           <div class="adaptive-grid">
             <div class="column">

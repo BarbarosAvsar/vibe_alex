@@ -3,7 +3,7 @@
 SwiftUI reference app targeting the newest iOS release (18) that turns the Vibecode prototype into a fully data-backed experience. \
 Key capabilities:
 - Live bullion pricing from GoldPrice.org, macro indicators (inflation, GDP, defense) via the World Bank API, and crisis monitoring sourced from NewsAPI's political/financial headlines plus World Bank governance/finance signals.
-- Currency switching (EUR <-> USD) backed by the ECB reference rates keeps prices aligned with midainvest.com defaults.
+- Currency switching (EUR <-> USD) backed by Frankfurter (ECB-based reference rates) keeps prices aligned with midainvest.com defaults.
 - Unified "Beratung anfragen" CTA that opens an in-app contact form and posts the request to your backend endpoint.
 - Modern tabbed navigation ("Uebersicht", "Vergleich", "Edelmetalle", "Krisen", "Beratung") coated with the new Liquid Glass design guidance from WWDC25 and aligned with Apple's Human Interface Guidelines / Clean Code for Swift conventions.
 - Offline cache + BackgroundTasks-powered refresh keep the dashboard usable without connectivity and trigger local alerts via UserNotifications.
@@ -17,7 +17,7 @@ Key capabilities:
 ## Configuration
 - Update the consultation endpoint in `CRISIS/CRISIS/Config/AppConfig.swift` (default: `https://api.midainvest.com/contact`).
 - Provide a NewsAPI key by adding `NEWSAPI_API_KEY` to your environment or `Info.plist` (see `AppConfig.newsAPIKey`).
-- All other networking happens client-side against public APIs (GoldPrice.org, World Bank, ECB); no additional secrets are required.
+- All other networking happens client-side against public APIs (GoldPrice.org, World Bank, Frankfurter); no additional secrets are required.
 
 ## Android (Jetpack Compose)
 The Android project lives in `android/` and mirrors the iOS data sources and UI flow.
@@ -32,10 +32,15 @@ The Android project lives in `android/` and mirrors the iOS data sources and UI 
 ### Android Configuration
 - Consultation endpoint: `android/core-data/src/main/java/de/vibecode/crisis/core/data/AppConfig.kt`
 - NewsAPI: if `NEWS_API_KEY` is blank, NewsAPI articles are skipped automatically.
-- All other APIs (GoldPrice.org, World Bank, ECB, Stooq) are public and require no keys.
+- All other APIs (GoldPrice.org, World Bank, Frankfurter, Stooq) are public and require no keys.
 
 ## Web (GitHub Pages)
 The web experience lives in `docs/` and mirrors the app UI/flows with static HTML, CSS, and JavaScript.
+
+### Web Highlights
+- ApexCharts-powered comparison charts with SVG fallback handling.
+- Crisis timeline section aligned with the mobile prototype.
+- CRISIS logo embedded in the header for consistent branding.
 
 ### Getting Started (Web)
 1. Serve `docs/` locally (e.g. `python -m http.server --directory docs`).
@@ -48,6 +53,11 @@ The web experience lives in `docs/` and mirrors the app UI/flows with static HTM
 ### Deployment (GitHub Pages)
 - `.github/workflows/pages.yml` publishes `docs/` on pushes to `main`.
 - Enable Pages in GitHub repo settings and select "GitHub Actions" as the source.
+
+## Screenshots (Updated UI)
+![Crisis timeline intro](docs/screenshots/crisis-timeline-intro.png)
+![Crisis timeline cards](docs/screenshots/crisis-timeline-events.png)
+![Crisis timeline insight](docs/screenshots/crisis-timeline-insight.png)
 
 ## Reference Material
 - `reference/apple_documentation.md` - summary of every featured document on developer.apple.com/documentation.

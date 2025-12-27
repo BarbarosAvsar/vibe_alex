@@ -1,5 +1,6 @@
 ﻿<resources>
     <string name="app_name">CRISIS 2050</string>
+    <string name="logo_content_description">CRISIS 2050 Logo</string>
 
     <string name="tab_overview">Übersicht</string>
     <string name="tab_comparison">Vergleich</string>
@@ -90,6 +91,42 @@
     <string name="crisis_detail_source">Quelle: %1$s</string>
     <string name="crisis_detail_open_source">Quelle öffnen</string>
     <string name="crisis_detail_timeline_title">Zeitachse</string>
+    <string name="crisis_timeline_title">Krisen-Timeline</string>
+    <string name="crisis_timeline_subtitle">Historische Krisen und ihre Auswirkungen auf Anlageklassen.</string>
+    <string name="crisis_timeline_intro_title">Lernen Sie aus der Geschichte</string>
+    <string name="crisis_timeline_intro_body">Diese Timeline zeigt, wie Anlageklassen in historischen Krisen reagierten. Edelmetalle erwiesen sich oft als Stabilitaetsanker.</string>
+    <string name="crisis_timeline_impact_title">Auswirkungen auf Anlageklassen</string>
+    <string name="crisis_timeline_insight_title">Historische Erkenntnis</string>
+    <string name="crisis_timeline_insight_body">In grossen Krisen der letzten Jahrzehnte hielten Edelmetalle oft die Kaufkraft oder stiegen. Besonders in Waehrungsreformen und Inflationsphasen waren Gold und Silber der sichere Hafen fuer Vermoegen.</string>
+    <string name="crisis_timeline_disclaimer">Hinweis: Werte sind indikativ und dienen nur der Einordnung.</string>
+    <string name="crisis_timeline_tag_currency">Waehrungsreform</string>
+    <string name="crisis_timeline_tag_inflation">Inflation</string>
+    <string name="crisis_timeline_tag_market">Wirtschaftskrise</string>
+    <string name="crisis_timeline_tag_geopolitical">Geopolitik</string>
+    <string name="crisis_timeline_tag_pandemic">Pandemie</string>
+    <string name="crisis_timeline_tag_forecast">Prognose</string>
+    <string name="crisis_timeline_event_1948_title">Waehrungsreform &amp; Lastenausgleich</string>
+    <string name="crisis_timeline_event_1948_summary">Die deutsche Waehrungsreform entwertete Geldvermoegen; Sachwerte gewannen an Bedeutung.</string>
+    <string name="crisis_timeline_event_1971_title">Nixon Shock</string>
+    <string name="crisis_timeline_event_1971_summary">Aufhebung der Goldbindung des US-Dollars; Goldpreise zogen stark an.</string>
+    <string name="crisis_timeline_event_1973_title">Oelkrise</string>
+    <string name="crisis_timeline_event_1973_summary">Oelpreisschock loeste Inflation und Rezession in westlichen Industrien aus.</string>
+    <string name="crisis_timeline_event_1987_title">Schwarzer Montag</string>
+    <string name="crisis_timeline_event_1987_summary">Der groesste Boersencrash der Nachkriegszeit mit zweistelligen Tagesverlusten.</string>
+    <string name="crisis_timeline_event_1999_title">Euro-Einfuehrung (Buchgeld)</string>
+    <string name="crisis_timeline_event_1999_summary">Start der gemeinsamen Waehrung in Europa; Bargeld folgte 2002.</string>
+    <string name="crisis_timeline_event_2001_title">Dotcom-Blase &amp; 9/11</string>
+    <string name="crisis_timeline_event_2001_summary">Aktienmarkt korrigierte nach Tech-Blase; 9/11 verstaerkte Unsicherheit.</string>
+    <string name="crisis_timeline_event_2008_title">Finanzkrise</string>
+    <string name="crisis_timeline_event_2008_summary">Subprime-Krise fuehrte zur tiefsten Rezession seit der Grossen Depression.</string>
+    <string name="crisis_timeline_event_2020_title">COVID-19 Pandemie</string>
+    <string name="crisis_timeline_event_2020_summary">Globale Lockdowns sorgten fuer Schock und massive Liquiditaetsmassnahmen.</string>
+    <string name="crisis_timeline_event_2022_title">Ukraine-Krieg</string>
+    <string name="crisis_timeline_event_2022_summary">Geopolitische Spannungen und Energiepreise trieben Safe-Haven-Nachfrage.</string>
+    <string name="crisis_timeline_event_2028_title">Prognose: Naechster Benner-Zyklus</string>
+    <string name="crisis_timeline_event_2028_summary">Benner-Cycle signalisiert eine Phase wirtschaftlicher Spannung.</string>
+    <string name="crisis_timeline_event_2045_title">Prognose: Benner Panik-Phase</string>
+    <string name="crisis_timeline_event_2045_summary">Historische Muster deuten auf eine moegliche Panikphase hin.</string>
 
     <string name="consultation_title">Beratung anfragen</string>
     <string name="consultation_panel_subtitle">Für eine individuelle Beratung nutzen Sie bitte das Kontaktformular auf der Website.</string>

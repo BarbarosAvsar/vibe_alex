@@ -81,7 +81,7 @@
 - **Macro indicators:** World Bank API (`https://api.worldbank.org/v2/country/{ISO}/indicator/{code}`) -> `MacroIndicatorService` (inflation, GDP growth, defense spending).
 - **Crisis feed:** NewsAPI.org (`/v2/top-headlines`, `/v2/everything`) + World Bank governance/GDP indicators -> `CrisisMonitorService`.
 - **Market history:** Stooq CSV (`https://stooq.pl/q/d/l/?s={instrument}&i=d`) -> `MarketDataService` (equities, real estate, metals history).
-- **FX rates:** ECB eurofxref (`https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml`) -> `ExchangeRateService`.
+- **FX rates:** Frankfurter (ECB-based, JSON) (`https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD`) -> `ExchangeRateService`.
 - **Consultation submissions:** Midainvest contact endpoint (`https://api.midainvest.com/contact`) -> `ConsultationService`.
 - **Benner cycle:** computed locally (explicit exception) -> `BennerCycleService`.
 

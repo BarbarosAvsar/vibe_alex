@@ -91,6 +91,14 @@
 
   const COMPARISON_ASSET_MAP = new Map(COMPARISON_ASSETS.map((asset) => [asset.id, asset]));
 
+  const FALLBACK_COMPARISON_SERIES = {
+    equities: [100, 112, 106, 124, 138, 146, 128, 154, 168, 182, 190],
+    real_estate: [100, 104, 108, 114, 120, 126, 121, 130, 136, 142, 148],
+    metals: [100, 116, 124, 132, 140, 158, 176, 168, 190, 206, 214]
+  };
+
+  const CRISIS_TIMELINE_TAGS = ["currency", "inflation", "market", "geopolitical", "pandemic", "forecast"];
+
   const BENNER_CONFIG = {
     initialPanicYear: 1700,
     intervals: [18, 20, 16],
@@ -150,7 +158,7 @@
     settingsTitle: "Einstellungen",
     settingsSectionGeneral: "Allgemein",
     settingsCurrencyLabel: "Währung",
-    settingsCurrencyHint: "Wechselkurs aus der EZB, Updates alle 12 Stunden.",
+    settingsCurrencyHint: "EZB-Kurs via Frankfurter, Updates taeglich.",
     settingsLanguageLabel: "App-Sprache",
     settingsLanguageHint: "Ändert die Sprache der Benutzeroberfläche.",
     settingsSectionWatchlist: "Krisen-Filter",
@@ -266,6 +274,10 @@
     comparisonPerformanceTitle: "Performance-Übersicht",
     comparisonPerformanceSubtitle: "Historisch und Prognose",
     comparisonPerformanceFormat: "Historisch %s / Prognose %s",
+    comparisonPerformanceCagrLabel: "CAGR",
+    comparisonPerformanceDeltaLabel: "Prognose-Delta",
+    comparisonPerformanceChartAria: "Performance-Uebersicht Chart",
+    comparisonFallbackHint: "Hinweis: Vergleichsdaten basieren auf einem lokalen Index, da externe Kurse wegen CORS nicht abrufbar waren.",
     comparisonNoData: "Keine Marktdaten verfügbar.",
     comparisonLoading: "Lade Marktdaten…",
     comparisonMacroTitle: "Makro-Vergleich",
@@ -318,6 +330,102 @@
     crisisDetailTitle: "Krisen-Details",
     crisisDetailMissing: "Ereignis nicht gefunden.",
     crisisDetailTimeline: "Zeitachse",
+    crisisTimelineTitle: "Krisen-Timeline",
+    crisisTimelineSubtitle: "Historische Krisen und ihre Auswirkungen auf Anlageklassen.",
+    crisisTimelineIntroTitle: "Lernen Sie aus der Geschichte",
+    crisisTimelineIntroBody:
+      "Diese Timeline zeigt, wie Anlageklassen in historischen Krisen reagierten. Edelmetalle erwiesen sich oft als Stabilitaetsanker.",
+    crisisTimelineFilterAll: "Alle",
+    crisisTimelineImpactTitle: "Auswirkungen auf Anlageklassen",
+    crisisTimelineInsightTitle: "Historische Erkenntnis",
+    crisisTimelineInsightBody:
+      "In grossen Krisen der letzten Jahrzehnte hielten Edelmetalle oft die Kaufkraft oder stiegen. Besonders in Waehrungsreformen und Inflationsphasen waren Gold und Silber der sichere Hafen fuer Vermoegen.",
+    crisisTimelineDisclaimer: "Hinweis: Werte sind indikativ und dienen nur der Einordnung.",
+    crisisTimelineTagCurrency: "Waehrungsreform",
+    crisisTimelineTagInflation: "Inflation",
+    crisisTimelineTagMarket: "Wirtschaftskrise",
+    crisisTimelineTagGeopolitical: "Geopolitik",
+    crisisTimelineTagPandemic: "Pandemie",
+    crisisTimelineTagForecast: "Prognose",
+    crisisTimelineEvents: [
+      {
+        year: 1948,
+        tag: "currency",
+        title: "Waehrungsreform & Lastenausgleich",
+        summary: "Die deutsche Waehrungsreform entwertete Geldvermoegen; Sachwerte gewannen an Bedeutung.",
+        impacts: { equities: -40, realEstate: -30, metals: 85 }
+      },
+      {
+        year: 1971,
+        tag: "currency",
+        title: "Nixon Shock",
+        summary: "Aufhebung der Goldbindung des US-Dollars; Goldpreise zogen stark an.",
+        impacts: { equities: -15, realEstate: -8, metals: 120 }
+      },
+      {
+        year: 1973,
+        tag: "inflation",
+        title: "Oelkrise",
+        summary: "Oelpreisschock loeste Inflation und Rezession in westlichen Industrien aus.",
+        impacts: { equities: -25, realEstate: -10, metals: 65 }
+      },
+      {
+        year: 1987,
+        tag: "market",
+        title: "Schwarzer Montag",
+        summary: "Der groesste Boersencrash der Nachkriegszeit mit zweistelligen Tagesverlusten.",
+        impacts: { equities: -35, realEstate: -5, metals: 15 }
+      },
+      {
+        year: 1999,
+        tag: "currency",
+        title: "Euro-Einfuehrung (Buchgeld)",
+        summary: "Start der gemeinsamen Waehrung in Europa; Bargeld folgte 2002.",
+        impacts: { equities: 5, realEstate: 0, metals: 8 }
+      },
+      {
+        year: 2001,
+        tag: "market",
+        title: "Dotcom-Blase & 9/11",
+        summary: "Aktienmarkt korrigierte nach Tech-Blase; 9/11 verstaerkte Unsicherheit.",
+        impacts: { equities: -30, realEstate: -8, metals: 20 }
+      },
+      {
+        year: 2008,
+        tag: "market",
+        title: "Finanzkrise",
+        summary: "Subprime-Krise fuehrte zur tiefsten Rezession seit der Grossen Depression.",
+        impacts: { equities: -40, realEstate: -25, metals: 40 }
+      },
+      {
+        year: 2020,
+        tag: "pandemic",
+        title: "COVID-19 Pandemie",
+        summary: "Globale Lockdowns sorgten fuer Schock und massive Liquiditaetsmassnahmen.",
+        impacts: { equities: -20, realEstate: -5, metals: 25 }
+      },
+      {
+        year: 2022,
+        tag: "geopolitical",
+        title: "Ukraine-Krieg",
+        summary: "Geopolitische Spannungen und Energiepreise trieben Safe-Haven-Nachfrage.",
+        impacts: { equities: -15, realEstate: -8, metals: 18 }
+      },
+      {
+        year: 2028,
+        tag: "forecast",
+        title: "Prognose: Naechster Benner-Zyklus",
+        summary: "Benner-Cycle signalisiert eine Phase wirtschaftlicher Spannung.",
+        impacts: { equities: -25, realEstate: -15, metals: 35 }
+      },
+      {
+        year: 2045,
+        tag: "forecast",
+        title: "Prognose: Benner Panik-Phase",
+        summary: "Historische Muster deuten auf eine moegliche Panikphase hin.",
+        impacts: { equities: -35, realEstate: -20, metals: 50 }
+      }
+    ],
     crisisDetailOpenSource: "Quelle öffnen",
     crisisDetailTimeLabel: "Zeitpunkt: %s",
     crisisDetailSourceLabel: "Quelle: %s",
@@ -458,7 +566,7 @@
     settingsTitle: "Settings",
     settingsSectionGeneral: "General",
     settingsCurrencyLabel: "Currency",
-    settingsCurrencyHint: "ECB exchange rate, updates every 12 hours.",
+    settingsCurrencyHint: "ECB rate via Frankfurter, daily updates.",
     settingsLanguageLabel: "App language",
     settingsLanguageHint: "Changes the interface language.",
     settingsSectionWatchlist: "Crisis filters",
@@ -574,6 +682,10 @@
     comparisonPerformanceTitle: "Performance overview",
     comparisonPerformanceSubtitle: "Historical and forecast",
     comparisonPerformanceFormat: "History %s / Forecast %s",
+    comparisonPerformanceCagrLabel: "CAGR",
+    comparisonPerformanceDeltaLabel: "Forecast delta",
+    comparisonPerformanceChartAria: "Performance overview chart",
+    comparisonFallbackHint: "Note: Comparison data uses a local index because external prices were blocked by CORS.",
     comparisonNoData: "No market data available.",
     comparisonLoading: "Loading market data…",
     comparisonMacroTitle: "Macro comparison",
@@ -626,6 +738,102 @@
     crisisDetailTitle: "Crisis details",
     crisisDetailMissing: "Event not found.",
     crisisDetailTimeline: "Timeline",
+    crisisTimelineTitle: "Crisis timeline",
+    crisisTimelineSubtitle: "Historical crises and their impact on asset classes.",
+    crisisTimelineIntroTitle: "Learn from history",
+    crisisTimelineIntroBody:
+      "This timeline shows how asset classes reacted in past crises. Precious metals often acted as a stabilizer.",
+    crisisTimelineFilterAll: "All",
+    crisisTimelineImpactTitle: "Impact on asset classes",
+    crisisTimelineInsightTitle: "Historical insight",
+    crisisTimelineInsightBody:
+      "Across major crises of recent decades, precious metals often held purchasing power or rose. Especially in currency shifts and inflation spikes, gold and silver served as a safe haven.",
+    crisisTimelineDisclaimer: "Note: Values are indicative and for context only.",
+    crisisTimelineTagCurrency: "Currency shift",
+    crisisTimelineTagInflation: "Inflation",
+    crisisTimelineTagMarket: "Market crisis",
+    crisisTimelineTagGeopolitical: "Geopolitics",
+    crisisTimelineTagPandemic: "Pandemic",
+    crisisTimelineTagForecast: "Forecast",
+    crisisTimelineEvents: [
+      {
+        year: 1948,
+        tag: "currency",
+        title: "Currency reform & burden sharing",
+        summary: "Germany's reform devalued cash balances; real assets gained importance.",
+        impacts: { equities: -40, realEstate: -30, metals: 85 }
+      },
+      {
+        year: 1971,
+        tag: "currency",
+        title: "Nixon shock",
+        summary: "The US left the gold standard; gold prices accelerated.",
+        impacts: { equities: -15, realEstate: -8, metals: 120 }
+      },
+      {
+        year: 1973,
+        tag: "inflation",
+        title: "Oil crisis",
+        summary: "Oil price shocks triggered inflation and recession across Western economies.",
+        impacts: { equities: -25, realEstate: -10, metals: 65 }
+      },
+      {
+        year: 1987,
+        tag: "market",
+        title: "Black Monday",
+        summary: "The largest post-war equity crash with double-digit daily losses.",
+        impacts: { equities: -35, realEstate: -5, metals: 15 }
+      },
+      {
+        year: 1999,
+        tag: "currency",
+        title: "Euro launch (book money)",
+        summary: "The euro introduced a shared currency in Europe; cash followed in 2002.",
+        impacts: { equities: 5, realEstate: 0, metals: 8 }
+      },
+      {
+        year: 2001,
+        tag: "market",
+        title: "Dot-com bust & 9/11",
+        summary: "Tech markets corrected; 9/11 amplified uncertainty.",
+        impacts: { equities: -30, realEstate: -8, metals: 20 }
+      },
+      {
+        year: 2008,
+        tag: "market",
+        title: "Financial crisis",
+        summary: "The subprime shock triggered the deepest recession since the Great Depression.",
+        impacts: { equities: -40, realEstate: -25, metals: 40 }
+      },
+      {
+        year: 2020,
+        tag: "pandemic",
+        title: "COVID-19 pandemic",
+        summary: "Global lockdowns caused a shock and massive liquidity interventions.",
+        impacts: { equities: -20, realEstate: -5, metals: 25 }
+      },
+      {
+        year: 2022,
+        tag: "geopolitical",
+        title: "War in Ukraine",
+        summary: "Geopolitical stress and energy prices lifted safe-haven demand.",
+        impacts: { equities: -15, realEstate: -8, metals: 18 }
+      },
+      {
+        year: 2028,
+        tag: "forecast",
+        title: "Forecast: next Benner cycle",
+        summary: "The Benner cycle signals a period of economic stress.",
+        impacts: { equities: -25, realEstate: -15, metals: 35 }
+      },
+      {
+        year: 2045,
+        tag: "forecast",
+        title: "Forecast: Benner panic phase",
+        summary: "Historical patterns suggest a potential panic phase.",
+        impacts: { equities: -35, realEstate: -20, metals: 50 }
+      }
+    ],
     crisisDetailOpenSource: "Open source",
     crisisDetailTimeLabel: "Time: %s",
     crisisDetailSourceLabel: "Source: %s",
@@ -763,7 +971,7 @@
     settingsTitle: "Paramètres",
     settingsSectionGeneral: "Général",
     settingsCurrencyLabel: "Devise",
-    settingsCurrencyHint: "Taux de change de la BCE, mise à jour toutes les 12 heures.",
+    settingsCurrencyHint: "Taux BCE via Frankfurter, mises a jour quotidiennes.",
     settingsLanguageLabel: "Langue de l’application",
     settingsLanguageHint: "Modifie la langue de l’interface.",
     settingsSectionWatchlist: "Filtres de crise",
@@ -880,6 +1088,10 @@
     comparisonPerformanceTitle: "Aperçu de la performance",
     comparisonPerformanceSubtitle: "Historique et prévision",
     comparisonPerformanceFormat: "Historique %s / Prévision %s",
+    comparisonPerformanceCagrLabel: "TCAC",
+    comparisonPerformanceDeltaLabel: "Delta prevision",
+    comparisonPerformanceChartAria: "Graphique apercu performance",
+    comparisonFallbackHint: "Note : donnees de comparaison basees sur un indice local, car les cours externes sont bloques par CORS.",
     comparisonNoData: "Aucune donnée de marché disponible.",
     comparisonLoading: "Chargement des données de marché…",
     comparisonMacroTitle: "Comparaison macro",
@@ -932,6 +1144,102 @@
     crisisDetailTitle: "Détails de crise",
     crisisDetailMissing: "Événement introuvable.",
     crisisDetailTimeline: "Chronologie",
+    crisisTimelineTitle: "Chronologie des crises",
+    crisisTimelineSubtitle: "Crises historiques et leur impact sur les classes d'actifs.",
+    crisisTimelineIntroTitle: "Apprendre de l'histoire",
+    crisisTimelineIntroBody:
+      "Cette chronologie montre comment les classes d'actifs ont reagi lors des crises. Les metaux precieux ont souvent stabilise.",
+    crisisTimelineFilterAll: "Toutes",
+    crisisTimelineImpactTitle: "Impact sur les classes d'actifs",
+    crisisTimelineInsightTitle: "Enseignement historique",
+    crisisTimelineInsightBody:
+      "Dans les grandes crises recentes, les metaux precieux ont souvent preserve le pouvoir d'achat. En periodes de reforme monetaire et d'inflation, l'or et l'argent ont servi de refuge.",
+    crisisTimelineDisclaimer: "Note : valeurs indicatives, pour contexte.",
+    crisisTimelineTagCurrency: "Reforme monetaire",
+    crisisTimelineTagInflation: "Inflation",
+    crisisTimelineTagMarket: "Crise economique",
+    crisisTimelineTagGeopolitical: "Geopolitique",
+    crisisTimelineTagPandemic: "Pandemie",
+    crisisTimelineTagForecast: "Prevision",
+    crisisTimelineEvents: [
+      {
+        year: 1948,
+        tag: "currency",
+        title: "Reforme monetaire & compensation",
+        summary: "La reforme allemande a devalue l'epargne; les actifs reels ont gagne en poids.",
+        impacts: { equities: -40, realEstate: -30, metals: 85 }
+      },
+      {
+        year: 1971,
+        tag: "currency",
+        title: "Choc Nixon",
+        summary: "Fin de l'etalon-or; l'or a accelere.",
+        impacts: { equities: -15, realEstate: -8, metals: 120 }
+      },
+      {
+        year: 1973,
+        tag: "inflation",
+        title: "Crise petroliere",
+        summary: "Choc petrolier, inflation et recession en Occident.",
+        impacts: { equities: -25, realEstate: -10, metals: 65 }
+      },
+      {
+        year: 1987,
+        tag: "market",
+        title: "Lundi noir",
+        summary: "Krach boursier majeur avec pertes a deux chiffres en une journee.",
+        impacts: { equities: -35, realEstate: -5, metals: 15 }
+      },
+      {
+        year: 1999,
+        tag: "currency",
+        title: "Lancement de l'euro (scriptural)",
+        summary: "L'euro arrive en Europe; les billets suivent en 2002.",
+        impacts: { equities: 5, realEstate: 0, metals: 8 }
+      },
+      {
+        year: 2001,
+        tag: "market",
+        title: "Bulle internet & 11/09",
+        summary: "Correction tech et hausse de l'incertitude.",
+        impacts: { equities: -30, realEstate: -8, metals: 20 }
+      },
+      {
+        year: 2008,
+        tag: "market",
+        title: "Crise financiere",
+        summary: "La crise des subprimes a provoque une recession historique.",
+        impacts: { equities: -40, realEstate: -25, metals: 40 }
+      },
+      {
+        year: 2020,
+        tag: "pandemic",
+        title: "Pandemie COVID-19",
+        summary: "Confinements mondiaux et mesures massives de liquidite.",
+        impacts: { equities: -20, realEstate: -5, metals: 25 }
+      },
+      {
+        year: 2022,
+        tag: "geopolitical",
+        title: "Guerre en Ukraine",
+        summary: "Tensions geopolitiques et energie ont soutenu les refuges.",
+        impacts: { equities: -15, realEstate: -8, metals: 18 }
+      },
+      {
+        year: 2028,
+        tag: "forecast",
+        title: "Prevision : prochain cycle Benner",
+        summary: "Le cycle Benner signale une phase de tension economique.",
+        impacts: { equities: -25, realEstate: -15, metals: 35 }
+      },
+      {
+        year: 2045,
+        tag: "forecast",
+        title: "Prevision : phase de panique Benner",
+        summary: "Les modeles historiques suggerent une phase de panique.",
+        impacts: { equities: -35, realEstate: -20, metals: 50 }
+      }
+    ],
     crisisDetailOpenSource: "Ouvrir la source",
     crisisDetailTimeLabel: "Moment : %s",
     crisisDetailSourceLabel: "Source : %s",
@@ -1071,7 +1379,7 @@
     settingsTitle: "Ajustes",
     settingsSectionGeneral: "General",
     settingsCurrencyLabel: "Moneda",
-    settingsCurrencyHint: "Tipo de cambio del BCE, actualizaciones cada 12 horas.",
+    settingsCurrencyHint: "Tipo de cambio BCE via Frankfurter, actualizaciones diarias.",
     settingsLanguageLabel: "Idioma de la app",
     settingsLanguageHint: "Cambia el idioma de la interfaz.",
     settingsSectionWatchlist: "Filtros de crisis",
@@ -1188,6 +1496,10 @@
     comparisonPerformanceTitle: "Resumen de rendimiento",
     comparisonPerformanceSubtitle: "Histórico y pronóstico",
     comparisonPerformanceFormat: "Histórico %s / Pronóstico %s",
+    comparisonPerformanceCagrLabel: "CAGR",
+    comparisonPerformanceDeltaLabel: "Delta de pronostico",
+    comparisonPerformanceChartAria: "Grafico de resumen de rendimiento",
+    comparisonFallbackHint: "Nota: los datos de comparacion usan un indice local porque los precios externos fueron bloqueados por CORS.",
     comparisonNoData: "No hay datos de mercado disponibles.",
     comparisonLoading: "Cargando datos de mercado…",
     comparisonMacroTitle: "Comparación macro",
@@ -1240,6 +1552,102 @@
     crisisDetailTitle: "Detalles de crisis",
     crisisDetailMissing: "Evento no encontrado.",
     crisisDetailTimeline: "Línea de tiempo",
+    crisisTimelineTitle: "Linea de tiempo de crisis",
+    crisisTimelineSubtitle: "Crisis historicas y su impacto en clases de activos.",
+    crisisTimelineIntroTitle: "Aprender de la historia",
+    crisisTimelineIntroBody:
+      "Esta linea de tiempo muestra como reaccionaron las clases de activos en crisis pasadas. Los metales preciosos a menudo estabilizaron.",
+    crisisTimelineFilterAll: "Todas",
+    crisisTimelineImpactTitle: "Impacto en clases de activos",
+    crisisTimelineInsightTitle: "Leccion historica",
+    crisisTimelineInsightBody:
+      "En grandes crisis recientes, los metales preciosos suelen preservar poder adquisitivo. En reformas monetarias e inflacion, oro y plata fueron refugio.",
+    crisisTimelineDisclaimer: "Nota: valores indicativos solo para contexto.",
+    crisisTimelineTagCurrency: "Reforma monetaria",
+    crisisTimelineTagInflation: "Inflacion",
+    crisisTimelineTagMarket: "Crisis economica",
+    crisisTimelineTagGeopolitical: "Geopolitica",
+    crisisTimelineTagPandemic: "Pandemia",
+    crisisTimelineTagForecast: "Pronostico",
+    crisisTimelineEvents: [
+      {
+        year: 1948,
+        tag: "currency",
+        title: "Reforma monetaria y ajuste",
+        summary: "La reforma alemana devaluo el efectivo; los activos reales ganaron peso.",
+        impacts: { equities: -40, realEstate: -30, metals: 85 }
+      },
+      {
+        year: 1971,
+        tag: "currency",
+        title: "Nixon Shock",
+        summary: "Fin del patron oro; el oro acelero.",
+        impacts: { equities: -15, realEstate: -8, metals: 120 }
+      },
+      {
+        year: 1973,
+        tag: "inflation",
+        title: "Crisis del petroleo",
+        summary: "Choque petrolero, inflacion y recesion en Occidente.",
+        impacts: { equities: -25, realEstate: -10, metals: 65 }
+      },
+      {
+        year: 1987,
+        tag: "market",
+        title: "Lunes Negro",
+        summary: "Mayor desplome bursatil con perdidas de dos digitos en un dia.",
+        impacts: { equities: -35, realEstate: -5, metals: 15 }
+      },
+      {
+        year: 1999,
+        tag: "currency",
+        title: "Lanzamiento del euro",
+        summary: "Europa adopta el euro; el efectivo llega en 2002.",
+        impacts: { equities: 5, realEstate: 0, metals: 8 }
+      },
+      {
+        year: 2001,
+        tag: "market",
+        title: "Burbuja dotcom y 11-S",
+        summary: "Correccion tecnologica y aumento de la incertidumbre.",
+        impacts: { equities: -30, realEstate: -8, metals: 20 }
+      },
+      {
+        year: 2008,
+        tag: "market",
+        title: "Crisis financiera",
+        summary: "La crisis subprime llevo a una recesion historica.",
+        impacts: { equities: -40, realEstate: -25, metals: 40 }
+      },
+      {
+        year: 2020,
+        tag: "pandemic",
+        title: "Pandemia COVID-19",
+        summary: "Confinamientos globales y medidas masivas de liquidez.",
+        impacts: { equities: -20, realEstate: -5, metals: 25 }
+      },
+      {
+        year: 2022,
+        tag: "geopolitical",
+        title: "Guerra en Ucrania",
+        summary: "Tensiones geopoliticas y energia impulsaron la demanda refugio.",
+        impacts: { equities: -15, realEstate: -8, metals: 18 }
+      },
+      {
+        year: 2028,
+        tag: "forecast",
+        title: "Pronostico: proximo ciclo Benner",
+        summary: "El ciclo Benner sugiere tension economica.",
+        impacts: { equities: -25, realEstate: -15, metals: 35 }
+      },
+      {
+        year: 2045,
+        tag: "forecast",
+        title: "Pronostico: fase de panico Benner",
+        summary: "Los patrones historicos sugieren una fase de panico.",
+        impacts: { equities: -35, realEstate: -20, metals: 50 }
+      }
+    ],
     crisisDetailOpenSource: "Abrir fuente",
     crisisDetailTimeLabel: "Momento: %s",
     crisisDetailSourceLabel: "Fuente: %s",
@@ -1359,6 +1767,8 @@
     macroComparison: { kindId: "INFLATION", data: {}, loading: false },
     comparisonMode: "history",
     selectedAssets: new Set(["EQUITY_DE", "EQUITY_USA", "GOLD"]),
+    timelineFilter: "all",
+    apexCharts: { comparison: null, performance: null },
     selectedMetalId: null,
     selectedMacroRegion: "DE",
     scenario: { inflation: 2, growth: 1, defense: 2 },
@@ -1459,6 +1869,7 @@
     elements.metalsChart = $("#metals-chart");
     elements.metalsResilience = $("#metals-resilience");
     elements.metalsWhy = $("#metals-why-metals");
+    elements.crisisTimeline = $("#crisis-timeline");
     elements.crisisSummary = $("#crisis-summary");
     elements.crisisFeed = $("#crisis-feed");
     elements.crisisDetailCard = $("#crisis-detail-card");
@@ -1507,6 +1918,16 @@
     });
 
     elements.crisisBack?.addEventListener("click", () => setRoute("crisis"));
+
+    elements.crisisTimeline?.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const filter = target.dataset.timelineFilter;
+      if (filter) {
+        state.timelineFilter = filter;
+        renderCrisisTimeline();
+      }
+    });
 
     elements.consultationForm?.addEventListener("submit", handleConsultationSubmit);
 
@@ -1908,6 +2329,9 @@
     clearElement(container);
     container.append(cardHeader(TEXT.comparisonChartTitle, TEXT.comparisonChartSubtitle));
 
+    destroyApexChart(state.apexCharts.comparison);
+    state.apexCharts.comparison = null;
+
     const selected = state.comparisonSeries.filter((item) => state.selectedAssets.has(item.assetId));
     const mode = state.comparisonMode;
 
@@ -1935,7 +2359,21 @@
       return;
     }
 
-    container.append(createLineChart(series, { showTodayMarker: true }));
+    const chartContainer = makeEl("div", "chart-container");
+    chartContainer.setAttribute("role", "img");
+    chartContainer.setAttribute("aria-label", TEXT.chartAriaLabel);
+    container.append(chartContainer);
+
+    const chart = renderApexLineChart(chartContainer, series, { showTodayMarker: true });
+    if (chart) {
+      state.apexCharts.comparison = chart;
+    } else {
+      chartContainer.append(createLineChart(series, { showTodayMarker: true }));
+    }
+
+    if (selected.some((item) => item.historyFallback)) {
+      container.append(makeEl("p", "hint", TEXT.comparisonFallbackHint));
+    }
     container.append(renderLegend(series));
   }
 
@@ -1944,6 +2382,9 @@
     if (!container) return;
     clearElement(container);
     container.append(cardHeader(TEXT.comparisonPerformanceTitle, TEXT.comparisonPerformanceSubtitle));
+
+    destroyApexChart(state.apexCharts.performance);
+    state.apexCharts.performance = null;
 
     const selected = state.comparisonSeries.filter((item) => state.selectedAssets.has(item.assetId));
     const hasHistory = selected.some((item) => item.history.length);
@@ -1957,6 +2398,12 @@
       container.append(makeEl("p", "hint", TEXT.comparisonNoData));
       return;
     }
+
+    const chartContainer = makeEl("div", "chart-container");
+    chartContainer.setAttribute("role", "img");
+    chartContainer.setAttribute("aria-label", TEXT.comparisonPerformanceChartAria);
+    container.append(chartContainer);
+    state.apexCharts.performance = renderApexPerformanceChart(chartContainer, selected);
 
     selected.forEach((item) => {
       const row = makeEl("div", "row");
@@ -2235,7 +2682,125 @@
     container.append(list);
   }
 
+  function renderCrisisTimeline() {
+    const container = elements.crisisTimeline;
+    if (!container) return;
+    clearElement(container);
+
+    container.append(cardHeader(TEXT.crisisTimelineTitle, TEXT.crisisTimelineSubtitle));
+
+    const intro = makeEl("div", "timeline-intro");
+    const introHeader = makeEl("div", "row");
+    introHeader.append(makeEl("span", "timeline-intro-icon", "i"));
+    introHeader.append(makeEl("span", "label", TEXT.crisisTimelineIntroTitle));
+    intro.append(introHeader);
+    intro.append(makeEl("p", "hint", TEXT.crisisTimelineIntroBody));
+    container.append(intro);
+
+    const filterRow = makeEl("div", "timeline-filters");
+    const filters = ["all"].concat(CRISIS_TIMELINE_TAGS);
+    filters.forEach((filter) => {
+      const label = filter === "all" ? TEXT.crisisTimelineFilterAll : timelineTagLabel(filter);
+      const button = makeEl("button", "chip", label);
+      button.type = "button";
+      button.dataset.timelineFilter = filter;
+      if (state.timelineFilter === filter) button.classList.add("is-active");
+      filterRow.append(button);
+    });
+    container.append(filterRow);
+
+    const timeline = makeEl("div", "timeline");
+    const events = timelineEvents();
+    const filtered = state.timelineFilter === "all" ? events : events.filter((event) => event.tag === state.timelineFilter);
+    if (!filtered.length) {
+      timeline.append(makeEl("p", "hint", TEXT.comparisonNoData));
+    } else {
+      filtered.forEach((event) => timeline.append(renderTimelineEvent(event)));
+    }
+    container.append(timeline);
+
+    if (TEXT.crisisTimelineDisclaimer) {
+      container.append(makeEl("p", "hint", TEXT.crisisTimelineDisclaimer));
+    }
+
+    const insight = makeEl("div", "timeline-insight");
+    insight.append(makeEl("h3", null, TEXT.crisisTimelineInsightTitle));
+    insight.append(makeEl("p", "hint", TEXT.crisisTimelineInsightBody));
+    container.append(insight);
+  }
+
+  function timelineEvents() {
+    return Array.isArray(TEXT.crisisTimelineEvents) ? TEXT.crisisTimelineEvents : [];
+  }
+
+  function timelineTagLabel(tag) {
+    if (tag === "currency") return TEXT.crisisTimelineTagCurrency;
+    if (tag === "inflation") return TEXT.crisisTimelineTagInflation;
+    if (tag === "market") return TEXT.crisisTimelineTagMarket;
+    if (tag === "geopolitical") return TEXT.crisisTimelineTagGeopolitical;
+    if (tag === "pandemic") return TEXT.crisisTimelineTagPandemic;
+    if (tag === "forecast") return TEXT.crisisTimelineTagForecast;
+    return tag;
+  }
+
+  function timelineTagIcon(tag) {
+    if (tag === "currency") return "FX";
+    if (tag === "inflation") return "INF";
+    if (tag === "market") return "MKT";
+    if (tag === "geopolitical") return "GEO";
+    if (tag === "pandemic") return "PAN";
+    if (tag === "forecast") return "FUT";
+    return "o";
+  }
+
+  function renderTimelineEvent(event) {
+    const row = makeEl("div", "timeline-event");
+    row.dataset.timelineTag = event.tag || "";
+
+    const marker = makeEl("div", "timeline-marker");
+    marker.append(makeEl("span", "timeline-year", String(event.year || "")));
+    const icon = makeEl("span", "timeline-icon", timelineTagIcon(event.tag));
+    icon.setAttribute("aria-hidden", "true");
+    marker.append(icon);
+    row.append(marker);
+
+    const card = makeEl("div", "timeline-card");
+    const tag = makeEl("span", "pill timeline-tag", timelineTagLabel(event.tag));
+    card.append(tag);
+    card.append(makeEl("h3", null, event.title));
+    if (event.summary) {
+      card.append(makeEl("p", "hint", event.summary));
+    }
+
+    const impact = makeEl("div", "timeline-impact");
+    impact.append(makeEl("span", "label", TEXT.crisisTimelineImpactTitle));
+    impact.append(renderTimelineImpactRow(TEXT.scenarioEquities, event.impacts?.equities));
+    impact.append(renderTimelineImpactRow(TEXT.scenarioRealEstate, event.impacts?.realEstate));
+    impact.append(renderTimelineImpactRow(TEXT.scenarioMetals, event.impacts?.metals));
+    card.append(impact);
+
+    row.append(card);
+    return row;
+  }
+
+  function renderTimelineImpactRow(label, value) {
+    const row = makeEl("div", "timeline-impact-row");
+    row.append(makeEl("span", "hint", label));
+    if (!Number.isFinite(value)) {
+      row.append(makeEl("span", "hint", TEXT.notAvailableShort));
+      return row;
+    }
+    const sign = value > 0 ? "+" : "";
+    const display = `${sign}${formatNumber(value, 0)}%`;
+    const valueEl = makeEl("span", "impact-value", display);
+    valueEl.classList.add(value >= 0 ? "is-up" : "is-down");
+    valueEl.setAttribute("aria-label", `${label}: ${display}`);
+    row.append(valueEl);
+    return row;
+  }
+
   function renderCrisis() {
+    renderCrisisTimeline();
     renderCrisisSummary();
     renderCrisisFeed();
   }
@@ -2456,8 +3021,10 @@
     if (state.settings.currency !== currency) {
       state.settings.currency = currency;
       saveSettings();
-      void ensureFxRate();
       renderAll();
+      void ensureFxRate().then((updated) => {
+        if (updated) renderAll();
+      });
     }
   }
 
@@ -2970,42 +3537,43 @@
   }
 
   async function ensureFxRate() {
-    if (state.settings.currency !== "EUR") return;
-
-    if (state.fxRate && !fxRateStale(state.fxRate)) return;
+    if (state.fxRate && !fxRateStale(state.fxRate)) return false;
 
     try {
       const fxRate = await fetchFxRate();
+      const updated = fxRate.rate !== state.fxRate?.rate || fxRate.base !== state.fxRate?.base;
       state.fxRate = fxRate;
       writeJson(STORAGE_KEYS.fxRate, fxRate);
+      return updated;
     } catch {
       if (!state.fxRate) {
         state.fxRate = null;
       }
+      return false;
     }
   }
 
   async function fetchFxRate() {
-    const response = await fetch("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml", { cache: "no-store" });
-    const text = await response.text();
-    const xml = new DOMParser().parseFromString(text, "application/xml");
-    const node = xml.querySelector("Cube[currency='USD']");
-    const rate = Number(node?.getAttribute("rate"));
+    const response = await fetch("https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD", { cache: "no-store" });
+    const data = await response.json();
+    const rate = Number(data?.rates?.USD);
     if (!Number.isFinite(rate)) throw new Error("FX parse failed");
-    return { rate, fetchedAt: Date.now() };
+    return { rate, base: "EUR", fetchedAt: Date.now() };
   }
 
   function fxRateStale(fxRate) {
     if (!fxRate?.fetchedAt) return true;
-    return Date.now() - fxRate.fetchedAt > 12 * 60 * 60 * 1000;
+    return Date.now() - fxRate.fetchedAt > 24 * 60 * 60 * 1000;
   }
 
   async function loadComparisonSeries() {
     const series = await Promise.all(
       COMPARISON_ASSETS.map(async (asset) => {
-        const history = asset.instrument ? await fetchStooqHistory(asset.instrument, 10) : [];
+        const rawHistory = asset.instrument ? await fetchStooqHistory(asset.instrument, 10) : [];
+        const historyFallback = rawHistory.length === 0;
+        const history = historyFallback ? fallbackComparisonHistory(asset) : rawHistory;
         const projection = history.length ? makeProjection(history, asset.group) : [];
-        return { assetId: asset.id, history, projection };
+        return { assetId: asset.id, history, projection, historyFallback };
       })
     );
 
@@ -3049,6 +3617,18 @@
     const maxYear = points[points.length - 1]?.year;
     const threshold = maxYear - limitYears;
     return points.filter((point) => point.year >= threshold);
+  }
+
+  function fallbackComparisonHistory(asset) {
+    const series = FALLBACK_COMPARISON_SERIES[asset.group] || FALLBACK_COMPARISON_SERIES.equities;
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - (series.length - 1);
+    const seed = asset.id ? asset.id.charCodeAt(0) : 5;
+    const scale = 0.92 + (seed % 10) / 40;
+    return series.map((value, index) => ({
+      year: startYear + index,
+      value: value * scale
+    }));
   }
 
   function makeProjection(history, group) {
@@ -3485,6 +4065,115 @@
     return progress;
   }
 
+  function destroyApexChart(chart) {
+    if (!chart || typeof chart.destroy !== "function") return;
+    chart.destroy();
+  }
+
+  function renderApexLineChart(container, series, options = {}) {
+    if (!window.ApexCharts || !container) return null;
+
+    const allPoints = series.flatMap((item) => item.points);
+    if (!allPoints.length) return null;
+
+    const minX = Math.min(...allPoints.map((point) => point.x));
+    const maxX = Math.max(...allPoints.map((point) => point.x));
+    const currentYear = new Date().getFullYear();
+    const showMarker = options.showTodayMarker && currentYear >= minX && currentYear <= maxX;
+
+    const dashArray = series.map((item) => (item.dashed ? 6 : 0));
+    const colors = series.map((item) => item.color || COLORS.accent);
+    const dataSeries = series.map((item) => ({
+      name: item.label,
+      data: item.points.map((point) => [yearInstant(point.x), point.y])
+    }));
+
+    const chart = new ApexCharts(container, {
+      chart: {
+        type: "line",
+        height: 260,
+        foreColor: COLORS.muted,
+        toolbar: { show: false },
+        zoom: { enabled: true },
+        animations: { easing: "easeinout", speed: 800 }
+      },
+      series: dataSeries,
+      colors,
+      stroke: { width: 2.4, curve: "smooth", dashArray },
+      grid: { borderColor: "rgba(15, 28, 61, 0.18)", strokeDashArray: 4 },
+      markers: { size: 0, hover: { size: 4 } },
+      xaxis: { type: "datetime", labels: { datetimeUTC: false } },
+      yaxis: { labels: { formatter: (value) => formatNumber(value, 0) } },
+      tooltip: {
+        x: { format: "yyyy" },
+        y: { formatter: (value) => formatNumber(value, 2) }
+      },
+      legend: { show: false },
+      annotations: showMarker
+        ? {
+            xaxis: [
+              {
+                x: yearInstant(currentYear),
+                borderColor: COLORS.muted,
+                strokeDashArray: 4
+              }
+            ]
+          }
+        : {}
+    });
+
+    chart.render();
+    return chart;
+  }
+
+  function renderApexPerformanceChart(container, selected) {
+    if (!window.ApexCharts || !container) return null;
+
+    const data = selected.map((item) => ({
+      label: assetLabel(item.assetId),
+      cagr: calcCagrValue(item.history),
+      delta: calcProjectionDeltaValue(item.history, item.projection)
+    }));
+
+    const categories = data.map((item) => item.label);
+    const cagrValues = data.map((item) => item.cagr);
+    const deltaValues = data.map((item) => item.delta);
+    const hasValues = data.some((item) => Number.isFinite(item.cagr) || Number.isFinite(item.delta));
+
+    if (!hasValues) return null;
+
+    const chart = new ApexCharts(container, {
+      chart: {
+        type: "bar",
+        height: 240,
+        foreColor: COLORS.muted,
+        toolbar: { show: false },
+        animations: { easing: "easeinout", speed: 800 }
+      },
+      series: [
+        { name: TEXT.comparisonPerformanceCagrLabel, data: cagrValues },
+        { name: TEXT.comparisonPerformanceDeltaLabel, data: deltaValues }
+      ],
+      colors: [COLORS.accent, COLORS.info],
+      plotOptions: {
+        bar: { columnWidth: "44%", borderRadius: 6, borderRadiusApplication: "end" }
+      },
+      dataLabels: { enabled: false },
+      xaxis: { categories },
+      yaxis: {
+        labels: { formatter: (value) => `${formatNumber(value, 1)}%` }
+      },
+      grid: { borderColor: "rgba(15, 28, 61, 0.18)", strokeDashArray: 4 },
+      tooltip: {
+        y: { formatter: (value) => `${formatNumber(value, 1)}%` }
+      },
+      legend: { position: "top", horizontalAlign: "left" }
+    });
+
+    chart.render();
+    return chart;
+  }
+
   function createLineChart(series, options = {}) {
     const width = 320;
     const height = 200;
@@ -3602,8 +4291,14 @@
     if (!Number.isFinite(value)) return value;
     if (from === to) return value;
     if (!fxRate || !Number.isFinite(fxRate.rate)) return value;
-    if (from === "USD" && to === "EUR") return value / fxRate.rate;
-    if (from === "EUR" && to === "USD") return value * fxRate.rate;
+    const base = fxRate.base || "EUR";
+    if (base === "EUR") {
+      if (from === "USD" && to === "EUR") return value / fxRate.rate;
+      if (from === "EUR" && to === "USD") return value * fxRate.rate;
+    } else if (base === "USD") {
+      if (from === "USD" && to === "EUR") return value * fxRate.rate;
+      if (from === "EUR" && to === "USD") return value / fxRate.rate;
+    }
     return value;
   }
 
@@ -3623,6 +4318,24 @@
     if (!lastHistory || !lastProjection) return TEXT.notAvailableShort;
     const delta = (lastProjection.value - lastHistory.value) / Math.max(lastHistory.value, 0.1);
     return `${formatNumber(delta * 100, 1)}%`;
+  }
+
+  function calcCagrValue(history) {
+    const first = history[0];
+    const last = history[history.length - 1];
+    if (!first || !last || first.year === last.year) return null;
+    const years = last.year - first.year;
+    const base = Math.max(last.value, 0.1) / Math.max(first.value, 0.1);
+    const growth = Math.pow(base, 1 / years) - 1;
+    return Number.isFinite(growth) ? growth * 100 : null;
+  }
+
+  function calcProjectionDeltaValue(history, projection) {
+    const lastHistory = history[history.length - 1];
+    const lastProjection = projection[projection.length - 1];
+    if (!lastHistory || !lastProjection) return null;
+    const delta = (lastProjection.value - lastHistory.value) / Math.max(lastHistory.value, 0.1);
+    return Number.isFinite(delta) ? delta * 100 : null;
   }
 
   function convertToSet(list) {

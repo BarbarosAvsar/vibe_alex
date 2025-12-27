@@ -9,13 +9,28 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ShowChart
+import androidx.compose.material.icons.automirrored.filled.TrendingDown
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CurrencyExchange
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,6 +39,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.unit.dp
@@ -72,6 +89,7 @@ fun CrisisScreen(
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
+                    CrisisTimelineSection()
                     AdaptiveColumns(
                         windowSizeClass = windowSizeClass,
                         first = {
@@ -136,6 +154,253 @@ private fun CrisisFeedSection(
             }
         }
     }
+}
+
+@Composable
+private fun CrisisTimelineSection() {
+    DashboardSection(
+        title = stringResource(R.string.crisis_timeline_title),
+        subtitle = stringResource(R.string.crisis_timeline_subtitle)
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            GlassCard {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = null,
+                        tint = CrisisColors.accent
+                    )
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(text = stringResource(R.string.crisis_timeline_intro_title), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = stringResource(R.string.crisis_timeline_intro_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = CrisisColors.textSecondary
+                        )
+                    }
+                }
+            }
+
+            timelineEvents().forEach { event ->
+                TimelineEventCard(event)
+            }
+
+            Text(
+                text = stringResource(R.string.crisis_timeline_disclaimer),
+                style = MaterialTheme.typography.labelSmall,
+                color = CrisisColors.textMuted
+            )
+
+            GlassCard {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(text = stringResource(R.string.crisis_timeline_insight_title), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = stringResource(R.string.crisis_timeline_insight_body),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = CrisisColors.textSecondary
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TimelineEventCard(event: TimelineEvent) {
+    GlassCard {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                TimelineMarker(event)
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(
+                        text = stringResource(event.tag.labelRes),
+                        style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier
+                            .background(event.tag.tint.copy(alpha = 0.2f), shape = RoundedCornerShape(20.dp))
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                    Text(text = stringResource(event.titleRes), style = MaterialTheme.typography.titleMedium)
+                }
+            }
+
+            Text(
+                text = stringResource(event.summaryRes),
+                style = MaterialTheme.typography.bodySmall,
+                color = CrisisColors.textSecondary
+            )
+
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = stringResource(R.string.crisis_timeline_impact_title),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = CrisisColors.textMuted
+                )
+                TimelineImpactRow(
+                    label = stringResource(R.string.comparison_scenario_equities),
+                    icon = Icons.AutoMirrored.Filled.ShowChart,
+                    value = event.impact.equities
+                )
+                TimelineImpactRow(
+                    label = stringResource(R.string.comparison_scenario_real_estate),
+                    icon = Icons.Filled.Home,
+                    value = event.impact.realEstate
+                )
+                TimelineImpactRow(
+                    label = stringResource(R.string.comparison_scenario_metals),
+                    icon = Icons.Filled.Star,
+                    value = event.impact.metals
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TimelineMarker(event: TimelineEvent) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = event.year.toString(),
+            style = MaterialTheme.typography.labelSmall,
+            color = CrisisColors.textMuted
+        )
+        Box(
+            modifier = Modifier
+                .size(28.dp)
+                .background(event.tag.tint.copy(alpha = 0.2f), shape = CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = event.tag.icon,
+                contentDescription = null,
+                tint = CrisisColors.textPrimary,
+                modifier = Modifier.size(16.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun TimelineImpactRow(label: String, icon: ImageVector, value: Int) {
+    val color = if (value >= 0) CrisisColors.accentStrong else Color(0xFFB13A3A)
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Icon(imageVector = icon, contentDescription = null, tint = CrisisColors.textMuted, modifier = Modifier.size(16.dp))
+        Text(text = label, style = MaterialTheme.typography.labelMedium, color = CrisisColors.textSecondary)
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = "${if (value > 0) "+" else ""}$value%",
+            style = MaterialTheme.typography.labelLarge,
+            color = color
+        )
+    }
+}
+
+private data class TimelineImpact(
+    val equities: Int,
+    val realEstate: Int,
+    val metals: Int
+)
+
+private data class TimelineEvent(
+    val year: Int,
+    val tag: TimelineTag,
+    val titleRes: Int,
+    val summaryRes: Int,
+    val impact: TimelineImpact
+)
+
+private enum class TimelineTag(
+    val labelRes: Int,
+    val icon: ImageVector,
+    val tint: Color
+) {
+    CURRENCY(R.string.crisis_timeline_tag_currency, Icons.Filled.CurrencyExchange, CrisisColors.accentStrong),
+    INFLATION(R.string.crisis_timeline_tag_inflation, Icons.AutoMirrored.Filled.TrendingUp, CrisisColors.accent),
+    MARKET(R.string.crisis_timeline_tag_market, Icons.Filled.Warning, CrisisColors.accentInfo),
+    GEOPOLITICAL(R.string.crisis_timeline_tag_geopolitical, Icons.Filled.Public, CrisisColors.accent),
+    PANDEMIC(R.string.crisis_timeline_tag_pandemic, Icons.AutoMirrored.Filled.TrendingDown, CrisisColors.accentInfo),
+    FORECAST(R.string.crisis_timeline_tag_forecast, Icons.Filled.CalendarMonth, CrisisColors.accentStrong)
+}
+
+private fun timelineEvents(): List<TimelineEvent> {
+    return listOf(
+        TimelineEvent(
+            year = 1948,
+            tag = TimelineTag.CURRENCY,
+            titleRes = R.string.crisis_timeline_event_1948_title,
+            summaryRes = R.string.crisis_timeline_event_1948_summary,
+            impact = TimelineImpact(equities = -40, realEstate = -30, metals = 85)
+        ),
+        TimelineEvent(
+            year = 1971,
+            tag = TimelineTag.CURRENCY,
+            titleRes = R.string.crisis_timeline_event_1971_title,
+            summaryRes = R.string.crisis_timeline_event_1971_summary,
+            impact = TimelineImpact(equities = -15, realEstate = -8, metals = 120)
+        ),
+        TimelineEvent(
+            year = 1973,
+            tag = TimelineTag.INFLATION,
+            titleRes = R.string.crisis_timeline_event_1973_title,
+            summaryRes = R.string.crisis_timeline_event_1973_summary,
+            impact = TimelineImpact(equities = -25, realEstate = -10, metals = 65)
+        ),
+        TimelineEvent(
+            year = 1987,
+            tag = TimelineTag.MARKET,
+            titleRes = R.string.crisis_timeline_event_1987_title,
+            summaryRes = R.string.crisis_timeline_event_1987_summary,
+            impact = TimelineImpact(equities = -35, realEstate = -5, metals = 15)
+        ),
+        TimelineEvent(
+            year = 1999,
+            tag = TimelineTag.CURRENCY,
+            titleRes = R.string.crisis_timeline_event_1999_title,
+            summaryRes = R.string.crisis_timeline_event_1999_summary,
+            impact = TimelineImpact(equities = 5, realEstate = 0, metals = 8)
+        ),
+        TimelineEvent(
+            year = 2001,
+            tag = TimelineTag.MARKET,
+            titleRes = R.string.crisis_timeline_event_2001_title,
+            summaryRes = R.string.crisis_timeline_event_2001_summary,
+            impact = TimelineImpact(equities = -30, realEstate = -8, metals = 20)
+        ),
+        TimelineEvent(
+            year = 2008,
+            tag = TimelineTag.MARKET,
+            titleRes = R.string.crisis_timeline_event_2008_title,
+            summaryRes = R.string.crisis_timeline_event_2008_summary,
+            impact = TimelineImpact(equities = -40, realEstate = -25, metals = 40)
+        ),
+        TimelineEvent(
+            year = 2020,
+            tag = TimelineTag.PANDEMIC,
+            titleRes = R.string.crisis_timeline_event_2020_title,
+            summaryRes = R.string.crisis_timeline_event_2020_summary,
+            impact = TimelineImpact(equities = -20, realEstate = -5, metals = 25)
+        ),
+        TimelineEvent(
+            year = 2022,
+            tag = TimelineTag.GEOPOLITICAL,
+            titleRes = R.string.crisis_timeline_event_2022_title,
+            summaryRes = R.string.crisis_timeline_event_2022_summary,
+            impact = TimelineImpact(equities = -15, realEstate = -8, metals = 18)
+        ),
+        TimelineEvent(
+            year = 2028,
+            tag = TimelineTag.FORECAST,
+            titleRes = R.string.crisis_timeline_event_2028_title,
+            summaryRes = R.string.crisis_timeline_event_2028_summary,
+            impact = TimelineImpact(equities = -25, realEstate = -15, metals = 35)
+        ),
+        TimelineEvent(
+            year = 2045,
+            tag = TimelineTag.FORECAST,
+            titleRes = R.string.crisis_timeline_event_2045_title,
+            summaryRes = R.string.crisis_timeline_event_2045_summary,
+            impact = TimelineImpact(equities = -35, realEstate = -20, metals = 50)
+        )
+    )
 }
 
 @Composable

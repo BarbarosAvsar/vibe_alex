@@ -61,39 +61,24 @@ struct ExchangeRateService {
     }
 
     func fetchRates() async throws -> ExchangeRates {
-        guard let url = URL(string: "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml") else {
+        guard let url = URL(string: "https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD") else {
             throw ServiceError.invalidResponse
         }
         let data = try await client.get(url)
-        let parser = ECBRateParser()
-        parser.parse(data: data)
-        guard let usdRate = parser.rates["USD"], let date = parser.date else {
+        let response = try JSONDecoder().decode(FrankfurterResponse.self, from: data)
+        guard let usdRate = response.rates["USD"] else {
             throw ServiceError.missingRate
         }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        let date = formatter.date(from: response.date) ?? Date()
         return ExchangeRates(base: .eur, timestamp: date, values: [.usd: usdRate])
     }
 }
 
-private final class ECBRateParser: NSObject, XMLParserDelegate {
-    private(set) var rates: [String: Double] = [:]
-    private(set) var date: Date?
-
-    func parse(data: Data) {
-        let parser = XMLParser(data: data)
-        parser.delegate = self
-        parser.parse()
-    }
-
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
-        if elementName == "Cube", let timeValue = attributeDict["time"] {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            formatter.locale = Locale(identifier: "en_US_POSIX")
-            date = formatter.date(from: timeValue)
-        }
-
-        if elementName == "Cube", let currency = attributeDict["currency"], let rateText = attributeDict["rate"], let rate = Double(rateText) {
-            rates[currency] = rate
-        }
-    }
+private struct FrankfurterResponse: Decodable {
+    let base: String
+    let date: String
+    let rates: [String: Double]
 }

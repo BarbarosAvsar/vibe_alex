@@ -6,7 +6,7 @@ struct LogoMark: View {
             .resizable()
             .scaledToFit()
             .frame(height: 26)
-            .accessibilityHidden(true)
+            .accessibilityLabel("CRISIS 2050 logo")
     }
 }
 
